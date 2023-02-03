@@ -15,12 +15,13 @@ function get_config($is_cache=false, $ch_host='*'){
     }
 
     // 2023-02-03 채널별 환경설정 조회가 가능하게 쿼리문 수정
-    // $sql = " select * from {$g5['config_table']}
-    $sql = " SELECT *
+    // $sql = select * from {$g5['config_table']}
+    $sql = "SELECT *
         FROM {$g5['config_table']} cf
-        INNER JOIN $g5['channel_host_table'] ch ON cf.cn_id = ch.cn_id
-        WHERE ch.ch_host = '{$ch_host}' ";
-    
+        INNER JOIN {$g5['channel_host_table']} ch ON cf.cn_id = ch.cn_id
+        WHERE ch.ch_host = '{$ch_host}'
+        LIMIT 0, 1 ";
+
     $cache = run_replace('get_config', sql_fetch($sql));
 
     return $cache;
