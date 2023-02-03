@@ -153,7 +153,8 @@ if ($g5_install || $is_install === false) {
     }
 
     $sql = " insert into `{$table_prefix}config`
-                set cf_title = '".G5_VERSION."',
+                set cn_id = '$admin_id',
+                    cf_title = '".G5_VERSION."',
                     cf_theme = 'basic',
                     cf_admin = '$admin_id',
                     cf_admin_email = '$admin_email',
@@ -604,6 +605,10 @@ fwrite($f, "\$g5['menu_table'] = G5_TABLE_PREFIX.'menu'; // 메뉴관리 테이�
 fwrite($f, "\$g5['social_profile_table'] = G5_TABLE_PREFIX.'member_social_profiles'; // 소셜 로그인 테이블\n");
 fwrite($f, "\$g5['member_cert_history_table'] = G5_TABLE_PREFIX.'member_cert_history'; // 본인인증 변경내역 테이블\n");
 
+// 몰인몰 기능 구현을 위한 추가 테이블
+fwrite($f, "\$g5['channel_table'] = G5_TABLE_PREFIX.'channel_table'; // 채널 정보 테이블\n");
+fwrite($f, "\$g5['channel_host_table'] = G5_TABLE_PREFIX.'channel_host_table'; // 채널 호스트 정보 테이블\n");
+
 if($g5_shop_install) {
     fwrite($f, "\n");
     fwrite($f, "define('G5_USE_SHOP', true);\n\n");
@@ -633,6 +638,7 @@ if($g5_shop_install) {
     fwrite($f, "\$g5['g5_shop_order_data_table'] = G5_SHOP_TABLE_PREFIX.'order_data'; // 모바일 결제정보 임시저장 테이블\n");
     fwrite($f, "\$g5['g5_shop_inicis_log_table'] = G5_SHOP_TABLE_PREFIX.'inicis_log'; // 이니시스 모바일 계좌이체 로그 테이블\n");
 }
+
 
 fwrite($f, "?>");
 

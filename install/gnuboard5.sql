@@ -1,6 +1,51 @@
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `g5_channel`
+--
+
+DROP TABLE IF EXISTS `g5_channel`;
+CREATE TABLE IF NOT EXISTS `g5_channel` (
+  `cn_id` varchar(20) NOT NULL default '' COMMENT '채널 ID',
+  `cg_id` int(11) NOT NULL default '0' COMMENT '채널그룹 ID',
+  `cn_name` varchar(255) NOT NULL default '' COMMENT '채널 명',
+  `cn_datetime` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '채널 등록일시',
+  PRIMARY KEY  (`cn_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `g5_channel_group`
+--
+
+DROP TABLE IF EXISTS `g5_channel_group`;
+CREATE TABLE IF NOT EXISTS `g5_channel_group` (
+  `cg_id` int(11) NOT NULL auto_increment COMMENT '채널그룹 ID',
+  `cg_name` varchar(255) NOT NULL default '' COMMENT '채널그룹 명',
+  `cg_admin` varchar(20) NOT NULL default '' COMMENT '채널그룹 관리자',
+  `cg_datetime` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '채널그룹 등록일시',
+  PRIMARY KEY  (`cg_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `g5_channel_host`
+--
+
+DROP TABLE IF EXISTS `g5_channel_host`;
+CREATE TABLE IF NOT EXISTS `g5_channel_host` (
+  `ch_host` varchar(255) NOT NULL default '' COMMENT '채널 호스트',
+  `cn_id` varchar(20) NOT NULL default '' COMMENT '채널 ID',
+  `ch_datetime` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '채널호스트 등록일시',
+  PRIMARY KEY  (`ch_host`),
+  KEY `cn_id` (`cn_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `g5_auth`
 --
 
@@ -189,94 +234,98 @@ CREATE TABLE IF NOT EXISTS `g5_board_new` (
 
 DROP TABLE IF EXISTS `g5_config`;
 CREATE TABLE IF NOT EXISTS `g5_config` (
-  `cf_title` varchar(255) NOT NULL DEFAULT '',
-  `cf_theme` varchar(100) NOT NULL DEFAULT '',
-  `cf_admin` varchar(100) NOT NULL DEFAULT '',
-  `cf_admin_email` varchar(100) NOT NULL DEFAULT '',
-  `cf_admin_email_name` varchar(100) NOT NULL DEFAULT '',
-  `cf_add_script` text NOT NULL,
-  `cf_use_point` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_point_term` int(11) NOT NULL DEFAULT '0',
-  `cf_use_copy_log` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_use_email_certify` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_login_point` int(11) NOT NULL DEFAULT '0',
-  `cf_cut_name` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_nick_modify` int(11) NOT NULL DEFAULT '0',
-  `cf_new_skin` varchar(50) NOT NULL DEFAULT '',
-  `cf_new_rows` int(11) NOT NULL DEFAULT '0',
-  `cf_search_skin` varchar(50) NOT NULL DEFAULT '',
-  `cf_connect_skin` varchar(50) NOT NULL DEFAULT '',
-  `cf_faq_skin` varchar(50) NOT NULL DEFAULT '',
-  `cf_read_point` int(11) NOT NULL DEFAULT '0',
-  `cf_write_point` int(11) NOT NULL DEFAULT '0',
-  `cf_comment_point` int(11) NOT NULL DEFAULT '0',
-  `cf_download_point` int(11) NOT NULL DEFAULT '0',
-  `cf_write_pages` int(11) NOT NULL DEFAULT '0',
-  `cf_mobile_pages` int(11) NOT NULL DEFAULT '0',
-  `cf_link_target` varchar(50) NOT NULL DEFAULT '',
+  `cf_id` int(11) NOT NULL auto_increment COMMENT '환경설정 ID',
+  `cn_id` varchar(20) NOT NULL default '' COMMENT '채널 ID',
+  `cf_title` varchar(255) NOT NULL DEFAULT '' COMMENT '홈페이지 제목',
+  `cf_theme` varchar(100) NOT NULL DEFAULT '' COMMENT '설정 테마',
+  `cf_admin` varchar(100) NOT NULL DEFAULT '' COMMENT '최고관리자',
+  `cf_admin_email` varchar(100) NOT NULL DEFAULT '' COMMENT '관리자 이메일',
+  `cf_admin_email_name` varchar(100) NOT NULL DEFAULT '' COMMENT '관리자 이메일 발송명',
+  `cf_add_script` text NOT NULL COMMENT '추가 SCRIPT/CSS',
+  `cf_use_point` tinyint(4) NOT NULL DEFAULT '0' COMMENT '포인트 사용',
+  `cf_point_term` int(11) NOT NULL DEFAULT '0' COMMENT '포인트 유효기간',
+  `cf_use_copy_log` tinyint(4) NOT NULL DEFAULT '0' COMMENT '복사/이동시 로그',
+  `cf_use_email_certify` tinyint(4) NOT NULL DEFAULT '0' COMMENT '메일인증 사용',
+  `cf_login_point` int(11) NOT NULL DEFAULT '0' COMMENT '로그인시 포인트',
+  `cf_cut_name` tinyint(4) NOT NULL DEFAULT '0' COMMENT '이름(닉네임) 표시',
+  `cf_nick_modify` int(11) NOT NULL DEFAULT '0' COMMENT '닉네임 수정',
+  `cf_new_skin` varchar(50) NOT NULL DEFAULT '' COMMENT '최근게시물 스킨',
+  `cf_new_rows` int(11) NOT NULL DEFAULT '0' COMMENT '최근게시물 라인수',
+  `cf_search_skin` varchar(50) NOT NULL DEFAULT '' COMMENT '검색 스킨',
+  `cf_connect_skin` varchar(50) NOT NULL DEFAULT '' COMMENT '접속자 스킨',
+  `cf_faq_skin` varchar(50) NOT NULL DEFAULT '' COMMENT 'FAQ 스킨',
+  `cf_read_point` int(11) NOT NULL DEFAULT '0' COMMENT '글읽기 포인트',
+  `cf_write_point` int(11) NOT NULL DEFAULT '0' COMMENT '글쓰기 포인트',
+  `cf_comment_point` int(11) NOT NULL DEFAULT '0' COMMENT '댓글쓰기 포인트',
+  `cf_download_point` int(11) NOT NULL DEFAULT '0' COMMENT '다운로드 포인트',
+  `cf_write_pages` int(11) NOT NULL DEFAULT '0' COMMENT '페이지 표시 수',
+  `cf_mobile_pages` int(11) NOT NULL DEFAULT '0' COMMENT '페이지 표시 수',
+  `cf_link_target` varchar(50) NOT NULL DEFAULT '' COMMENT '새창 링크',
   `cf_bbs_rewrite` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_delay_sec` int(11) NOT NULL DEFAULT '0',
-  `cf_filter` text NOT NULL,
-  `cf_possible_ip` text NOT NULL,
-  `cf_intercept_ip` text NOT NULL,
-  `cf_analytics` text NOT NULL,
-  `cf_add_meta` text NOT NULL,
-  `cf_member_skin` varchar(50) NOT NULL DEFAULT '',
-  `cf_use_homepage` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_req_homepage` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_use_tel` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_req_tel` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_use_hp` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_req_hp` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_use_addr` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_req_addr` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_use_signature` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_req_signature` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_use_profile` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_req_profile` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_register_level` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_register_point` int(11) NOT NULL DEFAULT '0',
-  `cf_icon_level` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_use_recommend` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_recommend_point` int(11) NOT NULL DEFAULT '0',
-  `cf_leave_day` int(11) NOT NULL DEFAULT '0',
-  `cf_search_part` int(11) NOT NULL DEFAULT '0',
-  `cf_email_use` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_email_wr_super_admin` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_email_wr_group_admin` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_email_wr_board_admin` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_email_wr_write` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_email_wr_comment_all` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_email_mb_super_admin` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_email_mb_member` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_email_po_super_admin` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_prohibit_id` text NOT NULL,
-  `cf_prohibit_email` text NOT NULL,
-  `cf_new_del` int(11) NOT NULL DEFAULT '0',
-  `cf_memo_del` int(11) NOT NULL DEFAULT '0',
-  `cf_visit_del` int(11) NOT NULL DEFAULT '0',
-  `cf_popular_del` int(11) NOT NULL DEFAULT '0',
-  `cf_optimize_date` date NOT NULL default '0000-00-00',
-  `cf_use_member_icon` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_member_icon_size` int(11) NOT NULL DEFAULT '0',
-  `cf_member_icon_width` int(11) NOT NULL DEFAULT '0',
-  `cf_member_icon_height` int(11) NOT NULL DEFAULT '0',
+  `cf_delay_sec` int(11) NOT NULL DEFAULT '0' COMMENT '글쓰기 간격',
+  `cf_filter` text NOT NULL COMMENT '단어 필터링',
+  `cf_possible_ip` text NOT NULL COMMENT '접근가능 IP',
+  `cf_intercept_ip` text NOT NULL COMMENT '접근불가 IP',
+  `cf_analytics` text NOT NULL COMMENT '방문자분석 스크립트',
+  `cf_add_meta` text NOT NULL COMMENT '추가 메타태그',
+  `cf_syndi_token` varchar(255) NOT NULL DEFAULT '',
+  `cf_syndi_except` mediumtext NOT NULL,
+  `cf_member_skin` varchar(50) NOT NULL DEFAULT '' COMMENT '회원 스킨',
+  `cf_use_homepage` tinyint(4) NOT NULL DEFAULT '0' COMMENT '홈페이지 입력 보이기',
+  `cf_req_homepage` tinyint(4) NOT NULL DEFAULT '0' COMMENT '홈페이지 필수입력',
+  `cf_use_tel` tinyint(4) NOT NULL DEFAULT '0' COMMENT '전화번호 입력 보이기',
+  `cf_req_tel` tinyint(4) NOT NULL DEFAULT '0' COMMENT '전화번호 필수입력',
+  `cf_use_hp` tinyint(4) NOT NULL DEFAULT '0' COMMENT '휴대전화번호 입력 보이기',
+  `cf_req_hp` tinyint(4) NOT NULL DEFAULT '0' COMMENT '휴대전화번호 필수입력',
+  `cf_use_addr` tinyint(4) NOT NULL DEFAULT '0' COMMENT '주소 입력 보이기',
+  `cf_req_addr` tinyint(4) NOT NULL DEFAULT '0' COMMENT '주소 필수입력',
+  `cf_use_signature` tinyint(4) NOT NULL DEFAULT '0' COMMENT '서명 입력 보이기',
+  `cf_req_signature` tinyint(4) NOT NULL DEFAULT '0' COMMENT '서명 필수입력',
+  `cf_use_profile` tinyint(4) NOT NULL DEFAULT '0' COMMENT '자기소개 입력 보이기',
+  `cf_req_profile` tinyint(4) NOT NULL DEFAULT '0' COMMENT '자기소개 필수입력',
+  `cf_register_level` tinyint(4) NOT NULL DEFAULT '0' COMMENT '회원가입시 권한',
+  `cf_register_point` int(11) NOT NULL DEFAULT '0' COMMENT '회원가입시 포인트',
+  `cf_icon_level` tinyint(4) NOT NULL DEFAULT '0' COMMENT '아이콘 업로드 권한',
+  `cf_use_recommend` tinyint(4) NOT NULL DEFAULT '0' COMMENT '추천인제도 사용',
+  `cf_recommend_point` int(11) NOT NULL DEFAULT '0' COMMENT '추천인 포인트',
+  `cf_leave_day` int(11) NOT NULL DEFAULT '0' COMMENT '회원탈퇴후 삭제일자',
+  `cf_search_part` int(11) NOT NULL DEFAULT '0' COMMENT '검색 단위',
+  `cf_email_use` tinyint(4) NOT NULL DEFAULT '0' COMMENT '이메일발송 사용',
+  `cf_email_wr_super_admin` tinyint(4) NOT NULL DEFAULT '0' COMMENT '게시글 작성 최고관리자 발송',
+  `cf_email_wr_group_admin` tinyint(4) NOT NULL DEFAULT '0' COMMENT '게시글 작성 그룹관리자 발송',
+  `cf_email_wr_board_admin` tinyint(4) NOT NULL DEFAULT '0' COMMENT '게시글 작성 게시판관리자 발송',
+  `cf_email_wr_write` tinyint(4) NOT NULL DEFAULT '0' COMMENT '게시글 작성 원글작성자 발송',
+  `cf_email_wr_comment_all` tinyint(4) NOT NULL DEFAULT '0' COMMENT '게시글 작성 댓글작성자 발송',
+  `cf_email_mb_super_admin` tinyint(4) NOT NULL DEFAULT '0' COMMENT '회원가입 최고관리자 발송',
+  `cf_email_mb_member` tinyint(4) NOT NULL DEFAULT '0' COMMENT '회원가입 회원 발송',
+  `cf_email_po_super_admin` tinyint(4) NOT NULL DEFAULT '0' COMMENT '투표 기타의견 최고관리자 발송',
+  `cf_prohibit_id` text NOT NULL COMMENT '아이디, 닉네임 금지단어',
+  `cf_prohibit_email` text NOT NULL COMMENT '입력 금지 메일',
+  `cf_new_del` int(11) NOT NULL DEFAULT '0' COMMENT '최근게시물 삭제',
+  `cf_memo_del` int(11) NOT NULL DEFAULT '0' COMMENT '쪽지 삭제',
+  `cf_visit_del` int(11) NOT NULL DEFAULT '0' COMMENT '접속자로그 삭제',
+  `cf_popular_del` int(11) NOT NULL DEFAULT '0' COMMENT '인기검색어 삭제',
+  `cf_optimize_date` date NOT NULL default '0000-00-00' COMMENT '설정 실행일',
+  `cf_use_member_icon` tinyint(4) NOT NULL DEFAULT '0' COMMENT '회원아이콘 사용',
+  `cf_member_icon_size` int(11) NOT NULL DEFAULT '0' COMMENT '회원아이콘 용량',
+  `cf_member_icon_width` int(11) NOT NULL DEFAULT '0' COMMENT '회원아이콘 폭',
+  `cf_member_icon_height` int(11) NOT NULL DEFAULT '0' COMMENT '회원아이콘 높이',
   `cf_member_img_size` int(11) NOT NULL DEFAULT '0',
   `cf_member_img_width` int(11) NOT NULL DEFAULT '0',
   `cf_member_img_height` int(11) NOT NULL DEFAULT '0',
-  `cf_login_minutes` int(11) NOT NULL DEFAULT '0',
-  `cf_image_extension` varchar(255) NOT NULL DEFAULT '',
-  `cf_flash_extension` varchar(255) NOT NULL DEFAULT '',
-  `cf_movie_extension` varchar(255) NOT NULL DEFAULT '',
-  `cf_formmail_is_member` tinyint(4) NOT NULL DEFAULT '0',
-  `cf_page_rows` int(11) NOT NULL DEFAULT '0',
-  `cf_mobile_page_rows` int(11) NOT NULL DEFAULT '0',
-  `cf_visit` varchar(255) NOT NULL DEFAULT '',
-  `cf_max_po_id` int(11) NOT NULL DEFAULT '0',
-  `cf_stipulation` text NOT NULL,
-  `cf_privacy` text NOT NULL,
-  `cf_open_modify` int(11) NOT NULL DEFAULT '0',
-  `cf_memo_send_point` int(11) NOT NULL DEFAULT '0',
+  `cf_login_minutes` int(11) NOT NULL DEFAULT '0' COMMENT '현재접속자',
+  `cf_image_extension` varchar(255) NOT NULL DEFAULT '' COMMENT '이미지화일 업로드 확장자',
+  `cf_flash_extension` varchar(255) NOT NULL DEFAULT '' COMMENT '플래쉬 업로드 확장자',
+  `cf_movie_extension` varchar(255) NOT NULL DEFAULT '' COMMENT '동영상 업로드 확장자',
+  `cf_formmail_is_member` tinyint(4) NOT NULL DEFAULT '0' COMMENT '폼메일 사용여부',
+  `cf_page_rows` int(11) NOT NULL DEFAULT '0' COMMENT '한페이지당 라인수',
+  `cf_mobile_page_rows` int(11) NOT NULL DEFAULT '0' COMMENT '모바일 한페이지당 라인수',
+  `cf_visit` varchar(255) NOT NULL DEFAULT '' COMMENT '방문자수',
+  `cf_max_po_id` int(11) NOT NULL DEFAULT '0' COMMENT '가장 큰 투표번호',
+  `cf_stipulation` text NOT NULL COMMENT '회원가입약관',
+  `cf_privacy` text NOT NULL COMMENT '개인정보처리방침',
+  `cf_open_modify` int(11) NOT NULL DEFAULT '0' COMMENT '정보공개 수정',
+  `cf_memo_send_point` int(11) NOT NULL DEFAULT '0' COMMENT '쪽지전송 차감포인트',
   `cf_mobile_new_skin` varchar(50) NOT NULL DEFAULT '',
   `cf_mobile_search_skin` varchar(50) NOT NULL DEFAULT '',
   `cf_mobile_connect_skin` varchar(50) NOT NULL DEFAULT '',
@@ -342,8 +391,10 @@ CREATE TABLE IF NOT EXISTS `g5_config` (
   `cf_7` varchar(255) NOT NULL DEFAULT '',
   `cf_8` varchar(255) NOT NULL DEFAULT '',
   `cf_9` varchar(255) NOT NULL DEFAULT '',
-  `cf_10` varchar(255) NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `cf_10` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY  (`cf_id`),
+  KEY `cn_id` (`cn_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 

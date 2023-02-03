@@ -1,7 +1,9 @@
 <?php
 if (!defined('_GNUBOARD_')) exit;
 
-function get_config($is_cache=false){
+// 2023-02-03 채널별 환경설정 조회 기능 구현을 위한 함수인자 추가
+// function get_config($is_cache=false) > function get_config($is_cache=false, $ch_host='*')
+function get_config($is_cache=false, $ch_host='*'){
     global $g5;
 
     static $cache = array();
@@ -12,7 +14,13 @@ function get_config($is_cache=false){
         return $cache;
     }
 
-    $sql = " select * from {$g5['config_table']} ";
+    // 2023-02-03 채널별 환경설정 조회가 가능하게 쿼리문 수정
+    // $sql = " select * from {$g5['config_table']}
+    $sql = " SELECT *
+        FROM {$g5['config_table']} ON cf
+        INNER JOIN $g5['channel_host_table'] ON ch ON cf.cn_id = ch.cn_id
+        WHERE ch.ch_host = '{$ch_host}' ";
+    
     $cache = run_replace('get_config', sql_fetch($sql));
 
     return $cache;
