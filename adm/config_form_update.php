@@ -351,4 +351,4 @@ run_event('admin_config_form_update');
 
 update_rewrite_rules();
 
-goto_url('./config_form.php?'.$qstr.'&amp;cf_id='.$cf_id, false);
+goto_url('./config_form.php?'.$qstr.'&amp;w=u&amp;cf_id='.$cf_id.'&amp;cn_id='.$cn_id, false);
