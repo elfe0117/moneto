@@ -612,6 +612,27 @@ CREATE TABLE IF NOT EXISTS `g5_memo` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `g5_menu`
+--
+
+DROP TABLE IF EXISTS `g5_menu`;
+CREATE TABLE IF NOT EXISTS `g5_menu` (
+  `me_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '메뉴 ID',
+  `cn_id` varchar(20) NOT NULL DEFAULT '' COMMENT '채널 ID',
+  `me_code` varchar(255) NOT NULL DEFAULT '' COMMENT '메뉴 코드',
+  `me_name` varchar(255) NOT NULL DEFAULT '' COMMENT '메뉴 명',
+  `me_link` varchar(255) NOT NULL DEFAULT '' COMMENT '메뉴 링크',
+  `me_target` varchar(255) NOT NULL DEFAULT '0' COMMENT '새창',
+  `me_order` int(11) NOT NULL DEFAULT '0' COMMENT '출력 순서',
+  `me_use` tinyint(4) NOT NULL DEFAULT '0' COMMENT '메뉴 사용여부(PC)',
+  `me_mobile_use` tinyint(4) NOT NULL DEFAULT '0' COMMENT '메뉴 사용여부(MOBILE)',
+  PRIMARY KEY (`me_id`),
+  KEY `cn_id` (`cn_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `g5_point`
 --
 
