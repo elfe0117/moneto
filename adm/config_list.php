@@ -6,58 +6,27 @@ if ($is_admin != 'super') {
     alert('최고관리자만 접근 가능합니다.');
 }
 
-// 메뉴테이블 생성
-if (!isset($g5['menu_table'])) {
-    die('<meta charset="utf-8">dbconfig.php 파일에 <strong>$g5[\'menu_table\'] = G5_TABLE_PREFIX.\'menu\';</strong> 를 추가해 주세요.');
-}
-
-if (!sql_query(" DESCRIBE {$g5['menu_table']} ", false)) {
-    sql_query(
-        " CREATE TABLE IF NOT EXISTS `{$g5['menu_table']}` (
-                  `me_id` int(11) NOT NULL AUTO_INCREMENT,
-                  `me_code` varchar(255) NOT NULL DEFAULT '',
-                  `me_name` varchar(255) NOT NULL DEFAULT '',
-                  `me_link` varchar(255) NOT NULL DEFAULT '',
-                  `me_target` varchar(255) NOT NULL DEFAULT '0',
-                  `me_order` int(11) NOT NULL DEFAULT '0',
-                  `me_use` tinyint(4) NOT NULL DEFAULT '0',
-                  `me_mobile_use` tinyint(4) NOT NULL DEFAULT '0',
-                  PRIMARY KEY (`me_id`)
-                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ",
-        true
-    );
-}
-
-$sql = " select * from {$g5['menu_table']} order by me_id ";
+$sql = " SELECT *
+    FROM {$g5['config_table']}
+    ORDER BY cn_id ASC ";
 $result = sql_query($sql);
 
-$g5['title'] = "메뉴설정";
+$g5['title'] = "환경설정";
 require_once './admin.head.php';
 
-$colspan = 7;
-$sub_menu_info = '';
+$colspan = 5;
 ?>
-
-<div class="local_desc01 local_desc">
-    <p><strong>주의!</strong> 메뉴설정 작업 후 반드시 <strong>확인</strong>을 누르셔야 저장됩니다.</p>
-</div>
-
-<form name="fmenulist" id="fmenulist" method="post" action="./menu_list_update.php" onsubmit="return fmenulist_submit(this);">
+<form name="fconfiglist" id="fconfiglist" method="post" action="./config_list_update.php" onsubmit="return fconfiglist_submit(this);">
     <input type="hidden" name="token" value="">
-
-
-
-    <div id="menulist" class="tbl_head01 tbl_wrap">
+    <div id="configlist" class="tbl_head01 tbl_wrap">
         <table>
             <caption><?php echo $g5['title']; ?> 목록</caption>
             <thead>
                 <tr>
-                    <th scope="col">메뉴</th>
-                    <th scope="col">링크</th>
-                    <th scope="col">새창</th>
-                    <th scope="col">순서</th>
-                    <th scope="col">PC사용</th>
-                    <th scope="col">모바일사용</th>
+                    <th scope="col">채널 ID</th>
+                    <th scope="col">홈페이지 제목</th>
+                    <th scope="col">관리자</th>
+                    <th scope="col">관리자 이메일</th>
                     <th scope="col">관리</th>
                 </tr>
             </thead>
@@ -65,18 +34,8 @@ $sub_menu_info = '';
                 <?php
                 for ($i = 0; $row = sql_fetch_array($result); $i++) {
                     $bg = 'bg' . ($i % 2);
-                    $sub_menu_class = '';
-                    if (strlen($row['me_code']) == 4) {
-                        $sub_menu_class = ' sub_menu_class';
-                        $sub_menu_info = '<span class="sound_only">' . $row['me_name'] . '의 서브</span>';
-                        $sub_menu_ico = '<span class="sub_menu_ico"></span>';
-                    }
-
-                    $search  = array('"', "'");
-                    $replace = array('&#034;', '&#039;');
-                    $me_name = str_replace($search, $replace, $row['me_name']);
                 ?>
-                    <tr class="<?php echo $bg; ?> menu_list menu_group_<?php echo substr($row['me_code'], 0, 2); ?>">
+                    <tr class="<?php echo $bg; ?>">
                         <td class="td_category<?php echo $sub_menu_class; ?>">
                             <input type="hidden" name="code[]" value="<?php echo substr($row['me_code'], 0, 2) ?>">
                             <label for="me_name_<?php echo $i; ?>" class="sound_only"><?php echo $sub_menu_info; ?> 메뉴<strong class="sound_only"> 필수</strong></label>
@@ -96,20 +55,6 @@ $sub_menu_info = '';
                         <td class="td_num">
                             <label for="me_order_<?php echo $i; ?>" class="sound_only">순서</label>
                             <input type="text" name="me_order[]" value="<?php echo $row['me_order'] ?>" id="me_order_<?php echo $i; ?>" class="tbl_input" size="5">
-                        </td>
-                        <td class="td_mng">
-                            <label for="me_use_<?php echo $i; ?>" class="sound_only">PC사용</label>
-                            <select name="me_use[]" id="me_use_<?php echo $i; ?>">
-                                <option value="1" <?php echo get_selected($row['me_use'], '1', true); ?>>사용함</option>
-                                <option value="0" <?php echo get_selected($row['me_use'], '0', true); ?>>사용안함</option>
-                            </select>
-                        </td>
-                        <td class="td_mng">
-                            <label for="me_mobile_use_<?php echo $i; ?>" class="sound_only">모바일사용</label>
-                            <select name="me_mobile_use[]" id="me_mobile_use_<?php echo $i; ?>">
-                                <option value="1" <?php echo get_selected($row['me_mobile_use'], '1', true); ?>>사용함</option>
-                                <option value="0" <?php echo get_selected($row['me_mobile_use'], '0', true); ?>>사용안함</option>
-                            </select>
                         </td>
                         <td class="td_mng">
                             <?php if (strlen($row['me_code']) == 2) { ?>
