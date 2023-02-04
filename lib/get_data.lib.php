@@ -19,7 +19,7 @@ function get_config($is_cache=false, $ch_host='*'){
     $sql = "SELECT *
         FROM {$g5['config_table']} cf
         INNER JOIN {$g5['channel_host_table']} ch ON cf.cn_id = ch.cn_id
-        WHERE ch.ch_host = '{$ch_host}'
+        WHERE (ch.ch_host = '{$ch_host}' OR cf.cn_id = '{$ch_host}')
         LIMIT 0, 1 ";
 
     $cache = run_replace('get_config', sql_fetch($sql));

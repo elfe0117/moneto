@@ -10,6 +10,8 @@ if ($is_admin != 'super') {
     alert('최고관리자만 접근 가능합니다.');
 }
 
+$cf_id = isset($_POST['cf_id']) ? strip_tags(clean_xss_attributes($_POST['cf_id'])) : '';
+$cn_id = isset($_POST['cn_id']) ? strip_tags(clean_xss_attributes($_POST['cn_id'])) : '';
 $cf_title = isset($_POST['cf_title']) ? strip_tags(clean_xss_attributes($_POST['cf_title'])) : '';
 $cf_admin = isset($_POST['cf_admin']) ? clean_xss_tags($_POST['cf_admin'], 1, 1) : '';
 $posts = array();
@@ -335,7 +337,8 @@ $sql = " update {$g5['config_table']}
                 cf_7 = '{$_POST['cf_7']}',
                 cf_8 = '{$_POST['cf_8']}',
                 cf_9 = '{$_POST['cf_9']}',
-                cf_10 = '{$_POST['cf_10']}' ";
+                cf_10 = '{$_POST['cf_10']}'
+            WHERE cf_id = '{$cf_id}' ";
 sql_query($sql);
 
 //sql_query(" OPTIMIZE TABLE `$g5[config_table]` ");
@@ -348,4 +351,4 @@ run_event('admin_config_form_update');
 
 update_rewrite_rules();
 
-goto_url('./config_form.php', false);
+goto_url('./config_form.php?'.$qstr.'&amp;cf_id='.$cf_id, false);

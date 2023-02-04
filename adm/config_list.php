@@ -36,30 +36,12 @@ $colspan = 5;
                     $bg = 'bg' . ($i % 2);
                 ?>
                     <tr class="<?php echo $bg; ?>">
-                        <td class="td_category<?php echo $sub_menu_class; ?>">
-                            <input type="hidden" name="code[]" value="<?php echo substr($row['me_code'], 0, 2) ?>">
-                            <label for="me_name_<?php echo $i; ?>" class="sound_only"><?php echo $sub_menu_info; ?> 메뉴<strong class="sound_only"> 필수</strong></label>
-                            <input type="text" name="me_name[]" value="<?php echo get_sanitize_input($me_name); ?>" id="me_name_<?php echo $i; ?>" required class="required tbl_input full_input">
-                        </td>
-                        <td>
-                            <label for="me_link_<?php echo $i; ?>" class="sound_only">링크<strong class="sound_only"> 필수</strong></label>
-                            <input type="text" name="me_link[]" value="<?php echo $row['me_link'] ?>" id="me_link_<?php echo $i; ?>" required class="required tbl_input full_input">
-                        </td>
+                        <td class="td_id"><?php echo(get_text($row['cn_id'])); ?></td>
+                        <td><?php echo(get_text($row['cf_title'])); ?></td>
+                        <td><?php echo(get_text($row['cf_admin'])); ?></td>
+                        <td><?php echo(get_text($row['cf_admin_email'])); ?></td>
                         <td class="td_mng">
-                            <label for="me_target_<?php echo $i; ?>" class="sound_only">새창</label>
-                            <select name="me_target[]" id="me_target_<?php echo $i; ?>">
-                                <option value="self" <?php echo get_selected($row['me_target'], 'self', true); ?>>사용안함</option>
-                                <option value="blank" <?php echo get_selected($row['me_target'], 'blank', true); ?>>사용함</option>
-                            </select>
-                        </td>
-                        <td class="td_num">
-                            <label for="me_order_<?php echo $i; ?>" class="sound_only">순서</label>
-                            <input type="text" name="me_order[]" value="<?php echo $row['me_order'] ?>" id="me_order_<?php echo $i; ?>" class="tbl_input" size="5">
-                        </td>
-                        <td class="td_mng">
-                            <?php if (strlen($row['me_code']) == 2) { ?>
-                                <button type="button" class="btn_add_submenu btn_03 ">추가</button>
-                            <?php } ?>
+                            <a href="./config_form.php?<?php echo($qstr); ?>&amp;w=u&amp;cf_id=<?php echo($row['cf_id']); ?>&amp;cn_id=<?php echo($row['cn_id']); ?>" class="btn btn_03">수정</a>
                             <button type="button" class="btn_del_menu btn_02">삭제</button>
                         </td>
                     </tr>
@@ -73,12 +55,6 @@ $colspan = 5;
             </tbody>
         </table>
     </div>
-
-    <div class="btn_fixed_top">
-        <button type="button" onclick="return add_menu();" class="btn btn_02">메뉴추가<span class="sound_only"> 새창</span></button>
-        <input type="submit" name="act_button" value="확인" class="btn_submit btn ">
-    </div>
-
 </form>
 
 <script>
