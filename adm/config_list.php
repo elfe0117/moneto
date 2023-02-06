@@ -37,7 +37,7 @@ $colspan = 5;
                 ?>
                     <tr class="<?php echo $bg; ?>">
                         <td class="td_id"><?php echo(get_text($row['cn_id'])); ?></td>
-                        <td><?php echo(get_text($row['cf_title'])); ?></td>
+                        <td class="td_left"><?php echo(get_text($row['cf_title'])); ?></td>
                         <td><?php echo(get_text($row['cf_admin'])); ?></td>
                         <td><?php echo(get_text($row['cf_admin_email'])); ?></td>
                         <td class="td_mng">
