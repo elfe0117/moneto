@@ -18,10 +18,12 @@ check_admin_token();
 
 $cg_name = isset($_POST['cg_name']) ? strip_tags(clean_xss_attributes($_POST['cg_name'])) : '';
 $cg_admin = isset($_POST['cg_admin']) ? strip_tags(clean_xss_attributes($_POST['cg_admin'])) : '';
+$cg_use = isset($_POST['cg_use']) ? (int)$_POST['cg_use'] : 0;
 
 $sql_common = "
     cg_name = '{$cg_name}',
-    cg_admin = '{$cg_admin}' ";
+    cg_admin = '{$cg_admin}',
+    cg_use = '{$cg_use}' ";
 
 if ($w == '') {
     $cg = sql_fetch("SELECT * FROM {$g5['channel_group_table']} WHERE cg_id = '{$cg_id}' ");

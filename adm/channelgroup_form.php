@@ -13,6 +13,7 @@ $cg_id = isset($_GET['cg_id']) ? trim($_GET['cg_id']) : '';
 
 $html_title = '채널그룹관리';
 
+$channel_total_count = 0;
 $cg = array();
 if ($w == 'u') {
     $html_title .= ' 수정';
@@ -23,6 +24,11 @@ if ($w == 'u') {
         WHERE cg_id = '{$cg_id}'
         LIMIT 0, 1 ";
     $cg = sql_fetch($sql);
+
+    $sql = "SELECT COUNT(*) AS cnt
+        FROM {$g5['channel_group_table']}
+        WHERE cg_id = '{$cg_id}' ";
+    $channel_total_count = $row['cnt'];
 } else {
     $html_title .= ' 입력';
 }
@@ -54,14 +60,27 @@ require_once './admin.head.php';
                     <td><input type="text" id="cg_name" name="cg_name" value="<?php echo($cg['cg_name']); ?>" required class="frm_input required"></td>
                 </tr>
                 <tr>
-                    <th scope="row"><label for="cg_admnin">관리자</label><strong class="sound_only"> 필수</strong></th>
-                    <td><input type="text" id="cg_admin" name="cg_admin" value="<?php echo($cg['cg_admin']); ?>" required class="frm_input required"></td>
+                    <th scope="row"><label for="cg_admin">관리자<strong class="sound_only">필수</strong></label></th>
+                    <td><?php echo get_member_id_select('cg_admin', 10, $cg['cg_admin'], 'required') ?></td>
                 </tr>
+                <tr>
+                    <th scope="row"><label for="cg_use">사용여부<strong class="sound_only"> 필수</strong></label></th>
+                    <td>
+                        <input type="checkbox" name="cg_use" value="1" id="cg_use" <?php echo ($cg['cg_use']) ? "checked" : ""; ?>> 예
+                    </td>
+                </tr>
+                <?php if ($channel_total_count) { ?>
+                <tr>
+                    <th scope="row">채널 수</th>
+                    <td><?php echo($channel_total_count); ?></td>
+                </tr>
+                <?php } ?>
             </tbody>
         </table>
     </div>
 
     <div class="btn_fixed_top btn_confirm">
+        <a href="./channelgroup_list.php?<?php echo $qstr; ?>" class="btn btn_02">목록</a>
         <input type="submit" value="확인" class="btn_submit btn" accesskey="s">
     </div>
 
