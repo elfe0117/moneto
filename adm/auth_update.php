@@ -3,6 +3,8 @@ $sub_menu = "100200";
 require_once './_common.php';
 require_once G5_LIB_PATH . '/mailer.lib.php';
 
+$cn_id = (isset($_POST['cn_id']) && $_POST['cn_id']) ? trim($_POST['cn_id']) : '';
+$mb_id = (isset($_POST['mb_id']) && $_POST['mb_id']) ? trim($_POST['mb_id']) : '';
 $au_menu = isset($_POST['au_menu']) ? preg_replace('/[^0-9a-z_]/i', '', $_POST['au_menu']) : '';
 $post_r = isset($_POST['r']) ? preg_replace('/[^0-9a-z_]/i', '', $_POST['r']) : '';
 $post_w = isset($_POST['w']) ? preg_replace('/[^0-9a-z_]/i', '', $_POST['w']) : '';
@@ -26,14 +28,16 @@ if (!chk_captcha()) {
 }
 
 $sql = " insert into {$g5['auth_table']}
-            set mb_id   = '$mb_id',
+            set cn_id = '{$cn_id}',
+                mb_id   = '$mb_id',
                 au_menu = '$au_menu',
                 au_auth = '{$post_r},{$post_w},{$post_d}' ";
 $result = sql_query($sql, false);
 if (!$result) {
     $sql = " update {$g5['auth_table']}
                 set au_auth = '{$post_r},{$post_w},{$post_d}'
-              where mb_id   = '$mb_id'
+              where cn_id = '{$cn_id}'
+                AND mb_id   = '$mb_id'
                 and au_menu = '$au_menu' ";
     sql_query($sql);
 }

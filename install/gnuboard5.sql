@@ -51,11 +51,13 @@ CREATE TABLE IF NOT EXISTS `g5_channel_host` (
 
 DROP TABLE IF EXISTS `g5_auth`;
 CREATE TABLE IF NOT EXISTS `g5_auth` (
+  `cn_id` varchar(20) NOT NULL default '',
   `mb_id` varchar(20) NOT NULL default '',
   `au_menu` varchar(20) NOT NULL default '',
   `au_auth` set('r','w','d') NOT NULL default '',
-  PRIMARY KEY  (`mb_id`,`au_menu`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  PRIMARY KEY  (`cn_id`, `mb_id`,`au_menu`),
+  KEY `cn_id` (`cn_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 

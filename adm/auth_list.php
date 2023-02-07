@@ -6,6 +6,19 @@ if ($is_admin != 'super') {
     alert('최고관리자만 접근 가능합니다.');
 }
 
+$array_cn = array();
+$sql = "SELECT *
+    FROM {$g5['channel_table']}
+    WHERE cn_use = '1'
+    ORDER BY cn_id ASC ";
+$result = sql_query($sql);
+if ($result) {
+    while($row = sql_fetch_array($result)) {
+        array_push($array_cn, $row);
+    }
+    unset($result);
+}
+
 $sql_common = " from {$g5['auth_table']} a left join {$g5['member_table']} b on (a.mb_id=b.mb_id) ";
 
 $sql_search = " where (1) ";
@@ -51,7 +64,7 @@ $listall = '<a href="' . $_SERVER['SCRIPT_NAME'] . '" class="ov_listall btn_ov02
 $g5['title'] = "관리권한설정";
 require_once './admin.head.php';
 
-$colspan = 5;
+$colspan = 6;
 ?>
 
 <div class="local_ov01 local_ov">
@@ -85,6 +98,7 @@ $colspan = 5;
                         <label for="chkall" class="sound_only">현재 페이지 회원 전체</label>
                         <input type="checkbox" name="chkall" value="1" id="chkall" onclick="check_all(this.form)">
                     </th>
+                    <th scope="col"><?php echo subject_sort_link('a.cn_id') ?>채널 ID</a></th>
                     <th scope="col"><?php echo subject_sort_link('a.mb_id') ?>회원아이디</a></th>
                     <th scope="col"><?php echo subject_sort_link('mb_nick') ?>닉네임</a></th>
                     <th scope="col">메뉴</th>
@@ -120,9 +134,11 @@ $colspan = 5;
                         <td class="td_chk">
                             <input type="hidden" name="au_menu[<?php echo $i ?>]" value="<?php echo $row['au_menu'] ?>">
                             <input type="hidden" name="mb_id[<?php echo $i ?>]" value="<?php echo $row['mb_id'] ?>">
+                            <input type="hidden" name="cn_id[<?php echo $i ?>]" value="<?php echo $row['cn_id'] ?>">
                             <label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo $row['mb_nick'] ?>님 권한</label>
                             <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i ?>">
                         </td>
+                        <td class="td_id"><?php echo(get_text($row['cn_id'])); ?></td>
                         <td class="td_mbid"><a href="?sfl=a.mb_id&amp;stx=<?php echo $row['mb_id'] ?>"><?php echo $row['mb_id'] ?></a></td>
                         <td class="td_auth_mbnick"><?php echo $mb_nick ?></td>
                         <td class="td_menu">
@@ -189,6 +205,18 @@ echo $pagelist;
                     <col>
                 </colgroup>
                 <tbody>
+                    <tr>
+                        <th scope="row"><label for="cn_id">채널 ID<strong class="sound_only"> 필수</strong></label></th>
+                        <td>
+                            <select id="cn_id" name="cn_id" required>
+                                <?php
+                                foreach($array_cn as $row_cn) {
+                                    echo(option_selected($row_cn['cn_id'], $cn['cn_id'], $row_cn['cn_id']));
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
                     <tr>
                         <th scope="row"><label for="mb_id">회원아이디<strong class="sound_only">필수</strong></label></th>
                         <td>
