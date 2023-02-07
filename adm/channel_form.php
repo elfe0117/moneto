@@ -73,7 +73,7 @@ require_once './admin.head.php';
                 <tr>
                     <th scope="row"><label for="cg_id">채널 그룹<strong class="sound_only"> 필수</strong></label></th>
                     <td>
-                        <select id="cg_id" name="cg_id">
+                        <select id="cg_id" name="cg_id" required>
                             <?php
                             foreach($array_cg as $row_cg) {
                                 echo(option_selected($row_cg['cg_id'], $cn['cg_id'], $row_cg['cg_name']));
