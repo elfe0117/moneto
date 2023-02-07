@@ -8,6 +8,19 @@ if ($is_admin != 'super') {
     alert('최고관리자만 접근 가능합니다.');
 }
 
+// 채널 목록 정보 가져오기
+$array_cn = array();
+$sql = "SELECT *
+    FROM {$g5['channel_table']}
+    ORDER BY cn_id ASC ";
+$result = sql_query($sql);
+if ($result) {
+    while($row = sql_fetch_array($result)) {
+        array_push($array_cn, $row);
+    }
+    unset($result);
+}
+
 $cf = get_config(true, $cn_id);
 
 if (!isset($cf['cf_add_script'])) {
@@ -466,6 +479,18 @@ if ($cf['cf_sms_use'] && $cf['cf_icode_id'] && $cf['cf_icode_pw']) {
                     <col>
                 </colgroup>
                 <tbody>
+                    <tr>
+                        <th scope="row"><label for="cn_id">채널 ID<strong class="sound_only"> 필수</strong></label></th>
+                        <td colspan="3">
+                            <select id="cn_id" name="cn_id" required>
+                                <?php
+                                foreach($array_cn as $row_cn) {
+                                    echo(option_selected($row_cn['cn_id'], $cn['cn_id'], $row_cn['cn_id']));
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
                     <tr>
                         <th scope="row"><label for="cf_title">홈페이지 제목<strong class="sound_only">필수</strong></label></th>
                         <td colspan="3"><input type="text" name="cf_title" value="<?php echo get_sanitize_input($cf['cf_title']); ?>" id="cf_title" required class="required frm_input" size="40"></td>
@@ -1529,6 +1554,7 @@ if ($cf['cf_sms_use'] && $cf['cf_icode_id'] && $cf['cf_icode_pw']) {
     </section>
 
     <div class="btn_fixed_top btn_confirm">
+        <a href="./config_list.php?<?php echo $qstr; ?>" class="btn btn_02">목록</a>
         <input type="submit" value="확인" class="btn_submit btn" accesskey="s">
     </div>
 
