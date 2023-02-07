@@ -23,5 +23,5 @@ $menu['menu100'][] = array('100410', 'DB업그레이드', G5_ADMIN_URL . '/dbupg
 $menu['menu100'][] = array('100400', '부가서비스', G5_ADMIN_URL . '/service.php', 'cf_service');
 
 // 2023-02-06 채널관리 메뉴 추가
-$menu['menu100'][] = array('100610', '채널관리', G5_ADMIN_URL . '/channel_list.php',   'cf_channel');
-$menu['menu100'][] = array('100620', '채널그룹관리', G5_ADMIN_URL . '/channelgroup_list.php',   'cf_channelgroup');
+$menu['menu100'][] = array('100610', '채널관리', G5_ADMIN_URL . '/channel_list.php', 'cf_channel');
+$menu['menu100'][] = array('100620', '채널그룹관리', G5_ADMIN_URL . '/channelgroup_list.php', 'cf_channelgroup');
