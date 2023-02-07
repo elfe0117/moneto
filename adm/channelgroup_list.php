@@ -99,6 +99,8 @@ $colspan = 5;
     </div>
 </form>
 
+<?php echo get_paging(G5_IS_MOBILE ? $config['cf_mobile_pages'] : $config['cf_write_pages'], $page, $total_page, '?' . $qstr . '&amp;page='); ?>
+
 <script>
     function fchannelgrouplist_submit(f) {
         if (!is_checked("chk[]")) {
