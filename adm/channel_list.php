@@ -10,6 +10,7 @@ if ($is_admin != 'super') {
 $array_cg = array();
 $sql = "SELECT *
     FROM {$g5['channel_group_table']}
+    WHERE cg_use = '1'
     ORDER BY cg_name ASC ";
 $result = sql_query($sql);
 if ($result) {
