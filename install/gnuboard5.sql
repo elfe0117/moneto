@@ -67,43 +67,45 @@ CREATE TABLE IF NOT EXISTS `g5_auth` (
 
 DROP TABLE IF EXISTS `g5_board`;
 CREATE TABLE IF NOT EXISTS `g5_board` (
-  `bo_table` varchar(20) NOT NULL DEFAULT '',
+  `bo_id` int(11) NOT NULL auto_increment COMMENT '게시판 ID',
+  `cn_id` varchar(20) NOT NULL COMMENT '채널 ID',
+  `bo_table` varchar(20) NOT NULL DEFAULT '게시판 TABLE',
   `gr_id` varchar(255) NOT NULL DEFAULT '',
   `bo_subject` varchar(255) NOT NULL DEFAULT '',
   `bo_mobile_subject` varchar(255) NOT NULL DEFAULT '',
   `bo_device` enum('both','pc','mobile') NOT NULL DEFAULT 'both',
   `bo_admin` varchar(255) NOT NULL DEFAULT '',
-  `bo_list_level` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_read_level` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_write_level` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_reply_level` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_comment_level` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_upload_level` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_download_level` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_html_level` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_link_level` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_count_delete` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_count_modify` tinyint(4) NOT NULL DEFAULT '0',
+  `bo_list_level` tinyint NOT NULL DEFAULT '0',
+  `bo_read_level` tinyint NOT NULL DEFAULT '0',
+  `bo_write_level` tinyint NOT NULL DEFAULT '0',
+  `bo_reply_level` tinyint NOT NULL DEFAULT '0',
+  `bo_comment_level` tinyint NOT NULL DEFAULT '0',
+  `bo_upload_level` tinyint NOT NULL DEFAULT '0',
+  `bo_download_level` tinyint NOT NULL DEFAULT '0',
+  `bo_html_level` tinyint NOT NULL DEFAULT '0',
+  `bo_link_level` tinyint NOT NULL DEFAULT '0',
+  `bo_count_delete` tinyint NOT NULL DEFAULT '0',
+  `bo_count_modify` tinyint NOT NULL DEFAULT '0',
   `bo_read_point` int(11) NOT NULL DEFAULT '0',
   `bo_write_point` int(11) NOT NULL DEFAULT '0',
   `bo_comment_point` int(11) NOT NULL DEFAULT '0',
   `bo_download_point` int(11) NOT NULL DEFAULT '0',
-  `bo_use_category` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_category_list` text NOT NULL,
-  `bo_use_sideview` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_use_file_content` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_use_secret` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_use_dhtml_editor` tinyint(4) NOT NULL DEFAULT '0',
+  `bo_use_category` tinyint NOT NULL DEFAULT '0',
+  `bo_category_list` mediumtext NOT NULL,
+  `bo_use_sideview` tinyint NOT NULL DEFAULT '0',
+  `bo_use_file_content` tinyint NOT NULL DEFAULT '0',
+  `bo_use_secret` tinyint NOT NULL DEFAULT '0',
+  `bo_use_dhtml_editor` tinyint NOT NULL DEFAULT '0',
   `bo_select_editor` varchar(50) NOT NULL DEFAULT '',
-  `bo_use_rss_view` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_use_good` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_use_nogood` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_use_name` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_use_signature` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_use_ip_view` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_use_list_view` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_use_list_file` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_use_list_content` tinyint(4) NOT NULL DEFAULT '0',
+  `bo_use_rss_view` tinyint NOT NULL DEFAULT '0',
+  `bo_use_good` tinyint NOT NULL DEFAULT '0',
+  `bo_use_nogood` tinyint NOT NULL DEFAULT '0',
+  `bo_use_name` tinyint NOT NULL DEFAULT '0',
+  `bo_use_signature` tinyint NOT NULL DEFAULT '0',
+  `bo_use_ip_view` tinyint NOT NULL DEFAULT '0',
+  `bo_use_list_view` tinyint NOT NULL DEFAULT '0',
+  `bo_use_list_file` tinyint NOT NULL DEFAULT '0',
+  `bo_use_list_content` tinyint NOT NULL DEFAULT '0',
   `bo_table_width` int(11) NOT NULL DEFAULT '0',
   `bo_subject_len` int(11) NOT NULL DEFAULT '0',
   `bo_mobile_subject_len` int(11) NOT NULL DEFAULT '0',
@@ -116,32 +118,32 @@ CREATE TABLE IF NOT EXISTS `g5_board` (
   `bo_mobile_skin` varchar(255) NOT NULL DEFAULT '',
   `bo_include_head` varchar(255) NOT NULL DEFAULT '',
   `bo_include_tail` varchar(255) NOT NULL DEFAULT '',
-  `bo_content_head` text NOT NULL,
-  `bo_mobile_content_head` text NOT NULL,
-  `bo_content_tail` text NOT NULL,
-  `bo_mobile_content_tail` text NOT NULL,
-  `bo_insert_content` text NOT NULL,
+  `bo_content_head` mediumtext NOT NULL,
+  `bo_mobile_content_head` mediumtext NOT NULL,
+  `bo_content_tail` mediumtext NOT NULL,
+  `bo_mobile_content_tail` mediumtext NOT NULL,
+  `bo_insert_content` mediumtext NOT NULL,
   `bo_gallery_cols` int(11) NOT NULL DEFAULT '0',
   `bo_gallery_width` int(11) NOT NULL DEFAULT '0',
   `bo_gallery_height` int(11) NOT NULL DEFAULT '0',
   `bo_mobile_gallery_width` int(11) NOT NULL DEFAULT '0',
   `bo_mobile_gallery_height` int(11) NOT NULL DEFAULT '0',
   `bo_upload_size` int(11) NOT NULL DEFAULT '0',
-  `bo_reply_order` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_use_search` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_order` int(11) NOT NULL DEFAULT '0',
-  `bo_count_write` int(11) NOT NULL DEFAULT '0',
-  `bo_count_comment` int(11) NOT NULL DEFAULT '0',
-  `bo_write_min` int(11) NOT NULL DEFAULT '0',
-  `bo_write_max` int(11) NOT NULL DEFAULT '0',
-  `bo_comment_min` int(11) NOT NULL DEFAULT '0',
-  `bo_comment_max` int(11) NOT NULL DEFAULT '0',
-  `bo_notice` text NOT NULL,
-  `bo_upload_count` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_use_email` tinyint(4) NOT NULL DEFAULT '0',
+  `bo_reply_order` tinyint NOT NULL DEFAULT '0',
+  `bo_use_search` tinyint NOT NULL DEFAULT '0',
+  `bo_order` int NOT NULL DEFAULT '0',
+  `bo_count_write` int NOT NULL DEFAULT '0',
+  `bo_count_comment` int NOT NULL DEFAULT '0',
+  `bo_write_min` int NOT NULL DEFAULT '0',
+  `bo_write_max` int NOT NULL DEFAULT '0',
+  `bo_comment_min` int NOT NULL DEFAULT '0',
+  `bo_comment_max` int NOT NULL DEFAULT '0',
+  `bo_notice` mediumtext NOT NULL,
+  `bo_upload_count` tinyint NOT NULL DEFAULT '0',
+  `bo_use_email` tinyint NOT NULL DEFAULT '0',
   `bo_use_cert` enum('','cert','adult','hp-cert','hp-adult') NOT NULL DEFAULT '',
-  `bo_use_sns` tinyint(4) NOT NULL DEFAULT '0',
-  `bo_use_captcha` tinyint(4) NOT NULL DEFAULT '0',
+  `bo_use_sns` tinyint NOT NULL DEFAULT '0',
+  `bo_use_captcha` tinyint NOT NULL DEFAULT '0',
   `bo_sort_field` varchar(255) NOT NULL DEFAULT '',
   `bo_1_subj` varchar(255) NOT NULL DEFAULT '',
   `bo_2_subj` varchar(255) NOT NULL DEFAULT '',
@@ -163,8 +165,9 @@ CREATE TABLE IF NOT EXISTS `g5_board` (
   `bo_8` varchar(255) NOT NULL DEFAULT '',
   `bo_9` varchar(255) NOT NULL DEFAULT '',
   `bo_10` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`bo_table`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`bo_id`),
+  UNIQUE KEY `fkey1` (`cn_id`, `bo_table`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -174,23 +177,24 @@ CREATE TABLE IF NOT EXISTS `g5_board` (
 
 DROP TABLE IF EXISTS `g5_board_file`;
 CREATE TABLE IF NOT EXISTS `g5_board_file` (
-  `bo_table` varchar(20) NOT NULL default '',
-  `wr_id` int(11) NOT NULL default '0',
-  `bf_no` int(11) NOT NULL default '0',
-  `bf_source` varchar(255) NOT NULL default '',
-  `bf_file` varchar(255) NOT NULL default '',
+  `cn_id` varchar(20) NOT NULL DEFAULT '' COMMENT '채널 ID',
+  `bo_table` varchar(20) NOT NULL DEFAULT '' COMMENT '게시판 TABLE',
+  `wr_id` int(11) NOT NULL DEFAULT '0',
+  `bf_no` int(11) NOT NULL DEFAULT '0',
+  `bf_source` varchar(255) NOT NULL DEFAULT '',
+  `bf_file` varchar(255) NOT NULL DEFAULT '',
   `bf_download` int(11) NOT NULL,
-  `bf_content` text NOT NULL,
-  `bf_fileurl` VARCHAR(255) NOT NULL DEFAULT '',
-  `bf_thumburl` VARCHAR(255) NOT NULL DEFAULT '',
-  `bf_storage` VARCHAR(50) NOT NULL DEFAULT '',
-  `bf_filesize` int(11) NOT NULL default '0',
-  `bf_width` int(11) NOT NULL default '0',
-  `bf_height` smallint(6) NOT NULL default '0',
-  `bf_type` tinyint(4) NOT NULL default '0',
-  `bf_datetime` datetime NOT NULL default '0000-00-00 00:00:00',
-  PRIMARY KEY  (`bo_table`,`wr_id`,`bf_no`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `bf_content` mediumtext NOT NULL,
+  `bf_fileurl` varchar(255) NOT NULL DEFAULT '',
+  `bf_thumburl` varchar(255) NOT NULL DEFAULT '',
+  `bf_storage` varchar(50) NOT NULL DEFAULT '',
+  `bf_filesize` int(11) NOT NULL DEFAULT '0',
+  `bf_width` int(11) NOT NULL DEFAULT '0',
+  `bf_height` smallint NOT NULL DEFAULT '0',
+  `bf_type` tinyint NOT NULL DEFAULT '0',
+  `bf_datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY  (`cn_id`,`bo_table`,`wr_id`,`bf_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -201,14 +205,15 @@ CREATE TABLE IF NOT EXISTS `g5_board_file` (
 DROP TABLE IF EXISTS `g5_board_good`;
 CREATE TABLE IF NOT EXISTS `g5_board_good` (
   `bg_id` int(11) NOT NULL auto_increment,
-  `bo_table` varchar(20) NOT NULL default '',
-  `wr_id` int(11) NOT NULL default '0',
-  `mb_id` varchar(20) NOT NULL default '',
-  `bg_flag` varchar(255) NOT NULL default '',
-  `bg_datetime` datetime NOT NULL default '0000-00-00 00:00:00',
-  PRIMARY KEY  (`bg_id`),
-  UNIQUE KEY `fkey1` (`bo_table`,`wr_id`,`mb_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+  `cn_id` varchar(20) NOT NULL DEFAULT '' COMMENT '채널 ID',
+  `bo_table` varchar(20) NOT NULL DEFAULT '',
+  `wr_id` int(11) NOT NULL DEFAULT '0',
+  `mb_id` varchar(20) NOT NULL DEFAULT '',
+  `bg_flag` varchar(255) NOT NULL DEFAULT '',
+  `bg_datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`bg_id`),
+  UNIQUE KEY `fkey1` (`cn_id`,`bo_table`,`wr_id`,`mb_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -219,14 +224,16 @@ CREATE TABLE IF NOT EXISTS `g5_board_good` (
 DROP TABLE IF EXISTS `g5_board_new`;
 CREATE TABLE IF NOT EXISTS `g5_board_new` (
   `bn_id` int(11) NOT NULL auto_increment,
+  `cn_id` varchar(20) NOT NULL DEFAULT '' COMMENT '채널 ID',
   `bo_table` varchar(20) NOT NULL default '',
   `wr_id` int(11) NOT NULL default '0',
   `wr_parent` int(11) NOT NULL default '0',
   `bn_datetime` datetime NOT NULL default '0000-00-00 00:00:00',
   `mb_id` varchar(20) NOT NULL default '',
   PRIMARY KEY  (`bn_id`),
+  KEY `cn_id` (`cn_id`),
   KEY `mb_id` (`mb_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -444,6 +451,8 @@ CREATE TABLE IF NOT EXISTS `g5_member_cert_history` (
 
 DROP TABLE IF EXISTS `g5_group`;
 CREATE TABLE IF NOT EXISTS `g5_group` (
+  `gr_no` int(11) NOT NULL auto_increment COMMENT '게시판 그룹 번호',
+  `cn_id` varchar(20) NOT NULL default '' COMMENT '채널 ID',
   `gr_id` varchar(10) NOT NULL default '',
   `gr_subject` varchar(255) NOT NULL default '',
   `gr_device` ENUM('both','pc','mobile') NOT NULL DEFAULT 'both',
@@ -470,8 +479,9 @@ CREATE TABLE IF NOT EXISTS `g5_group` (
   `gr_8` varchar(255) NOT NULL default '',
   `gr_9` varchar(255) NOT NULL default '',
   `gr_10` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`gr_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  PRIMARY KEY  (`gr_no`),
+  UNIQUE KEY `fkey1` (`cn_id`,`gr_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -482,13 +492,15 @@ CREATE TABLE IF NOT EXISTS `g5_group` (
 DROP TABLE IF EXISTS `g5_group_member`;
 CREATE TABLE IF NOT EXISTS `g5_group_member` (
   `gm_id` int(11) NOT NULL auto_increment,
+  `cn_id` varchar(20) NOT NULL default '' COMMENT '채널 ID',
   `gr_id` varchar(255) NOT NULL default '',
   `mb_id` varchar(20) NOT NULL default '',
   `gm_datetime` datetime NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY  (`gm_id`),
+  KEY `cn_id` (`cn_id`),
   KEY `gr_id` (`gr_id`),
   KEY `mb_id` (`mb_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -738,12 +750,14 @@ DROP TABLE IF EXISTS `g5_scrap`;
 CREATE TABLE IF NOT EXISTS `g5_scrap` (
   `ms_id` int(11) NOT NULL auto_increment,
   `mb_id` varchar(20) NOT NULL default '',
+  `cn_id` varchar(20) NOT NULL default '' COMMENT '채널 ID',
   `bo_table` varchar(20) NOT NULL default '',
   `wr_id` varchar(15) NOT NULL default '',
   `ms_datetime` datetime NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY  (`ms_id`),
+  KEY `cn_id` (`cn_id`),
   KEY `mb_id` (`mb_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 

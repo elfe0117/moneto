@@ -21,6 +21,9 @@ if ($stx) {
         case "a.gr_id":
             $sql_search .= " ($sfl = '$stx') ";
             break;
+        case "a.cn_id" :
+            $sql_search .= " ({$sfl} = '{$stx}') ";
+            break;
         default:
             $sql_search .= " ($sfl like '%$stx%') ";
             break;
@@ -29,7 +32,7 @@ if ($stx) {
 }
 
 if (!$sst) {
-    $sst  = "a.gr_id, a.bo_table";
+    $sst  = "a.cn_id, a.gr_id, a.bo_table";
     $sod = "asc";
 }
 $sql_order = " order by $sst $sod ";
@@ -53,7 +56,7 @@ $listall = '<a href="' . $_SERVER['SCRIPT_NAME'] . '" class="ov_listall">전체�
 $g5['title'] = '게시판관리';
 require_once './admin.head.php';
 
-$colspan = 15;
+$colspan = 16;
 ?>
 
 <div class="local_ov01 local_ov">
@@ -67,6 +70,7 @@ $colspan = 15;
         <option value="bo_table" <?php echo get_selected($sfl, "bo_table", true); ?>>TABLE</option>
         <option value="bo_subject" <?php echo get_selected($sfl, "bo_subject"); ?>>제목</option>
         <option value="a.gr_id" <?php echo get_selected($sfl, "a.gr_id"); ?>>그룹ID</option>
+        <option value="a.cn_id" <?php echo get_selected($sfl, "a.cn_id"); ?>>채널ID</option>
     </select>
     <label for="stx" class="sound_only">검색어<strong class="sound_only"> 필수</strong></label>
     <input type="text" name="stx" value="<?php echo $stx ?>" id="stx" required class="required frm_input">
@@ -90,6 +94,7 @@ $colspan = 15;
                         <label for="chkall" class="sound_only">게시판 전체</label>
                         <input type="checkbox" name="chkall" value="1" id="chkall" onclick="check_all(this.form)">
                     </th>
+                    <th scope="col"><?php echo subject_sort_link('a.cn_id') ?>채널</a></th>
                     <th scope="col"><?php echo subject_sort_link('a.gr_id') ?>그룹</a></th>
                     <th scope="col"><?php echo subject_sort_link('bo_table') ?>TABLE</a></th>
                     <th scope="col"><?php echo subject_sort_link('bo_skin', '', 'desc') ?>스킨</a></th>
@@ -119,6 +124,9 @@ $colspan = 15;
                         <td class="td_chk">
                             <label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo get_text($row['bo_subject']) ?></label>
                             <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i ?>">
+                        </td>
+                        <td>
+                            <?php echo($row['cn_id']); ?>
                         </td>
                         <td>
                             <?php if ($is_admin == 'super') { ?>
