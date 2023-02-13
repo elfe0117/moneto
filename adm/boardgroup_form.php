@@ -8,6 +8,19 @@ if ($is_admin != 'super' && $w == '') {
     alert('최고관리자만 접근 가능합니다.');
 }
 
+// 채널 목록 정보 가져오기
+$array_cn = array();
+$sql = "SELECT *
+    FROM {$g5['channel_table']}
+    ORDER BY cn_id ASC ";
+$result = sql_query($sql);
+if ($result) {
+    while($row = sql_fetch_array($result)) {
+        array_push($array_cn, $row);
+    }
+    unset($result);
+}
+
 $html_title = '게시판그룹';
 $gr_id_attr = '';
 $sound_only = '';
@@ -61,6 +74,18 @@ require_once './admin.head.php';
                 <col>
             </colgroup>
             <tbody>
+                <tr>
+                    <th scope="row"><label for="cn_id">채널 ID<strong class="sound_only"> 필수</strong></label></th>
+                    <td>
+                        <select id="cn_id" name="cn_id" required>
+                            <?php
+                            foreach($array_cn as $row_cn) {
+                                echo(option_selected($row_cn['cn_id'], $group['cn_id'], $row_cn['cn_id']));
+                            }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
                 <tr>
                     <th scope="row"><label for="gr_id">그룹 ID<?php echo $sound_only ?></label></th>
                     <td><input type="text" name="gr_id" value="<?php echo $group['gr_id'] ?>" id="gr_id" <?php echo $gr_id_attr; ?> class="<?php echo $gr_id_attr; ?> alnum_ frm_input" maxlength="10">
