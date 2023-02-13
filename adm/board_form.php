@@ -5,6 +5,23 @@ require_once G5_EDITOR_LIB;
 
 auth_check_menu($auth, $sub_menu, 'w');
 
+// 채널 목록 정보 가져오기
+$array_cn = array();
+$sql = "SELECT *
+    FROM {$g5['channel_table']}
+    ORDER BY cn_id ASC ";
+$result = sql_query($sql);
+if ($result) {
+    while($row = sql_fetch_array($result)) {
+        array_push($array_cn, $row);
+    }
+    unset($result);
+}
+
+if (!count($array_cn)) {
+    alert('채널이 한개 이상 생성되어야 합니다.', './channel_form.php');
+}
+
 $sql = " select count(*) as cnt from {$g5['group_table']} ";
 $row = sql_fetch($sql);
 if (!$row['cnt']) {
@@ -250,6 +267,18 @@ $pg_anchor = '<ul class="anchor">
                     <a href="<?php echo get_pretty_url($board['bo_table']) ?>" class="btn_frmline">게시판 바로가기</a>
                     <a href="./board_list.php?<?php echo $qstr;?>" class="btn_frmline">목록으로</a>
                 <?php } ?>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><label for="cn_id">채널<strong class="sound_only">필수</strong></label></th>
+            <td colspan="2">
+                <select id="cn_id" name="cn_id" required>
+                    <?php
+                    foreach($array_cn as $row_cn) {
+                        echo(option_selected($row_cn['cn_id'], $board['cn_id'], $row_cn['cn_id']));
+                    }
+                    ?>
+                </select>
             </td>
         </tr>
         <tr>

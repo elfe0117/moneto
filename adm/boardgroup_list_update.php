@@ -9,7 +9,9 @@ auth_check_menu($auth, $sub_menu, 'w');
 check_admin_token();
 
 $post_chk       = isset($_POST['chk']) ? (array) $_POST['chk'] : array();
+$post_group_no  = isset($_POST['group_no']) ? (array) $_POST['group_no'] : array();
 $post_group_id  = isset($_POST['group_id']) ? (array) $_POST['group_id'] : array();
+$post_channel_id  = isset($_POST['channel_id']) ? (array) $_POST['channel_id'] : array();
 $act_button     = isset($_POST['act_button']) ? $_POST['act_button'] : '';
 
 $chk_count = count($post_chk);
@@ -20,7 +22,9 @@ if (!$chk_count) {
 
 for ($i = 0; $i < $chk_count; $i++) {
     $k              = isset($post_chk[$i]) ? (int) $post_chk[$i] : 0;
+    $gr_no          = (int) $post_group_no[$k];
     $gr_id          = preg_replace('/[^a-z0-9_]/i', '', $post_group_id[$k]);
+    $cn_id          = preg_replace('/[^a-z0-9_]/i', '', $post_channel_id[$k]);
     $gr_subject     = isset($_POST['gr_subject'][$k]) ? strip_tags(clean_xss_attributes($_POST['gr_subject'][$k])) : '';
     $gr_admin       = isset($_POST['gr_admin'][$k]) ? strip_tags(clean_xss_attributes($_POST['gr_admin'][$k])) : '';
     $gr_device      = isset($_POST['gr_device'][$k]) ? clean_xss_tags($_POST['gr_device'][$k], 1, 1, 10) : '';
@@ -34,22 +38,23 @@ for ($i = 0; $i < $chk_count; $i++) {
                         gr_admin      = '" . sql_real_escape_string($gr_admin) . "',
                         gr_use_access = '" . $gr_use_access . "',
                         gr_order      = '" . $gr_order . "'
-                  where gr_id         = '{$gr_id}' ";
+                  where cn_no         = '{$cn_id}'
+                    AND gr_id         = '{$gr_id}' ";
         if ($is_admin != 'super') {
             $sql .= " and gr_admin    = '{$gr_admin}' ";
         }
         sql_query($sql);
     } elseif ($act_button == '선택삭제') {
-        $row = sql_fetch(" select count(*) as cnt from {$g5['board_table']} where gr_id = '$gr_id' ");
+        $row = sql_fetch(" select count(*) as cnt from {$g5['board_table']} where cn_id = '{$cn_id}' AND gr_id = '{$gr_id}' ");
         if ($row['cnt']) {
             alert("이 그룹에 속한 게시판이 존재하여 게시판 그룹을 삭제할 수 없습니다.\\n\\n이 그룹에 속한 게시판을 먼저 삭제하여 주십시오.", './board_list.php?sfl=gr_id&amp;stx=' . $gr_id);
         }
 
         // 그룹 삭제
-        sql_query(" delete from {$g5['group_table']} where gr_id = '$gr_id' ");
+        sql_query(" delete from {$g5['group_table']} where cn_id = '{$cn_id}' AND gr_id = '{$gr_id}' ");
 
         // 그룹접근 회원 삭제
-        sql_query(" delete from {$g5['group_member_table']} where gr_id = '$gr_id' ");
+        sql_query(" delete from {$g5['group_member_table']} where cn_id = '{$cn_id}' AND gr_id = '{$gr_id}' ");
     }
 }
 

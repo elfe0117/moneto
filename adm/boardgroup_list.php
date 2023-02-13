@@ -129,6 +129,7 @@ $colspan = 11;
                         <td class="td_chk">
                             <input type="hidden" name="group_no[<?php echo $i ?>]" value="<?php echo $row['gr_no'] ?>">
                             <input type="hidden" name="group_id[<?php echo $i ?>]" value="<?php echo $row['gr_id'] ?>">
+                            <input type="hidden" name="channel_id[<?php echo $i ?>]" value="<?php echo $row['cn_id'] ?>">
                             <label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo get_text($row['gr_subject']); ?> 그룹</label>
                             <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i ?>">
                         </td>

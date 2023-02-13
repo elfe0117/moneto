@@ -21,6 +21,10 @@ if ($result) {
     unset($result);
 }
 
+if (!count($array_cn)) {
+    alert('채널이 한개 이상 생성되어야 합니다.', './channel_form.php');
+}
+
 $cf = get_config(true, $cn_id);
 
 if (!isset($cf['cf_add_script'])) {
