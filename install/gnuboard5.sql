@@ -402,7 +402,7 @@ CREATE TABLE IF NOT EXISTS `g5_config` (
   `cf_9` varchar(255) NOT NULL DEFAULT '',
   `cf_10` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY  (`cf_id`),
-  KEY `cn_id` (`cn_id`)
+  UNIQUE KEY `cn_id` (`cn_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
