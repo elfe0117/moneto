@@ -55,15 +55,22 @@ function get_content_db($co_id, $is_cache=false){
     return $co;
 }
 
-function get_board_names(){
+function get_board_names($cn_id=''){
     global $g5;
 
     static $boards = array();
+
+    $cn_id = preg_replace('/[^a-z0-9_]/i', '', trim($cn_id));
 	
 	$boards = run_replace('get_board_names_cache', $boards);
 
     if( ! $boards ){
-        $sql = " select bo_table from {$g5['board_table']} ";
+        $sql = " SELECT bo_table
+            FROM {$g5['board_table']}
+            WHERE (1) ";
+        if ($cn_id) {
+            $sql .= " AND cn_id = '{$cn_id}' ";
+        }
         $result = sql_query($sql);
 
         while ($row = sql_fetch_array($result)) {
@@ -74,26 +81,27 @@ function get_board_names(){
     return $boards;
 }
 
-function get_board_db($bo_table, $is_cache=false){
+function get_board_db($cn_id, $bo_table, $is_cache=false){
     global $g5;
 
     static $cache = array();
 
+    $cn_id = preg_replace('/[^a-z0-9_]/i', '', $cn_id);
     $bo_table = preg_replace('/[^a-z0-9_]/i', '', $bo_table);
-    $cache = run_replace('get_board_db_cache', $cache, $bo_table, $is_cache);
-    $key = md5($bo_table);
+    $cache = run_replace('get_board_db_cache', $cache, $cn_id.'_'.$bo_table, $is_cache);
+    $key = md5($cn_id.'_'.$bo_table);
 
     if( $is_cache && isset($cache[$key]) ){
         return $cache[$key];
     }
 
-    if( !($cache[$key] = run_replace('get_board_db', array(), $bo_table)) ){
+    if( !($cache[$key] = run_replace('get_board_db', array(), $cn_id.'_'.$bo_table)) ){
 
-        $sql = " select * from {$g5['board_table']} where bo_table = '$bo_table' ";
+        $sql = " select * from {$g5['board_table']} where cn_id = '{$cn_id}' AND bo_table = '$bo_table' ";
 
         $board = sql_fetch($sql);
         
-        $board_defaults = array('bo_table'=>'', 'bo_skin'=>'', 'bo_mobile_skin'=>'', 'bo_upload_count' => 0, 'bo_use_dhtml_editor'=>'', 'bo_subject'=>'', 'bo_image_width'=>0);
+        $board_defaults = array('cn_id'=>'', 'bo_table'=>'', 'bo_skin'=>'', 'bo_mobile_skin'=>'', 'bo_upload_count' => 0, 'bo_use_dhtml_editor'=>'', 'bo_subject'=>'', 'bo_image_width'=>0);
 
         $cache[$key] = array_merge($board_defaults, (array) $board);
     }

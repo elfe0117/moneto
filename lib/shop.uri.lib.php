@@ -5,7 +5,7 @@ function shop_type_url($type, $add_param=''){
     global $config;
 
     if( $config['cf_bbs_rewrite'] ){
-        return get_pretty_url('shop', 'type-'.$type, $add_param);
+        return get_pretty_url('', 'shop', 'type-'.$type, $add_param);
     }
 	
 	$add_params = $add_param ? '&'.$add_param : '';
@@ -16,7 +16,7 @@ function shop_item_url($it_id, $add_param=''){
     global $config;
 
     if( $config['cf_bbs_rewrite'] ){
-        return get_pretty_url('shop', $it_id, $add_param);
+        return get_pretty_url('', 'shop', $it_id, $add_param);
     }
 	
 	$add_params = $add_param ? '&'.$add_param : '';
@@ -27,7 +27,7 @@ function shop_category_url($ca_id, $add_param=''){
     global $config;
 
     if( $config['cf_bbs_rewrite'] ){
-        return get_pretty_url('shop', 'list-'.$ca_id, $add_param);
+        return get_pretty_url('', 'shop', 'list-'.$ca_id, $add_param);
     }
 	
 	$add_params = $add_param ? '&'.$add_param : '';

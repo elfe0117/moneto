@@ -463,9 +463,9 @@ function get_list($write_row, $board, $skin_url, $subject_len=40)
         $list['icon_link'] = '<i class="fa fa-link" aria-hidden="true"></i> ';
 
     // 분류명 링크
-    $list['ca_name_href'] = get_pretty_url($board['bo_table'], '', 'sca='.urlencode($list['ca_name']));
+    $list['ca_name_href'] = get_pretty_url('', $board['bo_table'], '', 'sca='.urlencode($list['ca_name']));
 
-    $list['href'] = get_pretty_url($board['bo_table'], $list['wr_id'], $qstr);
+    $list['href'] = get_pretty_url('', $board['bo_table'], $list['wr_id'], $qstr);
     $list['comment_href'] = $list['href'];
 
     $list['icon_new'] = '';
@@ -1394,7 +1394,7 @@ function get_sideview($mb_id, $name='', $email='', $homepage='')
             return $name;
         }
 
-        $name_tag_open = '<a href="' . get_pretty_url($bo_table, '', 'sca=' . $sca . '&amp;sfl=wr_name,1&amp;stx=' . $name) . '" title="' . $name . ' 이름으로 검색" class="sv_guest" rel="nofollow" onclick="return false;">';
+        $name_tag_open = '<a href="' . get_pretty_url('', $bo_table, '', 'sca=' . $sca . '&amp;sfl=wr_name,1&amp;stx=' . $name) . '" title="' . $name . ' 이름으로 검색" class="sv_guest" rel="nofollow" onclick="return false;">';
         $name_tag['name'] = $name;
     }
 
@@ -1416,9 +1416,9 @@ function get_sideview($mb_id, $name='', $email='', $homepage='')
 
     if ($bo_table) {
         if ($mb_id) {
-            $menus['search_id'] = '<a href="' . get_pretty_url($bo_table, '', 'sca=' . $sca . '&amp;sfl=mb_id,1&amp;stx=' . $en_mb_id) . '" rel="nofollow">아이디로 검색</a>';
+            $menus['search_id'] = '<a href="' . get_pretty_url('', $bo_table, '', 'sca=' . $sca . '&amp;sfl=mb_id,1&amp;stx=' . $en_mb_id) . '" rel="nofollow">아이디로 검색</a>';
         } else {
-            $menus['search_name'] = '<a href="' . get_pretty_url($bo_table, '', 'sca=' . $sca . '&amp;sfl=wr_name,1&amp;stx=' . $name) . '" rel="nofollow">이름으로 검색</a>';
+            $menus['search_name'] = '<a href="' . get_pretty_url('', $bo_table, '', 'sca=' . $sca . '&amp;sfl=wr_name,1&amp;stx=' . $name) . '" rel="nofollow">이름으로 검색</a>';
         }
     }
 

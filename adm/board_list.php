@@ -114,8 +114,8 @@ $colspan = 16;
             <tbody>
                 <?php
                 for ($i = 0; $row = sql_fetch_array($result); $i++) {
-                    $one_update = '<a href="./board_form.php?w=u&amp;bo_table=' . $row['bo_table'] . '&amp;' . $qstr . '" class="btn btn_03">수정</a>';
-                    $one_copy = '<a href="./board_copy.php?bo_table=' . $row['bo_table'] . '" class="board_copy btn btn_02" target="win_board_copy">복사</a>';
+                    $one_update = '<a href="./board_form.php?w=u&amp;cn_id='.$row['cn_id'].'&amp;bo_table=' . $row['bo_table'] . '&amp;' . $qstr . '" class="btn btn_03">수정</a>';
+                    $one_copy = '<a href="./board_copy.php?cn_id='.$row['cn_id'].'&amp;bo_table=' . $row['bo_table'] . '" class="board_copy btn btn_02" target="win_board_copy">복사</a>';
 
                     $bg = 'bg' . ($i % 2);
                 ?>
@@ -126,6 +126,7 @@ $colspan = 16;
                             <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i ?>">
                         </td>
                         <td>
+                            <input type="hidden" name="board_channel[<?php echo $i ?>]" value="<?php echo $row['cn_id'] ?>">
                             <?php echo($row['cn_id']); ?>
                         </td>
                         <td>
@@ -137,7 +138,7 @@ $colspan = 16;
                         </td>
                         <td>
                             <input type="hidden" name="board_table[<?php echo $i ?>]" value="<?php echo $row['bo_table'] ?>">
-                            <a href="<?php echo get_pretty_url($row['bo_table']) ?>"><?php echo $row['bo_table'] ?></a>
+                            <a href="<?php echo get_pretty_url($row['cn_id'], $row['bo_table']) ?>"><?php echo $row['bo_table'] ?></a>
                         </td>
                         <td>
                             <label for="bo_skin_<?php echo $i; ?>" class="sound_only">스킨</label>

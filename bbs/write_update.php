@@ -318,10 +318,10 @@ if ($w == '' || $w == 'r') {
     }
 }  else if ($w == 'u') {
     if (get_session('ss_bo_table') != $_POST['bo_table'] || get_session('ss_wr_id') != $_POST['wr_id']) {
-        alert('올바른 방법으로 수정하여 주십시오.', get_pretty_url($bo_table));
+        alert('올바른 방법으로 수정하여 주십시오.', get_pretty_url('', $bo_table));
     }
 
-    $return_url = get_pretty_url($bo_table, $wr_id);
+    $return_url = get_pretty_url('', $bo_table, $wr_id);
 
     if ($is_admin == 'super') // 최고관리자 통과
         ;
@@ -702,7 +702,7 @@ if (!($w == 'u' || $w == 'cu') && $config['cf_email_use'] && $board['bo_use_emai
 
     $subject = '['.$config['cf_title'].'] '.$board['bo_subject'].' 게시판에 '.$str.'글이 올라왔습니다.';
 
-    $link_url = get_pretty_url($bo_table, $wr_id, $qstr);
+    $link_url = get_pretty_url('', $bo_table, $wr_id, $qstr);
 
     include_once(G5_LIB_PATH.'/mailer.lib.php');
 

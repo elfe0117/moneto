@@ -4,7 +4,7 @@ include_once('./_common.php');
 include_once(G5_PATH.'/head.sub.php');
 
 if ($is_guest) {
-    $href = './login.php?'.$qstr.'&amp;url='.urlencode(get_pretty_url($bo_table, $wr_id));
+    $href = './login.php?'.$qstr.'&amp;url='.urlencode(get_pretty_url('', $bo_table, $wr_id));
     $href2 = str_replace('&amp;', '&', $href);
     echo <<<HEREDOC
     <script>
@@ -39,7 +39,7 @@ $sql = " select count(*) as cnt from {$g5['scrap_table']}
 $row = sql_fetch($sql);
 if ($row['cnt']) {
 
-    $back_url = get_pretty_url($bo_table, $wr_id);
+    $back_url = get_pretty_url('', $bo_table, $wr_id);
 
     echo <<<HEREDOC
     <script>

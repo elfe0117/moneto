@@ -10,14 +10,14 @@ $list_count = (is_array($list) && $list) ? count($list) : 0;
 ?>
 
 <div class="pic_li_lt">
-    <h2 class="lat_title"><a href="<?php echo get_pretty_url($bo_table); ?>"><?php echo $bo_subject ?></a></h2>
+    <h2 class="lat_title"><a href="<?php echo get_pretty_url('', $bo_table); ?>"><?php echo $bo_subject ?></a></h2>
     <ul>
     <?php
     for ($i=0; $i<$list_count; $i++) {
         
         $img_link_html = '';
 
-        $wr_href = get_pretty_url($bo_table, $list[$i]['wr_id']);
+        $wr_href = get_pretty_url('', $bo_table, $list[$i]['wr_id']);
         
         if( $i === 0 ) {
             $thumb = get_list_thumbnail($bo_table, $list[$i]['wr_id'], $thumb_width, $thumb_height, false, true);
@@ -70,6 +70,6 @@ $list_count = (is_array($list) && $list) ? count($list) : 0;
     <li class="empty_li">게시물이 없습니다.</li>
     <?php }  ?>
     </ul>
-    <a href="<?php echo get_pretty_url($bo_table); ?>" class="lt_more"><span class="sound_only"><?php echo $bo_subject ?></span>더보기</a>
+    <a href="<?php echo get_pretty_url('', $bo_table); ?>" class="lt_more"><span class="sound_only"><?php echo $bo_subject ?></span>더보기</a>
 
 </div>

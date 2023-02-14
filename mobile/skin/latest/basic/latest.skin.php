@@ -20,7 +20,7 @@ $is_show_next_prev = ($list_count > 4) ? 1 : 0;
 ?>
 
 <div class="lt owl-carousel-wrap">
-    <a href="<?php echo get_pretty_url($bo_table); ?>" class="lt_title"><strong><?php echo $bo_subject; ?></strong></a>
+    <a href="<?php echo get_pretty_url('', $bo_table); ?>" class="lt_title"><strong><?php echo $bo_subject; ?></strong></a>
     <div class="<?php echo $list_count ? 'latest-sel' : ''; ?>">
         <ul class="item">
             <?php
@@ -28,7 +28,7 @@ $is_show_next_prev = ($list_count > 4) ? 1 : 0;
             $thumb = get_list_thumbnail($bo_table, $list[$i]['wr_id'], $thumb_width, $thumb_height, false, true);
             $img = $thumb['src'] ? $thumb['src'] : '';
             $img_content = $img ? '<img src="'.$img.'" alt="'.$thumb['alt'].'" >' : '';
-            $wr_href = get_pretty_url($bo_table, $list[$i]['wr_id']);
+            $wr_href = get_pretty_url('', $bo_table, $list[$i]['wr_id']);
 
             $echo_ul = ( $i && (($i % $divisor_count) === 0) ) ? '</ul><ul class="item">'.PHP_EOL : '';
 
@@ -82,5 +82,5 @@ $is_show_next_prev = ($list_count > 4) ? 1 : 0;
 		<button class="lt_page_next"><span class="sound_only">다음페이지</span><i class="fa fa-caret-right" aria-hidden="true"></i></button>
 	</div>
     <?php } ?>
-    <a href="<?php echo get_pretty_url($bo_table); ?>" class="lt_more"><span class="sound_only"><?php echo $bo_subject ?></span>전체보기</a>
+    <a href="<?php echo get_pretty_url('', $bo_table); ?>" class="lt_more"><span class="sound_only"><?php echo $bo_subject ?></span>전체보기</a>
 </div>

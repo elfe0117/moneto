@@ -222,7 +222,7 @@ if ($w == 'c') // 댓글 입력
 
         $subject = '['.$config['cf_title'].'] '.$board['bo_subject'].' 게시판에 '.$str.'글이 올라왔습니다.';
         // 4.00.15 - 메일로 보내는 댓글의 바로가기 링크 수정
-        $link_url = get_pretty_url($bo_table, $wr_id, $qstr."#c_".$comment_id);
+        $link_url = get_pretty_url('', $bo_table, $wr_id, $qstr."#c_".$comment_id);
 
         include_once(G5_LIB_PATH.'/mailer.lib.php');
 

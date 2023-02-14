@@ -1452,7 +1452,7 @@ function relation_item($it_id, $width, $height, $rows=3)
 
         $img = get_it_image($row['it_id'], $width, $height);
 
-        $str .= '<li class="sct_rel_li"><a href="'.get_pretty_url('shop', $row['it_id']).'" class="sct_rel_a">'.$img.'</a></li>';
+        $str .= '<li class="sct_rel_li"><a href="'.get_pretty_url('', 'shop', $row['it_id']).'" class="sct_rel_a">'.$img.'</a></li>';
     }
 
     if($i > 0)
@@ -2033,7 +2033,7 @@ function shop_member_cert_check($id, $type)
                 $row = sql_fetch($sql);
 
                 if (($row['ca_cert_use'] || $row['ca_adult_use']) && strlen($member['mb_dupinfo']) == 64 && $member['mb_certify']) { // 본인 인증 된 계정 중에서 di로 저장 되었을 경우에만
-                    goto_url(G5_BBS_URL."/member_cert_refresh.php?url=".urlencode(get_pretty_url($bo_table, $wr_id, $qstr)));
+                    goto_url(G5_BBS_URL."/member_cert_refresh.php?url=".urlencode(get_pretty_url('', $bo_table, $wr_id, $qstr)));
                 }
 
                 // 본인확인체크
@@ -2067,7 +2067,7 @@ function shop_member_cert_check($id, $type)
             $ca = sql_fetch($sql);
 
             if (($ca['ca_cert_use'] || $ca['ca_adult_use']) && strlen($member['mb_dupinfo']) == 64 && $member['mb_certify']) { // 본인 인증 된 계정 중에서 di로 저장 되었을 경우에만
-                goto_url(G5_BBS_URL."/member_cert_refresh.php?url=".urlencode(get_pretty_url($bo_table, $wr_id, $qstr)));
+                goto_url(G5_BBS_URL."/member_cert_refresh.php?url=".urlencode(get_pretty_url('', $bo_table, $wr_id, $qstr)));
             
             }
 

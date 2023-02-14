@@ -128,6 +128,7 @@ $_REQUEST = array_map_deep(G5_ESCAPE_FUNCTION,  $_REQUEST);
 
 // 완두콩님이 알려주신 보안관련 오류 수정
 // $member 에 값을 직접 넘길 수 있음
+$channel = array();
 $config = array();
 $member = array('mb_id'=>'', 'mb_level'=> 1, 'mb_name'=> '', 'mb_point'=> 0, 'mb_certify'=>'', 'mb_email'=>'', 'mb_open'=>'', 'mb_homepage'=>'', 'mb_tel'=>'', 'mb_hp'=>'', 'mb_zip1'=>'', 'mb_zip2'=>'', 'mb_addr1'=>'', 'mb_addr2'=>'', 'mb_addr3'=>'', 'mb_addr_jibeon'=>'', 'mb_signature'=>'', 'mb_profile'=>'');
 $board  = array('bo_table'=>'', 'bo_skin'=>'', 'bo_mobile_skin'=>'', 'bo_upload_count' => 0, 'bo_use_dhtml_editor'=>'', 'bo_subject'=>'', 'bo_image_width'=>0);
@@ -345,6 +346,29 @@ if(XenoPostToForm::check()) {
 //==============================================================================
 // 공용 변수
 //------------------------------------------------------------------------------
+// 채널 정보
+if (isset($_REQUEST['cn_id']) && !is_array($_REQUEST['cn_id'])) {
+    $cn_id = preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cn_id']));
+    $cn_id = substr($cn_id, 0, 20);
+
+    // 채널ID 세션 생성
+    set_session('ss_cn_id', $cn_id);
+} else {
+    $cn_id = '';
+}
+
+$is_channel = false;
+if (isset($_SESSION['ss_cn_id']) && $_SESSION['ss_cn_id']) {
+    $is_channel = true;
+
+    // 채널정보 가져오기
+    $sql = " SELECT *
+        FROM {$g5['channel_table']}
+        WHERE cn_id = '{$_SESSION['ss_cn_id']}'
+        LIMIT 0, 1 ";
+    $channel = sql_fetch($sql);
+}
+
 // 기본환경설정
 // 기본적으로 사용하는 필드만 얻은 후 상황에 따라 필드를 추가로 얻음
 $config = get_config(true);
@@ -579,7 +603,7 @@ if (isset($_SESSION['ss_mb_id']) && $_SESSION['ss_mb_id']) { // 로그인중이�
 $write = array();
 $write_table = '';
 if ($bo_table) {
-    $board = get_board_db($bo_table, true);
+    $board = get_board_db($channel['cn_id'], $bo_table, true);
     if (isset($board['bo_table']) && $board['bo_table']) {
         set_cookie("ck_bo_table", $board['bo_table'], 86400 * 1);
         $gr_id = $board['gr_id'];

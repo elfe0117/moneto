@@ -131,7 +131,7 @@ if (strstr($sfl, "mb_id")) {
 
                     $link1 = $link2 = '';
                     if (!preg_match("/^\@/", $row['po_rel_table']) && $row['po_rel_table']) {
-                        $link1 = '<a href="' . get_pretty_url($row['po_rel_table'], $row['po_rel_id']) . '" target="_blank">';
+                        $link1 = '<a href="' . get_pretty_url($row['cn_id'], $row['po_rel_table'], $row['po_rel_id']) . '" target="_blank">';
                         $link2 = '</a>';
                     }
 

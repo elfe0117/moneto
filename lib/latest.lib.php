@@ -7,6 +7,7 @@ if (!defined('_GNUBOARD_')) exit;
 function latest($skin_dir='', $bo_table, $rows=10, $subject_len=40, $cache_time=1, $options='')
 {
     global $g5;
+    global $channel;
 
     if (!$skin_dir) $skin_dir = 'basic';
     
@@ -46,7 +47,7 @@ function latest($skin_dir='', $bo_table, $rows=10, $subject_len=40, $cache_time=
 
         $list = array();
 
-        $board = get_board_db($bo_table, true);
+        $board = get_board_db($channel['cn_id'], $bo_table, true);
 
         if( ! $board ){
             return '';

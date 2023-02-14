@@ -33,7 +33,7 @@ if ($url) {
     else
         $link = $url;
 } else if ($bo_table) {
-    $link = get_pretty_url($bo_table);
+    $link = get_pretty_url('', $bo_table);
 } else {
     $link = G5_URL;
 }

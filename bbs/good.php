@@ -94,7 +94,7 @@ if(isset($_POST['js']) && $_POST['js'] === "on") {
 
     if (!$is_member)
     {
-        $href = G5_BBS_URL.'/login.php?'.$qstr.'&amp;url='.urlencode(get_pretty_url($bo_table, $wr_id));
+        $href = G5_BBS_URL.'/login.php?'.$qstr.'&amp;url='.urlencode(get_pretty_url('', $bo_table, $wr_id));
 
         alert('회원만 가능합니다.', $href);
     }
@@ -148,7 +148,7 @@ if(isset($_POST['js']) && $_POST['js'] === "on") {
             else
                 $status = '비추천';
 
-            $href = get_pretty_url($bo_table, $wr_id);
+            $href = get_pretty_url('', $bo_table, $wr_id);
 			
 			run_event('bbs_increase_good_html', $bo_table, $wr_id, $good, $href);
 

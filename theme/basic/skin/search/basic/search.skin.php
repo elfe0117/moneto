@@ -108,8 +108,8 @@ add_stylesheet('<link rel="stylesheet" href="'.$search_skin_url.'/style.css">', 
     for ($idx=$table_index, $k=0; $idx<count($search_table) && $k<$rows; $idx++) {
      ?>
 		<div class="search_board_result">
-        <h2><a href="<?php echo get_pretty_url($search_table[$idx], '', $search_query); ?>"><?php echo $bo_subject[$idx] ?> 게시판 내 결과</a></h2>
-		<a href="<?php echo get_pretty_url($search_table[$idx], '', $search_query); ?>" class="sch_more">더보기</a>
+        <h2><a href="<?php echo get_pretty_url('', $search_table[$idx], '', $search_query); ?>"><?php echo $bo_subject[$idx] ?> 게시판 내 결과</a></h2>
+		<a href="<?php echo get_pretty_url('', $search_table[$idx], '', $search_query); ?>" class="sch_more">더보기</a>
         <ul>
         <?php
         for ($i=0; $i<count($list[$idx]) && $k<$rows; $i++, $k++) {

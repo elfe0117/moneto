@@ -2,11 +2,16 @@
 if (!defined('_GNUBOARD_')) exit;
 
 // 짧은 주소 형식으로 만들어서 가져온다.
-function get_pretty_url($folder, $no='', $query_string='', $action='')
+function get_pretty_url($cn_id='', $folder, $no='', $query_string='', $action='')
 {
-    global $g5, $config;
+    global $g5, $config, $channel;
 
-    $boards = get_board_names();
+    $cn_id = preg_replace('/[^a-z0-9_]/i', '', trim($cn_id));
+    if (!$cn_id) {
+        $cn_id = $channel['cn_id'];
+    }
+
+    $boards = get_board_names($cn_id);
     $segments = array();
     $url = $add_query = '';
 
@@ -72,7 +77,7 @@ function get_pretty_url($folder, $no='', $query_string='', $action='')
 
     } else { // don't use shortten url
         if(in_array($folder, $boards)) {
-            $url = G5_BBS_URL. '/board.php?bo_table='. $folder;
+            $url = G5_BBS_URL. '/board.php?cn_id='.$cn_id.'&amp;bo_table='. $folder;
             if($no) {
                 $url .= '&amp;wr_id='. $no;
             }
