@@ -516,6 +516,7 @@ if($g5_shop_install) {
 // 디렉토리 생성
 $dir_arr = array (
     $data_path.'/cache',
+    $data_path.'/channel',
     $data_path.'/editor',
     $data_path.'/file',
     $data_path.'/log',

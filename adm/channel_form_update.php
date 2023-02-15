@@ -17,7 +17,7 @@ if ($w == 'd') {
 check_admin_token();
 
 // 채널 디렉토리 생성
-$g5_channel_data_path = G5_DATA_PATH.'/channel';
+$g5_channel_data_path = G5_STORAGE_PATH.'/channel';
 
 @mkdir($g5_channel_data_path, G5_DIR_PERMISSION);
 @chmod($g5_channel_data_path, G5_DIR_PERMISSION);
