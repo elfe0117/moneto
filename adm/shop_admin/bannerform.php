@@ -4,6 +4,19 @@ include_once('./_common.php');
 
 auth_check_menu($auth, $sub_menu, "w");
 
+// 채널 목록 정보 가져오기
+$array_cn = array();
+$sql = "SELECT *
+    FROM {$g5['channel_table']}
+    ORDER BY cn_id ASC ";
+$result = sql_query($sql);
+if ($result) {
+    while($row = sql_fetch_array($result)) {
+        array_push($array_cn, $row);
+    }
+    unset($result);
+}
+
 $bn_id = isset($_REQUEST['bn_id']) ? preg_replace('/[^0-9]/', '', $_REQUEST['bn_id']) : 0;
 $bn = array(
 'bn_id'=>0,
@@ -55,12 +68,24 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
     </colgroup>
     <tbody>
     <tr>
+        <th scope="row">채널 ID</th>
+        <td>
+            <select id="cn_id" name="cn_id" required>
+                <?php
+                foreach($array_cn as $row_cn) {
+                    echo(option_selected($row_cn['cn_id'], $bn['cn_id'], $row_cn['cn_id']));
+                }
+                ?>
+            </select>
+        </td>
+    </tr>
+    <tr>
         <th scope="row">이미지</th>
         <td>
             <input type="file" name="bn_bimg">
             <?php
             $bimg_str = "";
-            $bimg = G5_DATA_PATH."/banner/{$bn['bn_id']}";
+            $bimg = G5_DATA_PATH."/{$bn['cn_id']}/banner/{$bn['bn_id']}";
             if (file_exists($bimg) && $bn['bn_id']) {
                 $size = @getimagesize($bimg);
                 if($size[0] && $size[0] > 750)
@@ -69,7 +94,7 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
                     $width = $size[0];
 
                 echo '<input type="checkbox" name="bn_bimg_del" value="1" id="bn_bimg_del"> <label for="bn_bimg_del">삭제</label>';
-                $bimg_str = '<img src="'.G5_DATA_URL.'/banner/'.$bn['bn_id'].'" width="'.$width.'">';
+                $bimg_str = '<img src="'.G5_DATA_URL.'/'.$bn['cn_id'].'/banner/'.$bn['bn_id'].'" width="'.$width.'">';
             }
             if ($bimg_str) {
                 echo '<div class="banner_or_img">';

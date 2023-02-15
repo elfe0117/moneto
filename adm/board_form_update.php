@@ -78,13 +78,19 @@ if (function_exists('filter_input_include_path')) {
     $bo_include_tail = filter_input_include_path($bo_include_tail);
 }
 
-$channel_path = G5_DATA_PATH . '/file/' . $cn_id;
+$channel_path = G5_DATA_PATH . '/' . $cn_id;
 
 // 채널 디렉토리 생성
 @mkdir($channel_path, G5_DIR_PERMISSION);
 @chmod($channel_path, G5_DIR_PERMISSION);
 
-$board_path = $channel_path . '/' . $bo_table;
+$channel_file_path = $channel_path . '/file';
+
+// 채널 첨부파일 디렉토리 생성
+@mkdir($channel_file_path, G5_DIR_PERMISSION);
+@chmod($channel_file_path, G5_DIR_PERMISSION);
+
+$board_path = $channel_file_path . '/' . $bo_table;
 
 // 게시판 디렉토리 생성
 @mkdir($board_path, G5_DIR_PERMISSION);

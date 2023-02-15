@@ -44,6 +44,8 @@ $rows = $config['cf_page_rows'];
 $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page < 1) { $page = 1; } // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
+
+$colspan = 9;
 ?>
 
 <div class="local_ov01 local_ov">
@@ -86,6 +88,7 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
     <caption><?php echo $g5['title']; ?> 목록</caption>
     <thead>
     <tr>
+        <th scope="col" rowspan="2" id="cn_id">채널</th>
         <th scope="col" rowspan="2" id="th_id">ID</th>
         <th scope="col" id="th_dvc">접속기기</th>
         <th scope="col" id="th_loc">위치</th>
@@ -111,7 +114,7 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
         // 새창 띄우기인지
         $bn_new_win = ($row['bn_new_win']) ? 'target="_blank"' : '';
 
-        $bimg = G5_DATA_PATH.'/banner/'.$row['bn_id'];
+        $bimg = G5_DATA_PATH.'/'.$row['cn_id'].'/banner/'.$row['bn_id'];
         if(file_exists($bimg)) {
             $size = @getimagesize($bimg);
             if($size[0] && $size[0] > 800)
@@ -121,7 +124,7 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
             $bn_img = "";
            
-            $bn_img .= '<img src="'.G5_DATA_URL.'/banner/'.$row['bn_id'].'?'.preg_replace('/[^0-9]/i', '', $row['bn_time']).'" width="'.$width.'" alt="'.get_text($row['bn_alt']).'">';
+            $bn_img .= '<img src="'.G5_DATA_URL.'/'.$row['cn_id'].'/banner/'.$row['bn_id'].'?'.preg_replace('/[^0-9]/i', '', $row['bn_time']).'" width="'.$width.'" alt="'.get_text($row['bn_alt']).'">';
         }
 
         switch($row['bn_device']) {
@@ -143,6 +146,7 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
     ?>
 
     <tr class="<?php echo $bg; ?>">
+        <td headers="cn_id" rowspan="2" class="td_num"><?php echo $row['cn_id']; ?></td>
         <td headers="th_id" rowspan="2" class="td_num"><?php echo $row['bn_id']; ?></td>
         <td headers="th_dvc"><?php echo $bn_device; ?></td>
         <td headers="th_loc"><?php echo $row['bn_position']; ?></td>
@@ -152,7 +156,7 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
         <td headers="th_hit" class="td_num"><?php echo $row['bn_hit']; ?></td>
         <td headers="th_mng" class="td_mng td_mns_m">
             <a href="./bannerform.php?w=u&amp;bn_id=<?php echo $row['bn_id']; ?>" class="btn btn_03">수정</a>
-            <a href="./bannerformupdate.php?w=d&amp;bn_id=<?php echo $row['bn_id']; ?>" onclick="return delete_confirm(this);" class="btn btn_02">삭제</a>
+            <a href="./bannerformupdate.php?w=d&amp;cn_id=<?php echo($row['cn_id']); ?>&amp;bn_id=<?php echo $row['bn_id']; ?>" onclick="return delete_confirm(this);" class="btn btn_02">삭제</a>
         </td>
     </tr>
     <tr class="<?php echo $bg; ?>">
@@ -165,7 +169,7 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
     <?php
     }
     if ($i == 0) {
-    echo '<tr><td colspan="8" class="empty_table">자료가 없습니다.</td></tr>';
+    echo '<tr><td colspan="'.$colspan.'" class="empty_table">자료가 없습니다.</td></tr>';
     }
     ?>
     </tbody>

@@ -13,8 +13,22 @@ else
 
 check_admin_token();
 
-@mkdir(G5_DATA_PATH."/banner", G5_DIR_PERMISSION);
-@chmod(G5_DATA_PATH."/banner", G5_DIR_PERMISSION);
+$cn_id = (isset($_REQUEST['cn_id']) && $_REQUEST['cn_id']) ? preg_replace('/[^a-z0-9_]/i', '', (string)$_REQUEST['cn_id']) : '';
+if (!$cn_id) {
+    alert('채널 ID는 반드시 선택하세요.');
+}
+
+$channel_path = G5_DATA_PATH . '/' . $cn_id;
+
+// 채널 디렉토리 생성
+@mkdir($channel_path, G5_DIR_PERMISSION);
+@chmod($channel_path, G5_DIR_PERMISSION);
+
+$banner_path = $channel_path . '/banner';
+
+// 배너 디렉토리 생성
+@mkdir($banner_path, G5_DIR_PERMISSION);
+@chmod($banner_path, G5_DIR_PERMISSION);
 
 $bn_bimg      = isset($_FILES['bn_bimg']['tmp_name']) ? $_FILES['bn_bimg']['tmp_name'] : '';
 $bn_bimg_name = isset($_FILES['bn_bimg']['name']) ? $_FILES['bn_bimg']['name'] : '';
@@ -30,7 +44,7 @@ $bn_begin_time = isset($_POST['bn_begin_time']) ? clean_xss_tags($_POST['bn_begi
 $bn_end_time = isset($_POST['bn_end_time']) ? clean_xss_tags($_POST['bn_end_time'], 1, 1) : '';
 $bn_order = isset($_POST['bn_order']) ? (int) $_POST['bn_order'] : 0;
 
-if ($bn_bimg_del)  @unlink(G5_DATA_PATH."/banner/$bn_id");
+if ($bn_bimg_del)  @unlink($banner_path."/{$bn_id}");
 
 //파일이 이미지인지 체크합니다.
 if( $bn_bimg || $bn_bimg_name ){
@@ -52,7 +66,8 @@ if ($w=="")
     sql_query(" alter table {$g5['g5_shop_banner_table']} auto_increment=1 ");
 
     $sql = " insert into {$g5['g5_shop_banner_table']}
-                set bn_alt        = '$bn_alt',
+                set cn_id         = '{$cn_id}',
+                    bn_alt        = '$bn_alt',
                     bn_url        = '$bn_url',
                     bn_device     = '$bn_device',
                     bn_position   = '$bn_position',
@@ -70,7 +85,8 @@ if ($w=="")
 else if ($w=="u")
 {
     $sql = " update {$g5['g5_shop_banner_table']}
-                set bn_alt        = '$bn_alt',
+                set cn_id         = '{$cn_id}',
+                    bn_alt        = '$bn_alt',
                     bn_url        = '$bn_url',
                     bn_device     = '$bn_device',
                     bn_position   = '$bn_position',
@@ -85,7 +101,7 @@ else if ($w=="u")
 }
 else if ($w=="d")
 {
-    @unlink(G5_DATA_PATH."/banner/$bn_id");
+    @unlink($banner_path."/{$bn_id}");
 
     $sql = " delete from {$g5['g5_shop_banner_table']} where bn_id = $bn_id ";
     $result = sql_query($sql);
@@ -94,7 +110,7 @@ else if ($w=="d")
 
 if ($w == "" || $w == "u")
 {
-    if ($_FILES['bn_bimg']['name']) upload_file($_FILES['bn_bimg']['tmp_name'], $bn_id, G5_DATA_PATH."/banner");
+    if ($_FILES['bn_bimg']['name']) upload_file($_FILES['bn_bimg']['tmp_name'], $bn_id, $banner_path);
 
     goto_url("./bannerform.php?w=u&amp;bn_id=$bn_id");
 } else {
