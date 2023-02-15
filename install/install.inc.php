@@ -1,6 +1,6 @@
 <?php
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
-$data_path = '../'.G5_DATA_DIR;
+$data_path = '../'.G5_STORAGE_DIR;
 
 if (! (isset($title) && $title)) $title = G5_VERSION." 설치";
 ?>
