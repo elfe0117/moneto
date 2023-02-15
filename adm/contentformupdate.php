@@ -25,6 +25,7 @@ if ($w == "" || $w == "u") {
     $co_row = sql_fetch($sql);
 }
 
+$cn_id = isset($_REQUEST['cn_id']) ? preg_replace('/[^a-z0-9_]/i', '', $_REQUEST['cn_id']) : '';
 $co_id = isset($_REQUEST['co_id']) ? preg_replace('/[^a-z0-9_]/i', '', $_REQUEST['co_id']) : '';
 $co_subject = isset($_POST['co_subject']) ? strip_tags(clean_xss_attributes($_POST['co_subject'])) : '';
 $co_include_head = isset($_POST['co_include_head']) ? preg_replace(array("#[\\\]+$#", "#(<\?php|<\?)#i"), "", substr($_POST['co_include_head'], 0, 255)) : '';
@@ -47,14 +48,14 @@ if (((isset($co_row['co_include_head']) && $co_row['co_include_head'] !== $co_in
     }
 }
 
-@mkdir(G5_DATA_PATH . "/content", G5_DIR_PERMISSION);
-@chmod(G5_DATA_PATH . "/content", G5_DIR_PERMISSION);
+@mkdir(G5_CHANNEL_DATA_PATH . "/content", G5_DIR_PERMISSION);
+@chmod(G5_CHANNEL_DATA_PATH . "/content", G5_DIR_PERMISSION);
 
 if ($co_himg_del) {
-    @unlink(G5_DATA_PATH . "/content/{$co_id}_h");
+    @unlink(G5_CHANNEL_DATA_PATH . "/content/{$co_id}_h");
 }
 if ($co_timg_del) {
-    @unlink(G5_DATA_PATH . "/content/{$co_id}_t");
+    @unlink(G5_CHANNEL_DATA_PATH . "/content/{$co_id}_t");
 }
 
 $error_msg = '';
@@ -110,19 +111,21 @@ if ($w == "") {
     }
 
     $sql = " insert {$g5['content_table']}
-                set co_id = '$co_id',
+                set cn_id = '{$cn_id}',
+                    co_id = '$co_id',
                     $sql_common ";
     sql_query($sql);
 } elseif ($w == "u") {
     $sql = " update {$g5['content_table']}
                 set $sql_common
-              where co_id = '$co_id' ";
+              where cn_id = '{$cn_id}'
+                AND co_id = '$co_id' ";
     sql_query($sql);
 } elseif ($w == "d") {
-    @unlink(G5_DATA_PATH . "/content/{$co_id}_h");
-    @unlink(G5_DATA_PATH . "/content/{$co_id}_t");
+    @unlink(G5_CHANNEL_DATA_PATH . "/content/{$co_id}_h");
+    @unlink(G5_CHANNEL_DATA_PATH . "/content/{$co_id}_t");
 
-    $sql = " delete from {$g5['content_table']} where co_id = '$co_id' ";
+    $sql = " delete from {$g5['content_table']} where cn_id = '{$cn_id}' AND co_id = '$co_id' ";
     sql_query($sql);
 }
 
@@ -130,24 +133,24 @@ if (function_exists('get_admin_captcha_by')) {
     get_admin_captcha_by('remove');
 }
 
-g5_delete_cache_by_prefix('content-' . $co_id . '-');
+g5_delete_cache_by_prefix('content-' . $cn_id.'_'.$co_id . '-');
 
 if ($w == "" || $w == "u") {
     if ($_FILES['co_himg']['name']) {
-        $dest_path = G5_DATA_PATH . "/content/" . $co_id . "_h";
+        $dest_path = G5_CHANNEL_DATA_PATH . "/content/" . $co_id . "_h";
         @move_uploaded_file($_FILES['co_himg']['tmp_name'], $dest_path);
         @chmod($dest_path, G5_FILE_PERMISSION);
     }
     if ($_FILES['co_timg']['name']) {
-        $dest_path = G5_DATA_PATH . "/content/" . $co_id . "_t";
+        $dest_path = G5_CHANNEL_DATA_PATH . "/content/" . $co_id . "_t";
         @move_uploaded_file($_FILES['co_timg']['tmp_name'], $dest_path);
         @chmod($dest_path, G5_FILE_PERMISSION);
     }
 
     if ($error_msg) {
-        alert($error_msg, "./contentform.php?w=u&amp;co_id=$co_id");
+        alert($error_msg, "./contentform.php?w=u&amp;cn_id={$cn_id}&amp;co_id=$co_id");
     } else {
-        goto_url("./contentform.php?w=u&amp;co_id=$co_id");
+        goto_url("./contentform.php?w=u&amp;cn_id={$cn_id}&amp;co_id=$co_id");
     }
 } else {
     goto_url("./contentlist.php");

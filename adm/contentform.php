@@ -5,6 +5,23 @@ require_once G5_EDITOR_LIB;
 
 auth_check_menu($auth, $sub_menu, "w");
 
+// 채널 목록 정보 가져오기
+$array_cn = array();
+$sql = "SELECT *
+    FROM {$g5['channel_table']}
+    ORDER BY cn_id ASC ";
+$result = sql_query($sql);
+if ($result) {
+    while($row = sql_fetch_array($result)) {
+        array_push($array_cn, $row);
+    }
+    unset($result);
+}
+
+if (!count($array_cn)) {
+    alert('채널이 한개 이상 생성되어야 합니다.', './channel_form.php');
+}
+
 $co_id = isset($_REQUEST['co_id']) ? preg_replace('/[^a-z0-9_]/i', '', $_REQUEST['co_id']) : '';
 
 // 상단, 하단 파일경로 필드 추가
@@ -89,6 +106,18 @@ require_once G5_ADMIN_PATH . '/admin.head.php';
                 <col>
             </colgroup>
             <tbody>
+                <tr>
+                    <th scope="row"><label for="cn_id"></label></th>
+                    <td>
+                        <select id="cn_id" name="cn_id" required>
+                            <?php
+                            foreach($array_cn as $row_cn) {
+                                echo(option_selected($row_cn['cn_id'], $co['cn_id'], $row_cn['cn_id']));
+                            }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
                 <tr>
                     <th scope="row"><label for="co_id">ID</label></th>
                     <td>

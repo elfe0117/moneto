@@ -16,6 +16,12 @@ if ($w == 'd') {
 
 check_admin_token();
 
+// 채널 디렉토리 생성
+$g5_channel_data_path = G5_DATA_PATH.'/channel';
+
+@mkdir($g5_channel_data_path, G5_DIR_PERMISSION);
+@chmod($g5_channel_data_path, G5_DIR_PERMISSION);
+
 $cn_name = isset($_POST['cn_name']) ? strip_tags(clean_xss_attributes($_POST['cn_name'])) : '';
 $cg_id = isset($_POST['cg_id']) ? (int)$_POST['cg_id'] : 0;
 $cn_use = isset($_POST['cn_use']) ? (int)$_POST['cn_use'] : 0;
@@ -107,6 +113,18 @@ if ($w == '') {
             cf_stipulation = '해당 홈페이지에 맞는 회원가입약관을 입력합니다.',
             cf_privacy = '해당 홈페이지에 맞는 개인정보처리방침을 입력합니다.' ";
     sql_query($sql);
+
+    // 개별 채널 디렉토리 생성
+    $g5_channel_data_path = $g5_channel_data_path.'/'.$cn_id;
+    @mkdir($g5_channel_data_path, G5_DIR_PERMISSION);
+    @chmod($g5_channel_data_path, G5_DIR_PERMISSION);
+
+    // 개별 채널 유형별 디렉토리 생성
+    $array_data_sub_dir = array ('cache','editor','file','log','member','member_image','session','content','faq','tmp','banner','common','event','item');
+    for($i = 0; $i < count($array_data_sub_dir); $i++) {
+        @mkdir($g5_channel_data_path.'/'.$array_data_sub_dir[$i], G5_DIR_PERMISSION);
+        @chmod($g5_channel_data_path.'/'.$array_data_sub_dir[$i], G5_DIR_PERMISSION);
+    }
 } else if ($w == 'u') {
     $sql = "UPDATE {$g5['channel_table']}
         SET {$sql_common}
@@ -122,6 +140,9 @@ if ($w == '') {
 } else if ($w == 'd') {
     $sql = "DELETE FROM {$g5['channel_table']} WHERE cn_id = '{$cn_id}' ";
     sql_query($sql);
+
+    // 폴더 전체 삭제
+    rm_rf($g5_channel_data_path.'/'.$cn_id);
 }
 
 if ($w == 'd') {

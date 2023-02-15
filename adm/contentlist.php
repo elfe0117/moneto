@@ -52,6 +52,8 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
 $sql = "select * $sql_common order by co_id limit $from_record, {$config['cf_page_rows']} ";
 $result = sql_query($sql);
+
+$colspan = 4;
 ?>
 
 <div class="local_ov01 local_ov">
@@ -68,6 +70,7 @@ $result = sql_query($sql);
         <caption><?php echo $g5['title']; ?> 목록</caption>
         <thead>
             <tr>
+                <th scope="col">채널</th>
                 <th scope="col">ID</th>
                 <th scope="col">제목</th>
                 <th scope="col">관리</th>
@@ -78,6 +81,7 @@ $result = sql_query($sql);
                 $bg = 'bg' . ($i % 2);
             ?>
                 <tr class="<?php echo $bg; ?>">
+                    <td class="td_id"><?php echo $row['cn_id']; ?></td>
                     <td class="td_id"><?php echo $row['co_id']; ?></td>
                     <td class="td_left"><?php echo htmlspecialchars2($row['co_subject']); ?></td>
                     <td class="td_mng td_mng_l">
@@ -89,7 +93,7 @@ $result = sql_query($sql);
             <?php
             }
             if ($i == 0) {
-                echo '<tr><td colspan="3" class="empty_table">자료가 한건도 없습니다.</td></tr>';
+                echo '<tr><td colspan="'.$colspan.'" class="empty_table">자료가 한건도 없습니다.</td></tr>';
             }
             ?>
         </tbody>
