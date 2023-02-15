@@ -4,6 +4,8 @@ include_once('./_common.php');
 
 auth_check_menu($auth, $sub_menu, "r");
 
+
+
 $ev_id = isset($_GET['ev_id']) ? preg_replace('/[^0-9]/', '', $_GET['ev_id']) : '';
 $sort1 = (isset($_GET['sort1']) && in_array($_GET['sort1'], array('a.it_id', 'it_name'))) ? $_GET['sort1'] : 'a.it_id';
 $sort2 = (isset($_GET['sort2']) && in_array($_GET['sort2'], array('desc', 'asc'))) ? $_GET['sort2'] : 'desc';
@@ -11,9 +13,6 @@ $sel_field = (isset($_GET['sel_field']) && in_array($_GET['sel_field'], array('a
 $sel_ca_id = isset($_GET['sel_ca_id']) ? get_search_string($_GET['sel_ca_id']) : '';
 $search = isset($_GET['search']) ? get_search_string($_GET['search']) : '';
 $ev_title = isset($ev_title) ? clean_xss_tags($ev_title, 1, 1) : '';
-
-$g5['title'] = '이벤트일괄처리';
-include_once (G5_ADMIN_PATH.'/admin.head.php');
 
 $where = " where ";
 $sql_search = "";
@@ -67,6 +66,11 @@ if($ev_id) {
     $tmp = sql_fetch(" select ev_subject from {$g5['g5_shop_event_table']} where ev_id = '$ev_id' ");
     $ev_title = $tmp['ev_subject'];
 }
+
+$g5['title'] = '이벤트일괄처리';
+include_once (G5_ADMIN_PATH.'/admin.head.php');
+
+$colspan = 4;
 ?>
 
 <div class="local_ov01 local_ov">
@@ -173,7 +177,7 @@ if($ev_id) {
     }
 
     if ($i == 0)
-        echo '<tr><td colspan="4" class="empty_table">자료가 없습니다.</td></tr>';
+        echo '<tr><td colspan="'.$colspan.'" class="empty_table">자료가 없습니다.</td></tr>';
     ?>
     </tbody>
     </table>

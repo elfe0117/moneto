@@ -16,6 +16,8 @@ $total_count = $row['cnt'];
 
 $sql = "select * $sql_common order by ev_id desc ";
 $result = sql_query($sql);
+
+$colspan = 6;
 ?>
 
 <div class="local_ov01 local_ov">
@@ -32,6 +34,7 @@ $result = sql_query($sql);
     <caption><?php echo $g5['title']; ?> 목록</caption>
     <thead>
     <tr>
+        <th scope="col">채널</th>
         <th scope="col">이벤트번호</th>
         <th scope="col">제목</th>
         <th scope="col">연결상품</th>
@@ -56,6 +59,7 @@ $result = sql_query($sql);
     ?>
 
     <tr>
+        <td class="td_id"><?php echo $row['cn_id']; ?></td>
         <td class="td_num"><?php echo $row['ev_id']; ?></td>
         <td class="td_left"><?php echo $subject; ?></td>
         <td class="td_num"><?php echo $href; ?><?php echo $ev['cnt']; ?><?php echo $href_close; ?></td>
@@ -71,7 +75,7 @@ $result = sql_query($sql);
     }
 
     if ($i == 0) {
-        echo '<tr><td colspan="5" class="empty_table">자료가 없습니다.</td></tr>';
+        echo '<tr><td colspan="'.$colspan.'" class="empty_table">자료가 없습니다.</td></tr>';
     }
     ?>
     </tbody>
