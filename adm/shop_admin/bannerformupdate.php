@@ -18,13 +18,7 @@ if (!$cn_id) {
     alert('채널 ID는 반드시 선택하세요.');
 }
 
-$channel_path = G5_DATA_PATH . '/' . $cn_id;
-
-// 채널 디렉토리 생성
-@mkdir($channel_path, G5_DIR_PERMISSION);
-@chmod($channel_path, G5_DIR_PERMISSION);
-
-$banner_path = $channel_path . '/banner';
+$banner_path = G5_DATA_PATH . '/banner';
 
 // 배너 디렉토리 생성
 @mkdir($banner_path, G5_DIR_PERMISSION);

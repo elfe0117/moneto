@@ -85,7 +85,7 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
             <input type="file" name="bn_bimg">
             <?php
             $bimg_str = "";
-            $bimg = G5_DATA_PATH."/{$bn['cn_id']}/banner/{$bn['bn_id']}";
+            $bimg = G5_STORAGE_PATH."/channel/{$bn['cn_id']}/banner/{$bn['bn_id']}";
             if (file_exists($bimg) && $bn['bn_id']) {
                 $size = @getimagesize($bimg);
                 if($size[0] && $size[0] > 750)
@@ -94,7 +94,7 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
                     $width = $size[0];
 
                 echo '<input type="checkbox" name="bn_bimg_del" value="1" id="bn_bimg_del"> <label for="bn_bimg_del">삭제</label>';
-                $bimg_str = '<img src="'.G5_DATA_URL.'/'.$bn['cn_id'].'/banner/'.$bn['bn_id'].'" width="'.$width.'">';
+                $bimg_str = '<img src="'.G5_STORAGE_URL.'/channel/'.$bn['cn_id'].'/banner/'.$bn['bn_id'].'" width="'.$width.'">';
             }
             if ($bimg_str) {
                 echo '<div class="banner_or_img">';

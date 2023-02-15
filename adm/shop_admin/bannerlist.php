@@ -114,7 +114,7 @@ $colspan = 9;
         // 새창 띄우기인지
         $bn_new_win = ($row['bn_new_win']) ? 'target="_blank"' : '';
 
-        $bimg = G5_DATA_PATH.'/'.$row['cn_id'].'/banner/'.$row['bn_id'];
+        $bimg = G5_STORAGE_PATH.'/channel/'.$row['cn_id'].'/banner/'.$row['bn_id'];
         if(file_exists($bimg)) {
             $size = @getimagesize($bimg);
             if($size[0] && $size[0] > 800)
@@ -124,7 +124,7 @@ $colspan = 9;
 
             $bn_img = "";
            
-            $bn_img .= '<img src="'.G5_DATA_URL.'/'.$row['cn_id'].'/banner/'.$row['bn_id'].'?'.preg_replace('/[^0-9]/i', '', $row['bn_time']).'" width="'.$width.'" alt="'.get_text($row['bn_alt']).'">';
+            $bn_img .= '<img src="'.G5_STORAGE_URL.'/channel/'.$row['cn_id'].'/banner/'.$row['bn_id'].'?'.preg_replace('/[^0-9]/i', '', $row['bn_time']).'" width="'.$width.'" alt="'.get_text($row['bn_alt']).'">';
         }
 
         switch($row['bn_device']) {

@@ -95,7 +95,7 @@ if (isset($g5_path['path'])) {
 define('G5_ADMIN_URL',      G5_URL.'/'.G5_ADMIN_DIR);
 define('G5_BBS_URL',        G5_URL.'/'.G5_BBS_DIR);
 define('G5_CSS_URL',        G5_URL.'/'.G5_CSS_DIR);
-define('G5_STOREGY_URL',    G5_URL.'/'.G5_STORAGE_DIR);
+define('G5_STORAGE_URL',    G5_URL.'/'.G5_STORAGE_DIR);
 define('G5_IMG_URL',        G5_URL.'/'.G5_IMG_DIR);
 define('G5_JS_URL',         G5_URL.'/'.G5_JS_DIR);
 define('G5_SKIN_URL',       G5_URL.'/'.G5_SKIN_DIR);
