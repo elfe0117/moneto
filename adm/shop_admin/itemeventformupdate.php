@@ -12,8 +12,15 @@ else
 
 check_admin_token();
 
-@mkdir(G5_DATA_PATH."/event", G5_DIR_PERMISSION);
-@chmod(G5_DATA_PATH."/event", G5_DIR_PERMISSION);
+$cn_id = (isset($_REQUEST['cn_id']) && $_REQUEST['cn_id']) ? preg_replace('/[^a-z0-9_]/i', '', (string)$_REQUEST['cn_id']) : '';
+if (!$cn_id) {
+    alert('채널 ID는 반드시 선택하세요.');
+}
+
+$event_path = G5_DATA_PATH.'/event';
+
+@mkdir($event_path, G5_DIR_PERMISSION);
+@chmod($event_path, G5_DIR_PERMISSION);
 
 $ev_mimg_del = isset($_POST['ev_mimg_del']) ? (int) $_POST['ev_mimg_del'] : 0;
 $ev_himg_del = isset($_POST['ev_himg_del']) ? (int) $_POST['ev_himg_del'] : 0;
@@ -37,9 +44,9 @@ $ev_subject = isset($_POST['ev_subject']) ? clean_xss_tags($_POST['ev_subject'],
 $ev_head_html = isset($_POST['ev_head_html']) ? $_POST['ev_head_html'] : '';
 $ev_tail_html = isset($_POST['ev_tail_html']) ? $_POST['ev_tail_html'] : '';
 
-if ($ev_mimg_del)  @unlink(G5_DATA_PATH."/event/{$ev_id}_m");
-if ($ev_himg_del)  @unlink(G5_DATA_PATH."/event/{$ev_id}_h");
-if ($ev_timg_del)  @unlink(G5_DATA_PATH."/event/{$ev_id}_t");
+if ($ev_mimg_del)  @unlink($event_path."/{$ev_id}_m");
+if ($ev_himg_del)  @unlink($event_path."/{$ev_id}_h");
+if ($ev_timg_del)  @unlink($event_path."/{$ev_id}_t");
 
 $ev_skin = preg_replace('#\.+(\/|\\\)#', '', $ev_skin);
 $ev_mobile_skin = preg_replace('#\.+(\/|\\\)#', '', $ev_mobile_skin);
@@ -71,23 +78,24 @@ if ($w == "")
 {
     $ev_id = G5_SERVER_TIME;
 
-    $sql = " insert {$g5['g5_shop_event_table']}
-                    $sql_common
-                  , ev_id = '$ev_id' ";
+    $sql = " INSERT INTO {$g5['g5_shop_event_table']}
+                    {$sql_common}
+                  , ev_id = '$ev_id'
+                  , cn_id = '{$cn_id}' ";
     sql_query($sql);
 }
 else if ($w == "u")
 {
-    $sql = " update {$g5['g5_shop_event_table']}
-                $sql_common
-              where ev_id = '$ev_id' ";
+    $sql = " UPDATE {$g5['g5_shop_event_table']}
+                {$sql_common}
+              WHERE ev_id = '$ev_id' ";
     sql_query($sql);
 }
 else if ($w == "d")
 {
-    @unlink(G5_DATA_PATH."/event/{$ev_id}_m");
-    @unlink(G5_DATA_PATH."/event/{$ev_id}_h");
-    @unlink(G5_DATA_PATH."/event/{$ev_id}_t");
+    @unlink($event_path."/{$ev_id}_m");
+    @unlink($event_path."/{$ev_id}_h");
+    @unlink($event_path."/{$ev_id}_t");
 
     // 이벤트상품삭제
     $sql = " delete from {$g5['g5_shop_event_item_table']} where ev_id = '$ev_id' ";
@@ -99,9 +107,9 @@ else if ($w == "d")
 
 if ($w == "" || $w == "u")
 {
-    if ($_FILES['ev_mimg']['name']) upload_file($_FILES['ev_mimg']['tmp_name'], $ev_id."_m", G5_DATA_PATH."/event");
-    if ($_FILES['ev_himg']['name']) upload_file($_FILES['ev_himg']['tmp_name'], $ev_id."_h", G5_DATA_PATH."/event");
-    if ($_FILES['ev_timg']['name']) upload_file($_FILES['ev_timg']['tmp_name'], $ev_id."_t", G5_DATA_PATH."/event");
+    if ($_FILES['ev_mimg']['name']) upload_file($_FILES['ev_mimg']['tmp_name'], $ev_id."_m", $event_path);
+    if ($_FILES['ev_himg']['name']) upload_file($_FILES['ev_himg']['tmp_name'], $ev_id."_h", $event_path);
+    if ($_FILES['ev_timg']['name']) upload_file($_FILES['ev_timg']['tmp_name'], $ev_id."_t", $event_path);
 
     // 등록된 이벤트 상품 먼저 삭제
     $sql = " delete from {$g5['g5_shop_event_item_table']} where ev_id = '$ev_id' ";
