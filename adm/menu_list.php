@@ -34,7 +34,7 @@ $result = sql_query($sql);
 $g5['title'] = "메뉴설정";
 require_once './admin.head.php';
 
-$colspan = 7;
+$colspan = 8;
 $sub_menu_info = '';
 ?>
 
@@ -52,6 +52,7 @@ $sub_menu_info = '';
             <caption><?php echo $g5['title']; ?> 목록</caption>
             <thead>
                 <tr>
+                    <th scope="col">채널</th>
                     <th scope="col">메뉴</th>
                     <th scope="col">링크</th>
                     <th scope="col">새창</th>
@@ -77,6 +78,7 @@ $sub_menu_info = '';
                     $me_name = str_replace($search, $replace, $row['me_name']);
                 ?>
                     <tr class="<?php echo $bg; ?> menu_list menu_group_<?php echo substr($row['me_code'], 0, 2); ?>">
+                        <td class="td_id"><?php echo($row['cn_id']); ?></td>
                         <td class="td_category<?php echo $sub_menu_class; ?>">
                             <input type="hidden" name="code[]" value="<?php echo substr($row['me_code'], 0, 2) ?>">
                             <label for="me_name_<?php echo $i; ?>" class="sound_only"><?php echo $sub_menu_info; ?> 메뉴<strong class="sound_only"> 필수</strong></label>

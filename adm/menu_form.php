@@ -6,6 +6,19 @@ if ($is_admin != 'super') {
     alert_close('최고관리자만 접근 가능합니다.');
 }
 
+// 채널 목록 정보 가져오기
+$array_cn = array();
+$sql = "SELECT *
+    FROM {$g5['channel_table']}
+    ORDER BY cn_id ASC ";
+$result = sql_query($sql);
+if ($result) {
+    while($row = sql_fetch_array($result)) {
+        array_push($array_cn, $row);
+    }
+    unset($result);
+}
+
 $g5['title'] = '메뉴 추가';
 require_once G5_PATH . '/head.sub.php';
 
@@ -27,13 +40,37 @@ if ($new == 'new' || !$code) {
     <form name="fmenuform" id="fmenuform" class="new_win_con">
 
         <div class="new_win_desc">
-            <label for="me_type">대상선택</label>
-            <select name="me_type" id="me_type">
-                <option value="">직접입력</option>
-                <option value="group">게시판그룹</option>
-                <option value="board">게시판</option>
-                <option value="content">내용관리</option>
-            </select>
+            <table>
+                <colgroup>
+                    <col class="grid_4">
+                    <col>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th scope="row"><label for="cn_id">채널 ID<strong class="sound_only"> 필수</strong></label></th>
+                    <td>
+                        <select id="cn_id" name="cn_id" required>
+                            <?php
+                            foreach($array_cn as $row_cn) {
+                                echo(option_selected($row_cn['cn_id'], '', $row_cn['cn_id']));
+                            }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="me_type">대상선택</label></th>
+                    <td>
+                        <select id="me_type" name="me_type">
+                            <option value="">직접입력</option>
+                            <option value="group">게시판그룹</option>
+                            <option value="board">게시판</option>
+                            <option value="content">내용관리</option>
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
 
         <div id="menu_result"></div>
@@ -75,13 +112,13 @@ if ($new == 'new' || !$code) {
             }
         }
 
-        function menu_result_change(type) {
-
+        function menu_result_change(cn_id, type) {
             var dfd = new $.Deferred();
 
             $("#menu_result").empty().load(
                 "./menu_form_search.php", {
-                    type: type
+                    cn_id : cn_id,
+                    type : type
                 },
                 function() {
                     dfd.resolve('Finished');
@@ -91,15 +128,15 @@ if ($new == 'new' || !$code) {
             return dfd.promise();
         }
 
-        $("#me_type").on("change", function() {
-            var type = $(this).val();
+        $("#cn_id, #me_type").on("change", function() {
+            var cn_id = $("#cn_id").val();
+            var type = $("#me_type").val();
 
-            var promise = menu_result_change(type);
+            var promise = menu_result_change(cn_id, type);
 
             promise.done(function(message) {
                 link_checks_all_chage(type);
             });
-
         });
 
         $(document).on("click", "#add_manual", function() {
@@ -128,6 +165,10 @@ if ($new == 'new' || !$code) {
         <?php } ?>
 
         var list = "<tr class=\"menu_list menu_group_<?php echo $code; ?>\">";
+        list += "<td class=\"td_id\">";
+        list += "   <input type=\"hidden\" name=\"cn_id[]\" value=\"" + $("#cn_id").val() + "\">";
+        list += $("#cn_id").val();
+        list += "</td>";
         list += "<td" + sub_menu_class + ">";
         list += "<label for=\"me_name_" + ms + "\"  class=\"sound_only\">메뉴<strong class=\"sound_only\"> 필수</strong></label>";
         list += "<input type=\"hidden\" name=\"code[]\" value=\"<?php echo $code; ?>\">";

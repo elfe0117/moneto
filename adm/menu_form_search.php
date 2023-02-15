@@ -5,33 +5,39 @@ if ($is_admin != 'super') {
     die('최고관리자만 접근 가능합니다.');
 }
 
+$cn_id = (isset($_REQUEST['cn_id']) && $_REQUEST['cn_id']) ? preg_replace('/[^a-z0-9_]/i', '', (string)$_REQUEST['cn_id']) : '';
 $type = isset($_REQUEST['type']) ? preg_replace('/[^0-9a-z_]/i', '', $_REQUEST['type']) : '';
 
 switch ($type) {
     case 'group':
-        $sql = " select gr_id as id, gr_subject as subject
-                    from {$g5['group_table']}
-                    order by gr_order, gr_id ";
+        $sql = " SELECT cn_id, gr_id AS id, gr_subject AS subject
+            FROM {$g5['group_table']}
+            WHERE cn_id = '{$cn_id}'
+            ORDER BY gr_order ASC,
+                gr_id ASC ";
         break;
     case 'board':
-        $sql = " select bo_table as id, bo_subject as subject, gr_id
-                    from {$g5['board_table']}
-                    order by bo_order, bo_table ";
+        $sql = " SELECT cn_id, bo_table AS id, bo_subject AS subject, gr_id
+            FROM {$g5['board_table']}
+            WHERE cn_id = '{$cn_id}'
+            ORDER BY bo_order ASC,
+                bo_table ASC ";
         break;
     case 'content':
-        $sql = " select co_id as id, co_subject as subject
-                    from {$g5['content_table']}
-                    order by co_id ";
+        $sql = " SELECT cn_id, co_id AS id, co_subject AS subject
+            FROM {$g5['content_table']}
+            WHERE cn_id = '{$cn_id}'
+            ORDER BY co_id ASC ";
         break;
     default:
-        $sql = '';
+        $sql = "";
         break;
 }
 
 if ($sql) {
     $result = sql_query($sql);
 
-    for ($i = 0; $row = sql_fetch_array($result); $i++) {
+    for($i = 0; $row = sql_fetch_array($result); $i++) {
         if ($i == 0) {
             $bbs_subject_title = ($type == 'board') ? '게시판제목' : '제목';
             ?>

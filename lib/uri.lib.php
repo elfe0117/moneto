@@ -91,7 +91,7 @@ function get_pretty_url($cn_id='', $folder, $no='', $query_string='', $action=''
         } else {
             $url = G5_BBS_URL. '/'.$folder.'.php';
             if($no) {
-                $url .= ($folder === 'content') ? '?co_id='. $no : '?'. $no;
+                $url .= ($folder === 'content') ? '?cn_id='.$cn_id.'&amp;co_id='. $no : '?'. $no;
             }
             if($query_string) {
                 $url .= (!$no ? '?' : '&amp;'). $query_string;
