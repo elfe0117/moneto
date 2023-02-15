@@ -5,6 +5,19 @@ require_once G5_EDITOR_LIB;
 
 auth_check_menu($auth, $sub_menu, "w");
 
+// 채널 목록 정보 가져오기
+$array_cn = array();
+$sql = "SELECT *
+    FROM {$g5['channel_table']}
+    ORDER BY cn_id ASC ";
+$result = sql_query($sql);
+if ($result) {
+    while($row = sql_fetch_array($result)) {
+        array_push($array_cn, $row);
+    }
+    unset($result);
+}
+
 $nw_id = isset($_REQUEST['nw_id']) ? (string)preg_replace('/[^0-9]/', '', $_REQUEST['nw_id']) : 0;
 $nw = array(
     'nw_begin_time' => '',
@@ -59,6 +72,18 @@ require_once G5_ADMIN_PATH . '/admin.head.php';
                 <col>
             </colgroup>
             <tbody>
+                <tr>
+                    <th scope="row"><label for="cn_id">채널 ID<strong class="sound_only"> 필수</strong></label></th>
+                    <td>
+                        <select id="cn_id" name="cn_id" required>
+                            <?php
+                            foreach($array_cn as $row_cn) {
+                                echo(option_selected($row_cn['cn_id'], $nw['cn_id'], $row_cn['cn_id']));
+                            }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
                 <tr>
                     <th scope="row"><label for="nw_division">구분</label></th>
                     <td>

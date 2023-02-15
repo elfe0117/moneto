@@ -16,6 +16,11 @@ if ($w == 'd') {
 
 check_admin_token();
 
+$cn_id = (isset($_REQUEST['cn_id']) && $_REQUEST['cn_id']) ? preg_replace('/[^a-z0-9_]/i', '', (string)$_REQUEST['cn_id']) : '';
+if (!$cn_id) {
+    alert('채널 ID는 반드시 선택하세요.');
+}
+
 $nw_subject = isset($_POST['nw_subject']) ? strip_tags(clean_xss_attributes($_POST['nw_subject'])) : '';
 $posts = array();
 
@@ -57,15 +62,19 @@ $sql_common = " nw_device = '{$posts['nw_device']}',
                 nw_content_html = '{$posts['nw_content_html']}' ";
 
 if ($w == "") {
-    $sql = " insert {$g5['new_win_table']} set $sql_common ";
+    $sql = " INSERT INTO {$g5['new_win_table']}
+        SET $sql_common,
+            cn_id = '{$cn_id}' ";
     sql_query($sql);
 
     $nw_id = sql_insert_id();
 } elseif ($w == "u") {
-    $sql = " update {$g5['new_win_table']} set $sql_common where nw_id = '$nw_id' ";
+    $sql = " UPDATE {$g5['new_win_table']}
+        SET $sql_common
+        WHERE nw_id = '{$nw_id}' ";
     sql_query($sql);
 } elseif ($w == "d") {
-    $sql = " delete from {$g5['new_win_table']} where nw_id = '$nw_id' ";
+    $sql = " DELETE FROM {$g5['new_win_table']} WHERE nw_id = '{$nw_id}' ";
     sql_query($sql);
 }
 

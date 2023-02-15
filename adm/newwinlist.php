@@ -15,6 +15,7 @@ if (!sql_query(" DESCRIBE {$g5['new_win_table']} ", false)) {
         $query_cp = sql_query(
             " CREATE TABLE IF NOT EXISTS `{$g5['new_win_table']}` (
                       `nw_id` int(11) NOT NULL AUTO_INCREMENT,
+                      `cn_id` varchar(20) NOT NULL DEFAULT '' COMMENT '채널 ID',
                       `nw_division` varchar(10) NOT NULL DEFAULT 'both',
                       `nw_device` varchar(10) NOT NULL DEFAULT 'both',
                       `nw_begin_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -27,7 +28,8 @@ if (!sql_query(" DESCRIBE {$g5['new_win_table']} ", false)) {
                       `nw_subject` text NOT NULL,
                       `nw_content` text NOT NULL,
                       `nw_content_html` tinyint(4) NOT NULL DEFAULT '0',
-                      PRIMARY KEY (`nw_id`)
+                      PRIMARY KEY (`nw_id`),
+                      KEY `cn_id` (`cn_id`)
                     ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ",
             true
         );
@@ -46,6 +48,8 @@ $total_count = $row['cnt'];
 
 $sql = "select * $sql_common order by nw_id desc ";
 $result = sql_query($sql);
+
+$colspan = 12;
 ?>
 
 <div class="local_ov01 local_ov"><span class="btn_ov01"><span class="ov_txt">전체 </span><span class="ov_num"> <?php echo $total_count; ?>건</span></span></div>
@@ -60,6 +64,7 @@ $result = sql_query($sql);
         <thead>
             <tr>
                 <th scope="col">번호</th>
+                <th scope="col">채널</th>
                 <th scope="col">제목</th>
                 <th scope="col">접속기기</th>
                 <th scope="col">시작일시</th>
@@ -91,6 +96,7 @@ $result = sql_query($sql);
             ?>
                 <tr class="<?php echo $bg; ?>">
                     <td class="td_num"><?php echo $row['nw_id']; ?></td>
+                    <td class="td_id"><?php echo($row['cn_id']); ?></td>
                     <td class="td_left"><?php echo $row['nw_subject']; ?></td>
                     <td class="td_device"><?php echo $nw_device; ?></td>
                     <td class="td_datetime"><?php echo substr($row['nw_begin_time'], 2, 14); ?></td>
@@ -109,7 +115,7 @@ $result = sql_query($sql);
             }
 
             if ($i == 0) {
-                echo '<tr><td colspan="11" class="empty_table">자료가 한건도 없습니다.</td></tr>';
+                echo '<tr><td colspan="'.$colspan.'" class="empty_table">자료가 한건도 없습니다.</td></tr>';
             }
             ?>
         </tbody>
