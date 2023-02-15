@@ -48,14 +48,14 @@ if (((isset($co_row['co_include_head']) && $co_row['co_include_head'] !== $co_in
     }
 }
 
-@mkdir(G5_CHANNEL_DATA_PATH . "/content", G5_DIR_PERMISSION);
-@chmod(G5_CHANNEL_DATA_PATH . "/content", G5_DIR_PERMISSION);
+@mkdir(G5_DATA_PATH . "/content", G5_DIR_PERMISSION);
+@chmod(G5_DATA_PATH . "/content", G5_DIR_PERMISSION);
 
 if ($co_himg_del) {
-    @unlink(G5_CHANNEL_DATA_PATH . "/content/{$co_id}_h");
+    @unlink(G5_DATA_PATH . "/content/{$co_id}_h");
 }
 if ($co_timg_del) {
-    @unlink(G5_CHANNEL_DATA_PATH . "/content/{$co_id}_t");
+    @unlink(G5_DATA_PATH . "/content/{$co_id}_t");
 }
 
 $error_msg = '';
@@ -122,8 +122,8 @@ if ($w == "") {
                 AND co_id = '$co_id' ";
     sql_query($sql);
 } elseif ($w == "d") {
-    @unlink(G5_CHANNEL_DATA_PATH . "/content/{$co_id}_h");
-    @unlink(G5_CHANNEL_DATA_PATH . "/content/{$co_id}_t");
+    @unlink(G5_DATA_PATH . "/content/{$co_id}_h");
+    @unlink(G5_DATA_PATH . "/content/{$co_id}_t");
 
     $sql = " delete from {$g5['content_table']} where cn_id = '{$cn_id}' AND co_id = '$co_id' ";
     sql_query($sql);
@@ -137,12 +137,12 @@ g5_delete_cache_by_prefix('content-' . $cn_id.'_'.$co_id . '-');
 
 if ($w == "" || $w == "u") {
     if ($_FILES['co_himg']['name']) {
-        $dest_path = G5_CHANNEL_DATA_PATH . "/content/" . $co_id . "_h";
+        $dest_path = G5_DATA_PATH . "/content/" . $co_id . "_h";
         @move_uploaded_file($_FILES['co_himg']['tmp_name'], $dest_path);
         @chmod($dest_path, G5_FILE_PERMISSION);
     }
     if ($_FILES['co_timg']['name']) {
-        $dest_path = G5_CHANNEL_DATA_PATH . "/content/" . $co_id . "_t";
+        $dest_path = G5_DATA_PATH . "/content/" . $co_id . "_t";
         @move_uploaded_file($_FILES['co_timg']['tmp_name'], $dest_path);
         @chmod($dest_path, G5_FILE_PERMISSION);
     }
