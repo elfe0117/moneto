@@ -16,12 +16,6 @@ if ($w == 'd') {
 
 check_admin_token();
 
-// 채널 디렉토리 생성
-$g5_channel_data_path = G5_STORAGE_PATH.'/channel';
-
-@mkdir($g5_channel_data_path, G5_DIR_PERMISSION);
-@chmod($g5_channel_data_path, G5_DIR_PERMISSION);
-
 $cn_name = isset($_POST['cn_name']) ? strip_tags(clean_xss_attributes($_POST['cn_name'])) : '';
 $cg_id = isset($_POST['cg_id']) ? (int)$_POST['cg_id'] : 0;
 $cn_use = isset($_POST['cn_use']) ? (int)$_POST['cn_use'] : 0;
@@ -115,15 +109,14 @@ if ($w == '') {
     sql_query($sql);
 
     // 개별 채널 디렉토리 생성
-    $g5_channel_data_path = $g5_channel_data_path.'/'.$cn_id;
-    @mkdir($g5_channel_data_path, G5_DIR_PERMISSION);
-    @chmod($g5_channel_data_path, G5_DIR_PERMISSION);
+    @mkdir(G5_DATA_PATH, G5_DIR_PERMISSION);
+    @chmod(G5_DATA_PATH, G5_DIR_PERMISSION);
 
     // 개별 채널 유형별 디렉토리 생성
     $array_data_sub_dir = array ('cache','editor','file','log','member','member_image','session','content','faq','tmp','banner','common','event','item');
     for($i = 0; $i < count($array_data_sub_dir); $i++) {
-        @mkdir($g5_channel_data_path.'/'.$array_data_sub_dir[$i], G5_DIR_PERMISSION);
-        @chmod($g5_channel_data_path.'/'.$array_data_sub_dir[$i], G5_DIR_PERMISSION);
+        @mkdir(G5_DATA_PATH.'/'.$array_data_sub_dir[$i], G5_DIR_PERMISSION);
+        @chmod(G5_DATA_PATH.'/'.$array_data_sub_dir[$i], G5_DIR_PERMISSION);
     }
 } else if ($w == 'u') {
     $sql = "UPDATE {$g5['channel_table']}
@@ -142,7 +135,7 @@ if ($w == '') {
     sql_query($sql);
 
     // 폴더 전체 삭제
-    rm_rf($g5_channel_data_path.'/'.$cn_id);
+    rm_rf(G5_DATA_PATH.'/'.$cn_id);
 }
 
 if ($w == 'd') {
