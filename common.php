@@ -368,11 +368,11 @@ if (isset($_SESSION['ss_cn_id']) && $_SESSION['ss_cn_id']) {
         LIMIT 0, 1 ";
     $channel = sql_fetch($sql);
 
-    define('G5_CHANNEL_DATA_URL', G5_DATA_URL.'/channel/'.$channel['cn_id']);
-    define('G5_CHANNEL_DATA_PATH', G5_DATA_PATH.'/channel/'.$channel['cn_id']);
+    define('G5_DATA_URL', G5_STORAGE_URL.'/channel/'.$channel['cn_id']);
+    define('G5_DATA_PATH', G5_STORAGE_PATH.'/channel/'.$channel['cn_id']);
 } else {
-    define('G5_CHANNEL_DATA_URL', '');
-    define('G5_CHANNEL_DATA_PATH', '');
+    define('G5_DATA_URL', G5_STORAGE_URL);
+    define('G5_DATA_PATH', G5_STORAGE_PATH);
 }
 
 // 기본환경설정
