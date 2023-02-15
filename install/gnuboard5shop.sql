@@ -133,26 +133,27 @@ CREATE TABLE IF NOT EXISTS `g5_shop_category` (
 
 DROP TABLE IF EXISTS `g5_shop_coupon`;
 CREATE TABLE IF NOT EXISTS `g5_shop_coupon` (
-  `cp_no` INT(11) NOT NULL AUTO_INCREMENT,
-  `cp_id` VARCHAR(100) NOT NULL DEFAULT '',
-  `cp_subject` VARCHAR(255) NOT NULL DEFAULT '',
-  `cp_method` TINYINT(4) NOT NULL DEFAULT '0',  
-  `cp_target` VARCHAR(255) NOT NULL DEFAULT '',
-  `mb_id` VARCHAR(255) NOT NULL DEFAULT '',
-  `cz_id` int(11) NOT NULL DEFAULT '0',
-  `cp_start` DATE NOT NULL DEFAULT '0000-00-00',
-  `cp_end` DATE NOT NULL DEFAULT '0000-00-00',
-  `cp_price` INT(11) NOT NULL DEFAULT '0',
-  `cp_type` TINYINT(4) NOT NULL DEFAULT '0',
-  `cp_trunc` INT(11) NOT NULL DEFAULT '0',
-  `cp_minimum` INT(11) NOT NULL DEFAULT '0',
-  `cp_maximum` INT(11) NOT NULL DEFAULT '0',
-  `od_id` bigint(20) unsigned NOT NULL,
-  `cp_datetime` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `cp_no` int NOT NULL AUTO_INCREMENT,
+  `cn_id` varchar(20) NOT NULL COMMENT '채널 ID',
+  `cp_id` varchar(100) NOT NULL DEFAULT '',
+  `cp_subject` varchar(255) NOT NULL DEFAULT '',
+  `cp_method` tinyint NOT NULL DEFAULT '0',
+  `cp_target` varchar(255) NOT NULL DEFAULT '',
+  `mb_id` varchar(255) NOT NULL DEFAULT '',
+  `cz_id` int NOT NULL DEFAULT '0',
+  `cp_start` date NOT NULL DEFAULT '0000-00-00',
+  `cp_end` date NOT NULL DEFAULT '0000-00-00',
+  `cp_price` int NOT NULL DEFAULT '0',
+  `cp_type` tinyint NOT NULL DEFAULT '0',
+  `cp_trunc` int NOT NULL DEFAULT '0',
+  `cp_minimum` int NOT NULL DEFAULT '0',
+  `cp_maximum` int NOT NULL DEFAULT '0',
+  `od_id` bigint UNSIGNED NOT NULL,
+  `cp_datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`cp_no`),
-  UNIQUE KEY `cp_id` (`cp_id`),
+  UNIQUE KEY `fkey1` (`cn_id`, `cp_id`),
   KEY `mb_id` (`mb_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -162,16 +163,18 @@ CREATE TABLE IF NOT EXISTS `g5_shop_coupon` (
 
 DROP TABLE IF EXISTS `g5_shop_coupon_log`;
 CREATE TABLE IF NOT EXISTS `g5_shop_coupon_log` (
-  `cl_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cl_id` int NOT NULL AUTO_INCREMENT,
+  `cn_id` varchar(100) NOT NULL DEFAULT '',
   `cp_id` varchar(100) NOT NULL DEFAULT '',
   `mb_id` varchar(100) NOT NULL DEFAULT '',
-  `od_id` bigint(20) NOT NULL,
-  `cp_price` int(11) NOT NULL DEFAULT '0',
+  `od_id` bigint NOT NULL,
+  `cp_price` int NOT NULL DEFAULT '0',
   `cl_datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`cl_id`),
+  KEY `fkey1` (`cn_id`, `cp_id`),
   KEY `mb_id` (`mb_id`),
   KEY `od_id` (`od_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 

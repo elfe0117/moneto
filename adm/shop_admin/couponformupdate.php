@@ -6,6 +6,11 @@ auth_check_menu($auth, $sub_menu, "w");
 
 check_admin_token();
 
+$cn_id = (isset($_REQUEST['cn_id']) && $_REQUEST['cn_id']) ? preg_replace('/[^a-z0-9_]/i', '', (string)$_REQUEST['cn_id']) : '';
+if (!$cn_id) {
+    alert('채널 ID는 반드시 선택하세요.');
+}
+
 $_POST = array_map('trim', $_POST);
 
 $check_sanitize_keys = array(
@@ -75,6 +80,18 @@ if($_POST['cp_method'] == 0) {
         alert('입력하신 분류코드는 존재하지 않는 분류코드이거나 쿠폰적용안함으로 설정된 분류입니다.');
 }
 
+$sql_common = "
+    cp_subject  = '{$cp_subject}',
+    cp_method   = '{$cp_method}',
+    cp_target   = '{$cp_target}',
+    mb_id       = '{$mb_id}',
+    cp_start    = '{$cp_start}',
+    cp_end      = '{$cp_end}',
+    cp_type     = '{$cp_type}',
+    cp_price    = '{$cp_price}',
+    cp_trunc    = '{$cp_trunc}',
+    cp_minimum  = '{$cp_minimum}',
+    cp_maximum  = '{$cp_maximum}' ";
 if($w == '') {
     if($_POST['chk_all_mb']) {
         $mb_id = '전체회원';
@@ -91,7 +108,7 @@ if($w == '') {
     do {
         $cp_id = get_coupon_id();
 
-        $sql3 = " select count(*) as cnt from {$g5['g5_shop_coupon_table']} where cp_id = '$cp_id' ";
+        $sql3 = " select count(*) as cnt from {$g5['g5_shop_coupon_table']} where cn_id = '{$cn_id}' AND cp_id = '$cp_id' ";
         $row3 = sql_fetch($sql3);
 
         if(!$row3['cnt'])
@@ -106,10 +123,10 @@ if($w == '') {
     } while(1);
 
     $sql = " INSERT INTO {$g5['g5_shop_coupon_table']}
-                ( cp_id, cp_subject, cp_method, cp_target, mb_id, cp_start, cp_end, cp_type, cp_price, cp_trunc, cp_minimum, cp_maximum, cp_datetime )
-            VALUES
-                ( '$cp_id', '$cp_subject', '$cp_method', '$cp_target', '$mb_id', '$cp_start', '$cp_end', '$cp_type', '$cp_price', '$cp_trunc', '$cp_minimum', '$cp_maximum', '".G5_TIME_YMDHIS."' ) ";
-
+        SET {$sql_common},
+            cn_id       = '{$cn_id}',
+            cp_id       = '{$cp_id}',
+            cp_datetime = '".G5_TIME_YMDHIS."' ";
     sql_query($sql);
 } else if($w == 'u') {
     $sql = " select * from {$g5['g5_shop_coupon_table']} where cp_id = '$cp_id' ";
@@ -122,19 +139,10 @@ if($w == '') {
         $mb_id = '전체회원';
     }
 
-    $sql = " update {$g5['g5_shop_coupon_table']}
-                set cp_subject  = '$cp_subject',
-                    cp_method   = '$cp_method',
-                    cp_target   = '$cp_target',
-                    mb_id       = '$mb_id',
-                    cp_start    = '$cp_start',
-                    cp_end      = '$cp_end',
-                    cp_type     = '$cp_type',
-                    cp_price    = '$cp_price',
-                    cp_trunc    = '$cp_trunc',
-                    cp_maximum  = '$cp_maximum',
-                    cp_minimum  = '$cp_minimum'
-                where cp_id = '$cp_id' ";
+    $sql = " UPDATE {$g5['g5_shop_coupon_table']}
+                SET {$sql_common}
+                WHERE cn_id = '{$cn_id}'
+                    AND cp_id = '{$cp_id}' ";
     sql_query($sql);
 }
 
