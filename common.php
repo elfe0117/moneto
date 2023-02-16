@@ -343,37 +343,92 @@ if(XenoPostToForm::check()) {
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// 언어 설정
+////////////////////////////////////////////////////////////////////////////////
+include_once(G5_LIB_PATH.'/language.lib.php'); // 언어 관련 함수 모음
+
+// 언어 불러오기
+$lang = get_language();
+$lang_path = G5_LANG_PATH.'/'.$lang.'.json';
+$lang_json = json_decode(file_get_contents($lang_path), true);
+if (!is_array($lang_json)) {
+    ?>
+    <!doctype html>
+    <html lang="ko">
+    <head>
+    <meta charset="utf-8">
+    <title>오류! 언어팩을 불러올 수 없습니다.</title>
+    <link rel="stylesheet" href="install/install.css">
+    </head>
+    <body>
+    
+    <div id="ins_bar">
+        <span id="bar_img">GNUBOARD5</span>
+        <span id="bar_txt">Message</span>
+    </div>
+    <h1>언어팩을 먼저 설치해주십시오.</h1>
+    
+    <div id="ins_ft">
+        <strong>GNUBOARD5</strong>
+        <p>GPL! OPEN SOURCE GNUBOARD</p>
+    </div>
+    
+    </body>
+    </html>
+    <?php
+    exit;
+}
+set_session('ss_lang', $lang);
+
+////////////////////////////////////////////////////////////////////////////////
+// 채널 설정
+////////////////////////////////////////////////////////////////////////////////
+include_once(G5_LIB_PATH.'/channel.lib.php'); // 채널 관려 함수 모음
+
+// 채널 정보 가져오기
+$channel = get_channel();
+if (!(isset($channel['cn_id']) && $channel['cn_id'])) {
+    ?>
+    <!doctype html>
+    <html lang="ko">
+    <head>
+    <meta charset="utf-8">
+    <title>오류! 채널정보를 불러올 수 없습니다.</title>
+    <link rel="stylesheet" href="install/install.css">
+    </head>
+    <body>
+    
+    <div id="ins_bar">
+        <span id="bar_img">GNUBOARD5</span>
+        <span id="bar_txt">Message</span>
+    </div>
+    <h1>채널를 먼저 설치해주십시오.</h1>
+    
+    <div id="ins_ft">
+        <strong>GNUBOARD5</strong>
+        <p>GPL! OPEN SOURCE GNUBOARD</p>
+    </div>
+    
+    </body>
+    </html>
+    <?php
+    exit;
+}
+set_session('ss_cid', $channel['cn_id']);
+
+////////////////////////////////////////////////////////////////////////////////
+// (채널) 디렉토리 관련 상수 정의
+////////////////////////////////////////////////////////////////////////////////
+//if ($channel['cn_id'] == G5_DEFAULT_CHANNEL) {
+//} else {
+//}
+define('G5_DATA_URL', G5_URL.'/channel/'.$channel['cn_id'].'/data');
+define('G5_DATA_PATH', G5_PATH.'/channel/'.$channel['cn_id'].'/data');
+
 //==============================================================================
 // 공용 변수
 //------------------------------------------------------------------------------
-// 채널 정보
-if (isset($_REQUEST['cn_id']) && !is_array($_REQUEST['cn_id'])) {
-    $cn_id = preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cn_id']));
-    $cn_id = substr($cn_id, 0, 20);
-
-    // 채널ID 세션 생성
-    set_session('ss_cn_id', $cn_id);
-} else {
-    $cn_id = '';
-}
-
-$is_channel = false;
-if (isset($_SESSION['ss_cn_id']) && $_SESSION['ss_cn_id']) {
-    $is_channel = true;
-
-    // 채널정보 가져오기
-    $sql = " SELECT *
-        FROM {$g5['channel_table']}
-        WHERE cn_id = '{$_SESSION['ss_cn_id']}'
-        LIMIT 0, 1 ";
-    $channel = sql_fetch($sql);
-
-    define('G5_DATA_URL', G5_STORAGE_URL.'/channel/'.$channel['cn_id']);
-    define('G5_DATA_PATH', G5_STORAGE_PATH.'/channel/'.$channel['cn_id']);
-} else {
-    define('G5_DATA_URL', G5_STORAGE_URL);
-    define('G5_DATA_PATH', G5_STORAGE_PATH);
-}
 
 // 기본환경설정
 // 기본적으로 사용하는 필드만 얻은 후 상황에 따라 필드를 추가로 얻음

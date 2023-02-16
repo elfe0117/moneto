@@ -49,6 +49,12 @@ define('G5_COOKIE_DOMAIN',  '');
 
 define('G5_DBCONFIG_FILE',  'dbconfig.php');
 
+// 기본 언어
+define('G5_DEFAULT_LANGUAGE', 'ko-KR');
+// 기본 채널
+define('G5_DEFAULT_CHANNEL',  'moneto');
+
+
 define('G5_ADMIN_DIR',      'adm');
 define('G5_BBS_DIR',        'bbs');
 define('G5_CSS_DIR',        'css');
@@ -75,6 +81,9 @@ define('G5_THEME_DIR',      'theme');
 
 define('G5_GROUP_DIR',      'group');
 define('G5_CONTENT_DIR',    'content');
+
+define('G5_LOCALE_DIR',     'locale');
+define('G5_LANG_DIR',       'lang');
 
 // URL 은 브라우저상에서의 경로 (도메인으로 부터)
 if (G5_DOMAIN) {
@@ -129,6 +138,9 @@ define('G5_LGXPAY_PATH',    G5_PLUGIN_PATH.'/'.G5_LGXPAY_DIR);
 define('G5_SNS_PATH',       G5_PLUGIN_PATH.'/'.G5_SNS_DIR);
 define('G5_SYNDI_PATH',     G5_PLUGIN_PATH.'/'.G5_SYNDI_DIR);
 define('G5_PHPMAILER_PATH', G5_PLUGIN_PATH.'/'.G5_PHPMAILER_DIR);
+
+define('G5_LOCALE_PATH',    G5_PATH.'/'.G5_LOCALE_DIR);
+define('G5_LANG_PATH',      G5_LOCALE_PATH.'/'.G5_LANG_DIR);
 //==============================================================================
 
 
