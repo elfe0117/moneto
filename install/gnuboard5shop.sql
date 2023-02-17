@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `g5_shop_coupon` (
   PRIMARY KEY (`cp_no`),
   UNIQUE KEY `fkey1` (`cn_id`, `cp_id`),
   KEY `mb_id` (`mb_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `g5_shop_coupon_log` (
   KEY `fkey1` (`cn_id`, `cp_id`),
   KEY `mb_id` (`mb_id`),
   KEY `od_id` (`od_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 

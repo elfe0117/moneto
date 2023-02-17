@@ -20,14 +20,11 @@ if ($_POST['act_button'] == "선택수정") {
         // 실제 번호를 넘김
         $k = isset($_POST['chk'][$i]) ? (int) $_POST['chk'][$i] : 0;
 
+        $post_cn_id = (isset($_POST['cn_id'][$k]) && $_POST['cn_id'][$k]) ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'][$k])) : '';
         $post_cn_name = (isset($_POST['cn_name'][$k]) && $_POST['cn_name'][$k]) ? strip_tags(clean_xss_attributes($_POST['cn_name'][$k])) : '';
         $post_cg_id = (isset($_POST['cg_id'][$k]) && $_POST['cg_id'][$k]) ? (int)$_POST['cg_id'][$k] : 0;
 
-        $sql = "SELECT *
-            FROM {$g5['channel_table']}
-            WHERE cn_id = '{$_POST['cn_id'][$k]}'
-            LIMIT 0, 1 ";
-        $cn_datas[] = $cn = sql_fetch($sql);
+        $cn_datas[] = $cn = get_channel($post_cn_id);
 
         if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
             $msg .= $cn['cn_id'] . ' : 자료가 존재하지 않습니다.\\n';
@@ -35,7 +32,7 @@ if ($_POST['act_button'] == "선택수정") {
             $sql = " UPDATE {$g5['channel_table']}
                 SET cn_name = '{$post_cn_name}',
                     cg_id = '{$post_cg_id}'
-                WHERE cn_id = '".sql_real_escape_string($cn['cn_id'])."' ";
+                WHERE cn_id = '{$cn['cn_id']}' ";
             sql_query($sql);
         }
     }
@@ -44,11 +41,9 @@ if ($_POST['act_button'] == "선택수정") {
         // 실제 번호를 넘김
         $k = isset($_POST['chk'][$i]) ? (int) $_POST['chk'][$i] : 0;
 
-        $sql = "SELECT *
-            FROM {$g5['channel_table']}
-            WHERE cn_id = '{$_POST['cn_id'][$k]}'
-            LIMIT 0, 1 ";
-        $cn_datas[] = $cn = sql_fetch($sql);
+        $post_cn_id = (isset($_POST['cn_id'][$k]) && $_POST['cn_id'][$k]) ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'][$k])) : '';
+
+        $cn_datas[] = $cn = get_channel($post_cn_id);
 
         if (!$cn['cn_id']) {
             $msg .= $cn['cn_id'] . ' : 자료가 존재하지 않습니다.\\n';
@@ -56,7 +51,7 @@ if ($_POST['act_button'] == "선택수정") {
             // 자료 삭제
             $sql = " UPDATE {$g5['channel_table']}
                 SET cn_use = 0
-                WHERE cn_id = '".sql_real_escape_string($cn['cn_id'])."' ";
+                WHERE cn_id = '{$cn['cn_id']}' ";
             sql_query($sql);
         }
     }

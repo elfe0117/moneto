@@ -34,12 +34,12 @@ define('G5_COLLECT_QUERY', false);
 // DB에 테이블 생성 시 테이블의 기본 스토리지 엔진을 설정할 수 있습니다.
 // InnoDB 또는 MyISAM 으로 설정 가능합니다.
 // 빈값으로 두면 DB 버전이나 호스팅사 정책의 기본값에 따라 설정됩니다.
-define('G5_DB_ENGINE', '');
+define('G5_DB_ENGINE', 'InnoDB');
 
 // Set Database table default Charset
 // utf8, utf8mb4 등 지정 가능 기본값은 utf8, 설치전에 utf8mb4 으로 수정 시 모든 테이블에 이모지 입력이 가능합니다.
 // utf8mb4 인코딩은 MySQL 또는 MariaDB 5.5 버전 이상을 요구합니다.
-define('G5_DB_CHARSET', 'utf8');
+define('G5_DB_CHARSET', 'utf8mb4');
 
 /*
 www.sir.kr 과 sir.kr 도메인은 서로 다른 도메인으로 인식합니다. 쿠키를 공유하려면 .sir.kr 과 같이 입력하세요.
@@ -51,6 +51,7 @@ define('G5_DBCONFIG_FILE',  'dbconfig.php');
 
 // 기본 언어
 define('G5_DEFAULT_LANGUAGE', 'ko-KR');
+
 // 기본 채널
 define('G5_DEFAULT_CHANNEL',  'moneto');
 
@@ -84,6 +85,7 @@ define('G5_CONTENT_DIR',    'content');
 
 define('G5_LOCALE_DIR',     'locale');
 define('G5_LANG_DIR',       'lang');
+define('G5_CHANNEL_DIR',    'channel');
 
 // URL 은 브라우저상에서의 경로 (도메인으로 부터)
 if (G5_DOMAIN) {
@@ -118,6 +120,8 @@ define('G5_SNS_URL',        G5_PLUGIN_URL.'/'.G5_SNS_DIR);
 define('G5_SYNDI_URL',      G5_PLUGIN_URL.'/'.G5_SYNDI_DIR);
 define('G5_MOBILE_URL',     G5_URL.'/'.G5_MOBILE_DIR);
 
+define('G5_CHANNEL_URL',    G5_URL.'/'.G5_CHANNEL_DIR);
+
 // PATH 는 서버상에서의 절대경로
 define('G5_ADMIN_PATH',     G5_PATH.'/'.G5_ADMIN_DIR);
 define('G5_BBS_PATH',       G5_PATH.'/'.G5_BBS_DIR);
@@ -141,6 +145,7 @@ define('G5_PHPMAILER_PATH', G5_PLUGIN_PATH.'/'.G5_PHPMAILER_DIR);
 
 define('G5_LOCALE_PATH',    G5_PATH.'/'.G5_LOCALE_DIR);
 define('G5_LANG_PATH',      G5_LOCALE_PATH.'/'.G5_LANG_DIR);
+define('G5_CHANNEL_PATH',   G5_CHANEL_PATH.'/'.G5_CHANNEL_DIR);
 //==============================================================================
 
 

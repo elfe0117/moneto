@@ -26,8 +26,10 @@ if ($w == 'u') {
     $cg = sql_fetch($sql);
 
     $sql = "SELECT COUNT(*) AS cnt
-        FROM {$g5['channel_group_table']}
-        WHERE cg_id = '{$cg_id}' ";
+        FROM {$g5['channel_table']}
+        WHERE cg_id = '{$cg_id}'
+            AND cn_use = '1' ";
+    $row = sql_fetch($sql);
     $channel_total_count = $row['cnt'];
 } else {
     $html_title .= ' 입력';

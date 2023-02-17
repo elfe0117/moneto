@@ -2,7 +2,7 @@
 $sub_menu = '100610';
 require_once './_common.php';
 
-$cn_id = isset($_POST['cn_id']) ? trim($_POST['cn_id']) : '';
+$cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';
 
 if ($w == "u" || $w == "d") {
     check_demo();
@@ -108,16 +108,7 @@ if ($w == '') {
             cf_privacy = '해당 홈페이지에 맞는 개인정보처리방침을 입력합니다.' ";
     sql_query($sql);
 
-    // 개별 채널 디렉토리 생성
-    @mkdir(G5_DATA_PATH, G5_DIR_PERMISSION);
-    @chmod(G5_DATA_PATH, G5_DIR_PERMISSION);
-
-    // 개별 채널 유형별 디렉토리 생성
-    $array_data_sub_dir = array ('cache','editor','file','log','member','member_image','session','content','faq','tmp','banner','common','event','item');
-    for($i = 0; $i < count($array_data_sub_dir); $i++) {
-        @mkdir(G5_DATA_PATH.'/'.$array_data_sub_dir[$i], G5_DIR_PERMISSION);
-        @chmod(G5_DATA_PATH.'/'.$array_data_sub_dir[$i], G5_DIR_PERMISSION);
-    }
+    crt_channel($cn_id);
 } else if ($w == 'u') {
     $sql = "UPDATE {$g5['channel_table']}
         SET {$sql_common}

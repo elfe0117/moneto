@@ -8,22 +8,11 @@ if ($is_admin != 'super') {
     alert('최고관리자만 접근 가능합니다.');
 }
 
-// 채널 ID
-$cn_id = isset($_GET['cn_id']) ? trim($_GET['cn_id']) : '';
-
 // 채널그룹 목록 정보
-$array_cg = array();
-$sql = "SELECT *
-    FROM {$g5['channel_group_table']}
-    WHERE cg_use = '1'
-    ORDER BY cg_name ASC ";
-$result = sql_query($sql);
-if ($result) {
-    while($row = sql_fetch_array($result)) {
-        array_push($array_cg, $row);
-    }
-    unset($result);
-}
+$cg_list = get_channelgroup_list();
+
+// 채널 ID
+$cn_id = isset($_GET['cn_id']) && !is_array($_GET['cn_id']) && $_GET['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_GET['cn_id'])) : '';
 
 $html_title = '채널관리';
 
@@ -32,13 +21,10 @@ $cf = array();
 if ($w == 'u') {
     $html_title .= ' 수정';
 
-    // 해당 채널정보 가져오기
-    $sql = "SELECT *
-        FROM {$g5['channel_table']}
-        WHERE cn_id = '{$cn_id}'
-        LIMIT 0, 1 ";
-    $cn = sql_fetch($sql);
+    // 채널 정보 구하기
+    $cn = get_channel($cn_id);
 
+    // 기본환경설정 정보 구하기
     $cf = get_config(true, $cn_id);
 } else {
     $html_title .= ' 입력';
@@ -75,8 +61,8 @@ require_once './admin.head.php';
                     <td>
                         <select id="cg_id" name="cg_id" required>
                             <?php
-                            foreach($array_cg as $row_cg) {
-                                echo(option_selected($row_cg['cg_id'], $cn['cg_id'], $row_cg['cg_name']));
+                            foreach($cg_list as $cg_row) {
+                                echo(option_selected($cg_row['cg_id'], $cn['cg_id'], $cg_row['cg_name']));
                             }
                             ?>
                         </select>

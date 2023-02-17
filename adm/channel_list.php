@@ -7,18 +7,7 @@ if ($is_admin != 'super') {
 }
 
 // 채널그룹 목록 정보
-$array_cg = array();
-$sql = "SELECT *
-    FROM {$g5['channel_group_table']}
-    WHERE cg_use = '1'
-    ORDER BY cg_name ASC ";
-$result = sql_query($sql);
-if ($result) {
-    while($row = sql_fetch_array($result)) {
-        array_push($array_cg, $row);
-    }
-    unset($result);
-}
+$cg_list = get_channelgroup_list();
 
 // 채널 정보
 $sql_common = " FROM {$g5['channel_table']} ";
@@ -66,15 +55,15 @@ $colspan = 6;
             <caption><?php echo $g5['title']; ?> 목록</caption>
             <thead>
                 <tr>
-                    <th scope="col" id="cn_list_chk">
+                    <th scope="col">
                         <label for="chkall" class="sound_only">전체</label>
                         <input type="checkbox" name="chkall" value="1" id="chkall" onclick="check_all(this.form)">
                     </th>
-                    <th scope="col" id="cn_list_id">채널 ID</th>
-                    <th scope="col" id="cn_list_name">채널명</th>
-                    <th scope="col" id="cg_list_id">그룹</th>
-                    <th scope="col" id="cn_list_use">사용여부</th>
-                    <th scope="col" id="cn_list_mng">관리</th>
+                    <th scope="col">채널 ID</th>
+                    <th scope="col">채널명</th>
+                    <th scope="col">그룹</th>
+                    <th scope="col">사용여부</th>
+                    <th scope="col">관리</th>
                 </tr>
             </thead>
             <tbody>
@@ -83,24 +72,24 @@ $colspan = 6;
                     $bg = 'bg' . ($i % 2);
                 ?>
                     <tr class="<?php echo $bg; ?>">
-                        <td headers="cn_list_chk" class="td_chk">
+                        <td class="td_chk">
                             <input type="hidden" name="cn_id[<?php echo $i ?>]" value="<?php echo $row['cn_id'] ?>" id="cn_id_<?php echo $i ?>">
                             <label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo get_text($row['cn_name']); ?></label>
                             <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i ?>">
                         </td>
-                        <td headers="cn_list_id" class="td_id"><?php echo(get_text($row['cn_id'])); ?></td>
-                        <td headers="cn_list_name" class="td_left"><input type="text" id="cn_name[<?php echo($i); ?>]" name="cn_name[<?php echo($i); ?>]" value="<?php echo(get_text($row['cn_name'])); ?>" class="tbl_input"></td>
-                        <td headers="cg_list_id">
+                        <td class="td_id"><?php echo(get_text($row['cn_id'])); ?></td>
+                        <td class="td_left"><input type="text" id="cn_name[<?php echo($i); ?>]" name="cn_name[<?php echo($i); ?>]" value="<?php echo(get_text($row['cn_name'])); ?>" class="tbl_input"></td>
+                        <td>
                             <select id="cg_id[<?php echo($i); ?>]" name="cg_id[<?php echo($i); ?>]">
                                 <?php
-                                foreach($array_cg as $row_cg) {
-                                    echo(option_selected($row_cg['cg_id'], $row['cg_id'], $row_cg['cg_name']));
+                                foreach($cg_list as $cg_row) {
+                                    echo(option_selected($cg_row['cg_id'], $row['cg_id'], $cg_row['cg_name']));
                                 }
                                 ?>
                             </select>
                         </td>
-                        <td headers="cn_list_use"><?php echo($row['cn_use'] ? '사용함' : '사용안함'); ?></td>
-                        <td headers="cn_list_mng" class="td_mng">
+                        <td><?php echo($row['cn_use'] ? '사용함' : '사용안함'); ?></td>
+                        <td class="td_mng">
                             <a href="./channel_form.php?<?php echo($qstr); ?>&amp;w=u&amp;cn_id=<?php echo($row['cn_id']); ?>" class="btn btn_03">수정</a>
                         </td>
                     </tr>

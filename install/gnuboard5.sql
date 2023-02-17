@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `g5_channel` (
   `cn_name` varchar(255) NOT NULL default '' COMMENT '채널 명',
   `cn_datetime` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '채널 등록일시',
   PRIMARY KEY  (`cn_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `g5_channel_group` (
   `cg_admin` varchar(20) NOT NULL default '' COMMENT '채널그룹 관리자',
   `cg_datetime` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '채널그룹 등록일시',
   PRIMARY KEY  (`cg_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `g5_channel_host` (
   `ch_datetime` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '채널호스트 등록일시',
   PRIMARY KEY  (`ch_host`),
   KEY `cn_id` (`cn_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `g5_auth` (
   `au_auth` set('r','w','d') NOT NULL default '',
   PRIMARY KEY  (`cn_id`, `mb_id`,`au_menu`),
   KEY `cn_id` (`cn_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `g5_board` (
   `bo_10` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`bo_id`),
   UNIQUE KEY `fkey1` (`cn_id`, `bo_table`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -194,7 +194,7 @@ CREATE TABLE IF NOT EXISTS `g5_board_file` (
   `bf_type` tinyint NOT NULL DEFAULT '0',
   `bf_datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY  (`cn_id`,`bo_table`,`wr_id`,`bf_no`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -213,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `g5_board_good` (
   `bg_datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`bg_id`),
   UNIQUE KEY `fkey1` (`cn_id`,`bo_table`,`wr_id`,`mb_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -233,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `g5_board_new` (
   PRIMARY KEY  (`bn_id`),
   KEY `cn_id` (`cn_id`),
   KEY `mb_id` (`mb_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -403,7 +403,7 @@ CREATE TABLE IF NOT EXISTS `g5_config` (
   `cf_10` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY  (`cf_id`),
   UNIQUE KEY `cn_id` (`cn_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -481,7 +481,7 @@ CREATE TABLE IF NOT EXISTS `g5_group` (
   `gr_10` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`gr_no`),
   UNIQUE KEY `fkey1` (`cn_id`,`gr_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -500,7 +500,7 @@ CREATE TABLE IF NOT EXISTS `g5_group_member` (
   KEY `cn_id` (`cn_id`),
   KEY `gr_id` (`gr_id`),
   KEY `mb_id` (`mb_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -642,7 +642,7 @@ CREATE TABLE IF NOT EXISTS `g5_menu` (
   `me_mobile_use` tinyint(4) NOT NULL DEFAULT '0' COMMENT '메뉴 사용여부(MOBILE)',
   PRIMARY KEY (`me_id`),
   KEY `cn_id` (`cn_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -757,7 +757,7 @@ CREATE TABLE IF NOT EXISTS `g5_scrap` (
   PRIMARY KEY  (`ms_id`),
   KEY `cn_id` (`cn_id`),
   KEY `mb_id` (`mb_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -937,7 +937,7 @@ CREATE TABLE IF NOT EXISTS `g5_content` (
   PRIMARY KEY  (`co_no`),
   UNIQUE KEY `fkey1` (`cn_id`,`co_id`),
   KEY `co_seo_title` (`co_seo_title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 

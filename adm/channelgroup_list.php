@@ -51,14 +51,14 @@ $colspan = 5;
             <caption><?php echo $g5['title']; ?> 목록</caption>
             <thead>
                 <tr>
-                    <th scope="col" id="cg_list_chk">
+                    <th scope="col">
                         <label for="chkall" class="sound_only">전체</label>
                         <input type="checkbox" name="chkall" value="1" id="chkall" onclick="check_all(this.form)">
                     </th>
-                    <th scope="col" id="cg_list_name">채널그룹 명</th>
-                    <th scope="col" id="cg_list_admin">관리자</th>
-                    <th scope="col" id="cg_list_use">사용여부</th>
-                    <th scope="col" id="cg_list_mng">관리</th>
+                    <th scope="col">채널그룹 명</th>
+                    <th scope="col">관리자</th>
+                    <th scope="col">사용여부</th>
+                    <th scope="col">관리</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,15 +67,15 @@ $colspan = 5;
                     $bg = 'bg' . ($i % 2);
                 ?>
                     <tr class="<?php echo $bg; ?>">
-                        <td headers="cg_list_chk" class="td_chk">
+                        <td class="td_chk">
                             <input type="hidden" name="cg_id[<?php echo $i ?>]" value="<?php echo $row['cg_id'] ?>" id="cg_id_<?php echo $i ?>">
                             <label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo get_text($row['cg_name']); ?></label>
                             <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i ?>">
                         </td>
-                        <td headers="cg_list_name" class="td_left"><input type="text" id="cg_name[<?php echo($i); ?>]" name="cg_name[<?php echo($i); ?>]" value="<?php echo(get_text($row['cg_name'])); ?>" class="tbl_input"></td>
-                        <td headers="cg_list_admin" class="td_left"><?php echo(get_text($row['cg_admin'])); ?></td>
-                        <td headers="cg_list_use"><?php echo($row['cg_use'] ? '사용함' : '사용안함'); ?></td>
-                        <td headers="cg_list_mng" class="td_mng">
+                        <td class="td_left"><input type="text" id="cg_name[<?php echo($i); ?>]" name="cg_name[<?php echo($i); ?>]" value="<?php echo(get_text($row['cg_name'])); ?>" class="tbl_input"></td>
+                        <td class="td_left"><?php echo(get_text($row['cg_admin'])); ?></td>
+                        <td><?php echo($row['cg_use'] ? '사용함' : '사용안함'); ?></td>
+                        <td class="td_mng">
                             <a href="./channelgroup_form.php?<?php echo($qstr); ?>&amp;w=u&amp;cg_id=<?php echo($row['cg_id']); ?>" class="btn btn_03">수정</a>
                         </td>
                     </tr>
