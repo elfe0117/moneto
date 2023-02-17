@@ -54,7 +54,8 @@ function get_channel_data_url($cid, $is_channel=true) {
 // 채널 생성
 function crt_channel($cid) {
     // 채널 디렉토리 생성
-    $channel_path = G5_CHANNEL_PATH.'/'.$cid
+    $channel_path = G5_CHANNEL_PATH.'/'.$cid;
+
     @mkdir($channel_path, G5_DIR_PERMISSION);
     @chmod($channel_path, G5_DIR_PERMISSION);
 
@@ -80,6 +81,10 @@ function del_channel($cid) {
         SET cn_use = 0
         WHERE cn_id = '{$cid}' ";
     sql_query($sql);
+
+    // 폴더 전체 삭제
+    $channel_path = G5_CHANNEL_PATH.'/'.$cid;
+    //rm_rf($channel_path);
 }
 
 // 채널그룹 구하기

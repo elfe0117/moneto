@@ -145,7 +145,7 @@ define('G5_PHPMAILER_PATH', G5_PLUGIN_PATH.'/'.G5_PHPMAILER_DIR);
 
 define('G5_LOCALE_PATH',    G5_PATH.'/'.G5_LOCALE_DIR);
 define('G5_LANG_PATH',      G5_LOCALE_PATH.'/'.G5_LANG_DIR);
-define('G5_CHANNEL_PATH',   G5_CHANEL_PATH.'/'.G5_CHANNEL_DIR);
+define('G5_CHANNEL_PATH',   G5_PATH.'/'.G5_CHANNEL_DIR);
 //==============================================================================
 
 

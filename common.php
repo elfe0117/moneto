@@ -423,8 +423,8 @@ set_session('ss_cid', $channel['cn_id']);
 //if ($channel['cn_id'] == G5_DEFAULT_CHANNEL) {
 //} else {
 //}
-define('G5_DATA_URL', G5_URL.'/channel/'.$channel['cn_id'].'/data');
-define('G5_DATA_PATH', G5_PATH.'/channel/'.$channel['cn_id'].'/data');
+@define('G5_DATA_URL', G5_URL.'/channel/'.$channel['cn_id'].'/data');
+@define('G5_DATA_PATH', G5_PATH.'/channel/'.$channel['cn_id'].'/data');
 
 //==============================================================================
 // 공용 변수

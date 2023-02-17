@@ -122,11 +122,7 @@ if ($w == '') {
         WHERE cn_id = '{$cn_id}' ";
     sql_query($sql);
 } else if ($w == 'd') {
-    $sql = "DELETE FROM {$g5['channel_table']} WHERE cn_id = '{$cn_id}' ";
-    sql_query($sql);
-
-    // 폴더 전체 삭제
-    rm_rf(G5_DATA_PATH.'/'.$cn_id);
+    del_channel($cn['cn_id']);
 }
 
 if ($w == 'd') {

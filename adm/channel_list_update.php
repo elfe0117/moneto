@@ -48,11 +48,7 @@ if ($_POST['act_button'] == "선택수정") {
         if (!$cn['cn_id']) {
             $msg .= $cn['cn_id'] . ' : 자료가 존재하지 않습니다.\\n';
         } else {
-            // 자료 삭제
-            $sql = " UPDATE {$g5['channel_table']}
-                SET cn_use = 0
-                WHERE cn_id = '{$cn['cn_id']}' ";
-            sql_query($sql);
+            del_channel($cn['cn_id']);
         }
     }
 }
