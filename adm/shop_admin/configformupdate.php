@@ -480,7 +480,7 @@ sql_query($sql);
 run_event('shop_admin_configformupdate');
 
 if( $warning_msg ){
-    alert($warning_msg, "./configform.php");
+    alert($warning_msg, "./configform.php?w=u&amp;de_id={$de_id}");
 } else {
-    goto_url("./configform.php");
+    goto_url("./configform.php?w=u&amp;de_id={$de_id}");
 }
