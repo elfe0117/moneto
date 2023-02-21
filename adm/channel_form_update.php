@@ -41,7 +41,7 @@ if ($w == '') {
 
     sql_channel_config_insert($cn_id, $cn_name, $cf_admin, $cf_admin_email);
 
-    crt_channel($cn_id);
+    crt_channel_directory($cn_id);
 } else if ($w == 'u') {
     $sql = "UPDATE {$g5['channel_table']}
         SET {$sql_common}
