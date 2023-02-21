@@ -35,7 +35,6 @@ if ($page < 1) {
 }
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
-
 $sql = " SELECT *
     {$sql_common}
     {$sql_search}
