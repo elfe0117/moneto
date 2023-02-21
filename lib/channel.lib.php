@@ -284,7 +284,7 @@ function sql_channel_config_insert($cid, $cf_title, $cf_admin, $cf_admin_email) 
 
     // 쇼핑몰설정 등록
     $sql = " INSERT INTO `g5_shop_default`
-        SET `cn_id` = 'moneto',
+        SET `cn_id` = '{$cid}',
             `de_admin_company_owner` = '대표자명',
             `de_admin_company_name` = '회사명',
             `de_admin_company_saupja_no` = '123-45-67890',
