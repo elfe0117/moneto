@@ -8,6 +8,19 @@ auth_check_menu($auth, $sub_menu, "w");
 
 check_admin_token();
 
+$de_id = (isset($_POST['de_id']) && $_POST['de_id']) ? (int)$_POST['de_id'] : 0; // 쇼핑몰설정 ID
+$cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : ''; // 채널 ID
+$sql = "SELECT *
+    FROM {$g5['g5_shop_default_table']}
+    WHERE de_id = '{$de_id}'
+        AND cn_id = '{$cn_id}'
+    LIMIT 0, 1 ";
+$de = sql_fetch($sql);
+if (!(isset($de['cn_id']) && $de['cn_id'])) {
+    alert('올바른 접근이 아닙니다.');
+}
+
+
 // 대표전화번호 유효성 체크
 if(! (isset($_POST['de_admin_company_tel']) && check_vaild_callback($_POST['de_admin_company_tel'])) )
     alert('대표전화번호를 올바르게 입력해 주세요.');
@@ -444,10 +457,11 @@ if (defined('G5_SHOP_DIRECT_NAVERPAY') && G5_SHOP_DIRECT_NAVERPAY) {
                 de_naverpay_mb_id             = '{$de_naverpay_mb_id}',
                 de_naverpay_sendcost          = '{$de_naverpay_sendcost}' ";
 }
+    $sql .= " WHERE cn_id = '{$de['cn_id']}' ";
 sql_query($sql);
 
 // 환경설정 > 포인트 사용
-sql_query(" update {$g5['config_table']} set cf_use_point = '{$cf_use_point}' ");
+sql_query(" update {$g5['config_table']} set cf_use_point = '{$cf_use_point}' WHERE cn_id = '{$de['cn_id']}' ");
 
 // LG, 아이코드 설정
 $sql = " update {$g5['config_table']}
@@ -459,7 +473,8 @@ $sql = " update {$g5['config_table']}
                 cf_icode_server_port    = '{$_POST['cf_icode_server_port']}',
                 cf_icode_token_key      = '{$cf_icode_token_key}',
                 cf_lg_mid               = '{$cf_lg_mid}',
-                cf_lg_mert_key          = '{$cf_lg_mert_key}' ";
+                cf_lg_mert_key          = '{$cf_lg_mert_key}'
+            WHERE cn_id = '{$de['cn_id']}' ";
 sql_query($sql);
 
 run_event('shop_admin_configformupdate');
