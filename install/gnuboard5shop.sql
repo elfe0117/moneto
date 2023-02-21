@@ -212,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `g5_shop_coupon_zone` (
 
 DROP TABLE IF EXISTS `g5_shop_default`;
 CREATE TABLE IF NOT EXISTS `g5_shop_default` (
-  `de_id` int NOT NULL AUTO_INCREMENT COMMENT '쇼핑몰설정 ID',
+  `de_id` int NOT NULL  AUTO_INCREMENT COMMENT '쇼핑몰설정 ID',
   `cn_id` varchar(20) NOT NULL DEFAULT '' COMMENT '채널 ID',
   `de_admin_company_owner` varchar(255) NOT NULL DEFAULT '',
   `de_admin_company_name` varchar(255) NOT NULL DEFAULT '',
