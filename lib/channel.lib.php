@@ -51,8 +51,8 @@ function get_channel_data_url($cid, $is_channel=true) {
     return $data_url;
 }
 
-// 채널 생성
-function crt_channel($cid) {
+// 채널 디렉토리 생성
+function crt_channel_directory($cid) {
     // 채널 디렉토리 생성
     $channel_path = G5_CHANNEL_PATH.'/'.$cid;
 
