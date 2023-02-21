@@ -76,6 +76,8 @@ $result = sql_query($sql);
 $qstr  = $qstr.'&amp;sca='.$sca.'&amp;page='.$page.'&amp;save_stx='.$stx;
 
 $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목록</a>';
+
+$colspan = 13;
 ?>
 
 <div class="local_ov01 local_ov">
@@ -133,6 +135,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
             <label for="chkall" class="sound_only">상품 전체</label>
             <input type="checkbox" name="chkall" value="1" id="chkall" onclick="check_all(this.form)">
         </th>
+        <th scope="col" rowspan="3"><?php echo subject_sort_link('cn_id', 'sca='.$sca); ?>채널</a></th>
         <th scope="col" rowspan="3"><?php echo subject_sort_link('it_id', 'sca='.$sca); ?>상품코드</a></th>
         <th scope="col" colspan="5">분류</th>
         <th scope="col" rowspan="3"><?php echo subject_sort_link('it_order', 'sca='.$sca); ?>순서</a></th>
@@ -169,6 +172,10 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
         <td rowspan="3" class="td_chk">
             <label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo get_text($row['it_name']); ?></label>
             <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i; ?>">
+        </td>
+        <td rowspan="3" class="td_num">
+            <input type="hidden" name="cn_id[<?php echo($i); ?>]" value="<?php echo($row['cn_id']); ?>">
+            <?php echo($row['cn_id']); ?>
         </td>
         <td rowspan="3" class="td_num">
             <input type="hidden" name="it_id[<?php echo $i; ?>]" value="<?php echo $row['it_id']; ?>">
@@ -240,7 +247,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
     <?php
     }
     if ($i == 0)
-        echo '<tr><td colspan="12" class="empty_table">자료가 한건도 없습니다.</td></tr>';
+        echo '<tr><td colspan="'.$colspan.'" class="empty_table">자료가 한건도 없습니다.</td></tr>';
     ?>
     </tbody>
     </table>
