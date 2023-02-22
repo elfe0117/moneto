@@ -47,6 +47,7 @@ function g5_path()
     if(isset($_SERVER['HTTP_HOST']) && preg_match('/:[0-9]+$/', $host)) 
         $host = preg_replace('/:[0-9]+$/', '', $host); 
     $host = preg_replace("/[\<\>\'\"\\\'\\\"\%\=\(\)\/\^\*]/", '', $host); 
+    $result['host'] = $host;
     $result['url'] = $http.$host.$port.$user.$root; 
     return $result;
 }

@@ -26,6 +26,8 @@ date_default_timezone_set("Asia/Seoul");
 define('G5_DOMAIN', '');
 define('G5_HTTPS_DOMAIN', '');
 
+define('G5_HOST', $g5_path['host']);
+
 // 그누보드 디버그바 설정입니다, 실제 서버운영시 false 로 설정해 주세요.
 define('G5_DEBUG', false);
 define('G5_COLLECT_QUERY', false);
