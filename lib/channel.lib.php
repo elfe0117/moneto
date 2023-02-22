@@ -21,7 +21,8 @@ function get_channel_id_session() {
 function get_channel_id() {
     $cid = get_channel_id_parameter();
     $cid = $cid ? $cid : get_channel_id_session();
-    return $cid ? $cid : G5_DEFAULT_CHANNEL;
+    //return $cid ? $cid : G5_DEFAULT_CHANNEL;
+    return $cid;
 }
 
 // 채널 구하기
@@ -30,8 +31,21 @@ function get_channel($cid='') {
 
     if (!$cid) {
         $cid = get_channel_id();
-    }
 
+        if (!$cid) {
+            $sql = "SELECT *
+                FROM {$g5['channel_host_table']}
+                WHERE ch_host = '".G5_HOST."'
+                LIMIT 0, 1 ";
+            $row = sql_fetch($sql);
+            if (isset($row['cn_id']) && $row['cn_id']) {
+                $cid = $row['cn_id'];
+            } else {
+                $cid = G5_DEFAULT_CHANNEL;
+            }
+        }
+    }
+    
     $sql = "SELECT *
         FROM {$g5['channel_table']}
         WHERE cn_id = '{$cid}'
