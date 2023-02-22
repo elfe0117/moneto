@@ -102,6 +102,7 @@ $g5['title'] = $html_title;
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 
 $pg_anchor ='<ul class="anchor">
+<li><a href="#anc_cn_info">채널정보</a></li>
 <li><a href="#anc_scatefrm_basic">필수입력</a></li>
 <li><a href="#anc_scatefrm_optional">선택입력</a></li>
 <li><a href="#anc_scatefrm_extra">여분필드</a></li>';
@@ -163,6 +164,34 @@ else {
 <input type="hidden" name="stx" value="<?php echo $stx; ?>">
 <input type="hidden" name="page" value="<?php echo $page; ?>">
 <input type="hidden" name="ca_explan_html" value="<?php echo $ca['ca_explan_html']; ?>">
+
+<section id="anc_cn_info">
+    <h2 class="h2_frm">채널정보</h2>
+    <?php echo $pg_anchor; ?>
+
+    <div class="tbl_frm01 tbl_wrap">
+        <table>
+        <caption>분류 추가 필수입력</caption>
+        <colgroup>
+            <col class="grid_4">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <th scope="row"><label for="cn_id">채널 ID</label></th>
+            <td>
+                <?php if ($w == '') { ?>
+                <input type="text" name="cn_id" id="cn_id" value="<?php echo($ca['cn_id']); ?>" required class="required frm_input">
+                <?php } else { ?>
+                    <input type="hidden" name="cn_id" id="cn_id" value="<?php echo($ca['cn_id']); ?>">
+                    <?php echo($ca['cn_id']); ?>
+                <?php } ?>
+            </td>
+        </tr>
+        </tbody>
+        </table>
+    </div>
+</sction>
 
 <section id="anc_scatefrm_basic">
     <h2 class="h2_frm">필수입력</h2>

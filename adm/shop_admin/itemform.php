@@ -179,6 +179,7 @@ if(!sql_query(" select ec_mall_pid from {$g5['g5_shop_item_table']} limit 1 ", f
 }
 
 $pg_anchor ='<ul class="anchor">
+<li><a href="#anc_cn_info">채널정보</a></li>
 <li><a href="#anc_sitfrm_cate">상품분류</a></li>
 <li><a href="#anc_sitfrm_skin">스킨설정</a></li>
 <li><a href="#anc_sitfrm_ini">기본정보</a></li>
@@ -217,6 +218,26 @@ if(!sql_query(" select it_skin from {$g5['g5_shop_item_table']} limit 1", false)
 <input type="hidden" name="sfl" value="<?php echo $sfl; ?>">
 <input type="hidden" name="stx"  value="<?php echo $stx; ?>">
 <input type="hidden" name="page" value="<?php echo $page; ?>">
+
+<section id="anc_cn_id">
+    <h2 class="h2_frm">채널정보</h2>
+    <?php echo $pg_anchor; ?>
+
+    <div class="tbl_frm01 tbl_wrap">
+        <table>
+        <caption>채널정보 입력</caption>
+        <colgroup>
+            <col class="grid_4">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <th scope="row"><label for="cn_id">채널 ID</label></th>
+            <td></td>
+        </tr>
+        </table>
+    </div>
+</section>
 
 <section id="anc_sitfrm_cate">
     <h2 class="h2_frm">상품분류</h2>
