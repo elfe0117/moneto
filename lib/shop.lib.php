@@ -687,7 +687,7 @@ function it_img_upload($srcfile, $filename, $dir)
 
     upload_file($srcfile, $filename, $dir);
 
-    $file = str_replace(G5_DATA_PATH.'/item/', '', $dir.'/'.$filename);
+    $file = str_replace(G5_STORAGE_PATH.'/item/', '', $dir.'/'.$filename);
 
     return $file;
 }

@@ -13,7 +13,7 @@ if(isset($it['it_id']) && $it['it_id']) {
     $result = sql_query($sql);
     if(sql_num_rows($result))
         $po_run = true;
-} else if(!empty($_POST)) {
+} else if(!empty($_POST) && (isset($_POST['opt1_subject']))) {
     $opt1_subject = isset($_POST['opt1_subject']) ? preg_replace(G5_OPTION_ID_FILTER, '', trim(stripslashes($_POST['opt1_subject']))) : '';
     $opt2_subject = isset($_POST['opt2_subject']) ? preg_replace(G5_OPTION_ID_FILTER, '', trim(stripslashes($_POST['opt2_subject']))) : '';
     $opt3_subject = isset($_POST['opt3_subject']) ? preg_replace(G5_OPTION_ID_FILTER, '', trim(stripslashes($_POST['opt3_subject']))) : '';

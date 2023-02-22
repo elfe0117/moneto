@@ -6,6 +6,8 @@ include_once(G5_LIB_PATH.'/iteminfo.lib.php');
 
 auth_check_menu($auth, $sub_menu, "w");
 
+$cn_id = isset($_REQUEST['cn_id']) && !is_array($_REQUEST['cn_id']) && $_REQUEST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cn_id'])) : '';
+
 $html_title = "상품 ";
 
 $it = array(
@@ -75,6 +77,10 @@ if ($w == "")
 {
     $html_title .= "입력";
 
+    if (!$cn_id) {
+        alert("잘못된 접근입니다.");
+    }
+
     // 옵션은 쿠키에 저장된 값을 보여줌. 다음 입력을 위한것임
     //$it[ca_id] = _COOKIE[ck_ca_id];
     $it['ca_id'] = get_cookie("ck_ca_id");
@@ -82,7 +88,7 @@ if ($w == "")
     $it['ca_id3'] = get_cookie("ck_ca_id3");
     if (!$it['ca_id'])
     {
-        $sql = " select ca_id from {$g5['g5_shop_category_table']} order by ca_order, ca_id limit 1 ";
+        $sql = " select ca_id from {$g5['g5_shop_category_table']} WHERE cn_id = '{$cn_id}' order by ca_order, ca_id limit 1 ";
         $row = sql_fetch($sql);
         if (! (isset($row['ca_id']) && $row['ca_id']))
             alert("등록된 분류가 없습니다. 우선 분류를 등록하여 주십시오.", './categorylist.php');
@@ -90,6 +96,7 @@ if ($w == "")
     }
     //$it[it_maker]  = stripslashes($_COOKIE[ck_maker]);
     //$it[it_origin] = stripslashes($_COOKIE[ck_origin]);
+    $it['cn_id']  = $cn_id;
     $it['it_maker']  = stripslashes(get_cookie("ck_maker"));
     $it['it_origin'] = stripslashes(get_cookie("ck_origin"));
 }
@@ -102,7 +109,8 @@ else if ($w == "u")
         $sql = " select it_id from {$g5['g5_shop_item_table']} a, {$g5['g5_shop_category_table']} b
                   where a.it_id = '$it_id'
                     and a.ca_id = b.ca_id
-                    and b.ca_mb_id = '{$member['mb_id']}' ";
+                    and b.ca_mb_id = '{$member['mb_id']}'
+                    AND b.cn_id = '{$cn_id}' ";
         $row = sql_fetch($sql);
         if (!$row['it_id'])
             alert("\'{$member['mb_id']}\' 님께서 수정 할 권한이 없는 상품입니다.");
@@ -110,13 +118,15 @@ else if ($w == "u")
 
     $it = get_shop_item($it_id);
 
+    $cn_id = $it['cn_id'];
+
     if(!$it)
         alert('상품정보가 존재하지 않습니다.');
 
     if (! (isset($ca_id) && $ca_id))
         $ca_id = $it['ca_id'];
 
-    $sql = " select * from {$g5['g5_shop_category_table']} where ca_id = '$ca_id' ";
+    $sql = " select * from {$g5['g5_shop_category_table']} where cn_id = '{$cn_id}' AND ca_id = '$ca_id' ";
     $ca = sql_fetch($sql);
 }
 else
@@ -132,9 +142,9 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
 // 분류리스트
 $category_select = '';
 $script = '';
-$sql = " select * from {$g5['g5_shop_category_table']} ";
+$sql = " select * from {$g5['g5_shop_category_table']} WHERE cn_id = '{$cn_id}' ";
 if ($is_admin != 'super')
-    $sql .= " where ca_mb_id = '{$member['mb_id']}' ";
+    $sql .= " AND ca_mb_id = '{$member['mb_id']}' ";
 $sql .= " order by ca_order, ca_id ";
 $result = sql_query($sql);
 for ($i=0; $row=sql_fetch_array($result); $i++)
@@ -233,7 +243,10 @@ if(!sql_query(" select it_skin from {$g5['g5_shop_item_table']} limit 1", false)
         <tbody>
         <tr>
             <th scope="row"><label for="cn_id">채널 ID</label></th>
-            <td></td>
+            <td>
+                <input type="hidden" name="cn_id" id="cn_id" value="<?php echo($it['cn_id']); ?>">
+                <?php echo($it['cn_id']); ?>
+            </td>
         </tr>
         </table>
     </div>
@@ -1353,12 +1366,13 @@ $(function(){
             <td>
                 <input type="file" name="it_img<?php echo $i; ?>" id="it_img<?php echo $i; ?>">
                 <?php
-                $it_img = G5_DATA_PATH.'/item/'.$it['it_img'.$i];
+                $it_img = get_channel_data_path($cn_id).'/item/'.$it['it_img'.$i];
+                
                 $it_img_exists = run_replace('shop_item_image_exists', (is_file($it_img) && file_exists($it_img)), $it, $i);
 
                 if($it_img_exists) {
                     $thumb = get_it_thumbnail($it['it_img'.$i], 25, 25);
-                    $img_tag = run_replace('shop_item_image_tag', '<img src="'.G5_DATA_URL.'/item/'.$it['it_img'.$i].'" class="shop_item_preview_image" >', $it, $i);
+                    $img_tag = run_replace('shop_item_image_tag', '<img src="'.get_channel_data_url($cn_id).'/item/'.$it['it_img'.$i].'" class="shop_item_preview_image" >', $it, $i);
                 ?>
                 <label for="it_img<?php echo $i; ?>_del"><span class="sound_only">이미지 <?php echo $i; ?> </span>파일삭제</label>
                 <input type="checkbox" name="it_img<?php echo $i; ?>_del" id="it_img<?php echo $i; ?>_del" value="1">

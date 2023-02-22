@@ -12,11 +12,17 @@ else if ($w == 'd')
 
 check_admin_token();
 
-@mkdir(G5_DATA_PATH."/item", G5_DIR_PERMISSION);
-@chmod(G5_DATA_PATH."/item", G5_DIR_PERMISSION);
+@mkdir(G5_STORAGE_PATH."/item", G5_DIR_PERMISSION);
+@chmod(G5_STORAGE_PATH."/item", G5_DIR_PERMISSION);
 
 // input vars 체크
 check_input_vars();
+
+$cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';
+$cn = get_channel($cn_id);
+if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
+    alert('정확한 채널ID를 입력하세요.');
+}
 
 $ca_id = isset($_POST['ca_id']) ? preg_replace('/[^0-9a-z]/i', '', $_POST['ca_id']) : '';
 $ca_id2 = isset($_POST['ca_id2']) ? preg_replace('/[^0-9a-z]/i', '', $_POST['ca_id2']) : '';
@@ -24,7 +30,7 @@ $ca_id3 = isset($_POST['ca_id3']) ? preg_replace('/[^0-9a-z]/i', '', $_POST['ca_
 
 if ($is_admin != 'super') {     // 최고관리자가 아니면 체크
     if( $w === '' ){
-        $sql = "select ca_mb_id from {$g5['g5_shop_category_table']} where ca_id = '$ca_id'";
+        $sql = "select ca_mb_id from {$g5['g5_shop_category_table']} where cn_id = '{$cn_id}' AND ca_id = '$ca_id'";
     } else {
         $sql = "select b.ca_mb_id from {$g5['g5_shop_item_table']} a , {$g5['g5_shop_category_table']} b where (a.ca_id = b.ca_id) and a.it_id = '$it_id'";
     }
@@ -55,7 +61,7 @@ if($w == "u") {
     $it_img10   = $file['it_img10'];
 }
 
-$it_img_dir = G5_DATA_PATH.'/item';
+$it_img_dir = G5_STORAGE_PATH.'/item';
 
 for($i=0;$i<=10;$i++){
     ${'it_img'.$i.'_del'} = ! empty($_POST['it_img'.$i.'_del']) ? 1 : 0;
@@ -437,6 +443,7 @@ if ($w == "")
     $sql_common .= " , it_update_time = '".G5_TIME_YMDHIS."' ";
     $sql = " insert {$g5['g5_shop_item_table']}
                 set it_id = '$it_id',
+                    cn_id = '{$cn_id}',
 					$sql_common	";
     sql_query($sql);
 }
@@ -628,7 +635,7 @@ if(is_checked('chk_all_9'))                      $all_fields .= " , it_9_subj = 
 if(is_checked('chk_all_10'))                     $all_fields .= " , it_10_subj = '$it_10_subj', it_10 = '$it_10' ";
 
 if($all_fields) {
-    sql_query(" update {$g5['g5_shop_item_table']} set it_name = it_name {$all_fields} ");
+    sql_query(" update {$g5['g5_shop_item_table']} set it_name = it_name {$all_fields} WHERE cn_id = '{$cn_id}' ");
 }
 
 $is_seo_title_edit = $w ? true : false;
@@ -636,7 +643,7 @@ if( function_exists('shop_seo_title_update') ) shop_seo_title_update($it_id, $is
 
 run_event('shop_admin_itemformupdate', $it_id, $w);
 
-$qstr = "$qstr&amp;sca=$sca&amp;page=$page";
+$qstr = "$qstr&amp;sca=$sca&amp;page=$page&amp;cn_id={$cn_id}";
 
 if ($w == "u") {
     goto_url("./itemform.php?w=u&amp;it_id=$it_id&amp;$qstr");

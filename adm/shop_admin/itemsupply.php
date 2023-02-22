@@ -9,7 +9,7 @@ if(isset($it['it_id']) && $it['it_id']) {
     $result = sql_query($sql);
     if(sql_num_rows($result))
         $ps_run = true;
-} else if(!empty($_POST)) {
+} else if(!empty($_POST) && (isset($_POST['subject']))) {
     $subject_count = (isset($_POST['subject']) && is_array($_POST['subject'])) ? count($_POST['subject']) : 0;
     $supply_count = (isset($_POST['supply']) && is_array($_POST['supply'])) ? count($_POST['supply']) : 0;
 

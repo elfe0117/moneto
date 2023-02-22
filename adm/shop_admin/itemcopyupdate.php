@@ -140,14 +140,14 @@ function copy_directory($src_dir, $dest_dir)
 }
 
 // 파일복사
-$dest_path = G5_DATA_PATH.'/item/'.$new_it_id;
+$dest_path = G5_STORAGE_PATH.'/item/'.$new_it_id;
 @mkdir($dest_path, G5_DIR_PERMISSION);
 @chmod($dest_path, G5_DIR_PERMISSION);
 $comma = '';
 $sql_img = '';
 
 for($i=1; $i<=10; $i++) {
-    $file = G5_DATA_PATH.'/item/'.$cp['it_img'.$i];
+    $file = G5_STORAGE_PATH.'/item/'.$cp['it_img'.$i];
     $new_img = '';
 
     if(is_file($file)) {

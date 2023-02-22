@@ -65,11 +65,18 @@ function crt_channel_directory($cid) {
     @chmod($channel_data_path, G5_DIR_PERMISSION);
 
     // 채널 데이터 하위 디렉토리 생성
-    $sub_dir = array ('cache','editor','file','log','member','member_image','session','content','faq','tmp','banner','common','event','item');
+    $sub_dir = array ('cache','editor','file','log','member','member_image','content','faq','tmp','banner','common','event');
     foreach($sub_dir as $dir_name) {
         $channel_data_sub_path = $channel_data_path.'/'.$dir_name;
         @mkdir($channel_data_sub_path, G5_DIR_PERMISSION);
         @chmod($channel_data_sub_path, G5_DIR_PERMISSION);
+    }
+
+    // 채널 데이터 하위 링크 생성
+    $sub_ln = array ('session','item');
+    foreach($sub_ln as $ln_name) {
+        $channel_data_sub_path = $channel_data_path.'/'.$ln_name;
+        @symlink(G5_STORAGE_PATH.'/'.$ln_name, $channel_data_sub_path);
     }
 }
 
