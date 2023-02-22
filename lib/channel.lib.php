@@ -1,6 +1,12 @@
 <?php
 if (!defined('_GNUBOARD_')) exit;
 
+// URI to HOST 
+function get_uritohost($url) {
+    preg_match("/^(http|https|ftp|ftps):\/\/?([^\/]+)/i",$url,$matches);
+    return $matches[2];
+}
+
 // 파라메터 채널 구하기
 function get_channel_id_parameter() {
     return isset($_REQUEST['cid']) && !is_array($_REQUEST['cid']) && $_REQUEST['cid'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cid'])) : '';

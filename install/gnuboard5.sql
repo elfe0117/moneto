@@ -36,10 +36,12 @@ CREATE TABLE IF NOT EXISTS `g5_channel_group` (
 
 DROP TABLE IF EXISTS `g5_channel_host`;
 CREATE TABLE IF NOT EXISTS `g5_channel_host` (
+  `ch_id` int(11) NOT NULL auto_increment COMMENT '채널호스트 ID',
   `ch_host` varchar(255) NOT NULL default '' COMMENT '채널 호스트',
   `cn_id` varchar(20) NOT NULL default '' COMMENT '채널 ID',
   `ch_datetime` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '채널호스트 등록일시',
-  PRIMARY KEY  (`ch_host`),
+  PRIMARY KEY  (`ch_id`),
+  UNIQUE KEY `ch_host` (`ch_host`),
   KEY `cn_id` (`cn_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
