@@ -5,6 +5,8 @@ include_once(G5_EDITOR_LIB);
 
 auth_check_menu($auth, $sub_menu, "w");
 
+$cn_id = isset($_REQUEST['cn_id']) && !is_array($_REQUEST['cn_id']) && $_REQUEST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cn_id'])) : '';
+
 $ca_id = isset($_GET['ca_id']) ? preg_replace('/[^0-9a-z]/i', '', $_GET['ca_id']) : '';
 $ca = array(
 'ca_skin_dir'=>'',
@@ -35,6 +37,10 @@ if ($is_admin != 'super')
 
 if ($w == "")
 {
+    if (!$cn_id) {
+        alert("잘못된 접근입니다.");
+    }
+
     if ($is_admin != 'super' && !$ca_id)
         alert("최고관리자만 1단계 분류를 추가할 수 있습니다.");
 
@@ -72,6 +78,7 @@ if ($w == "")
     else // 1단계 분류
     {
         $html_title = "1단계분류추가";
+        $ca['cn_id'] = $cn_id;
         $ca['ca_use'] = 1;
         $ca['ca_explan_html'] = 1;
         $ca['ca_img_width']  = $default['de_simg_width'];
@@ -180,12 +187,8 @@ else {
         <tr>
             <th scope="row"><label for="cn_id">채널 ID</label></th>
             <td>
-                <?php if ($w == '') { ?>
-                <input type="text" name="cn_id" id="cn_id" value="<?php echo($ca['cn_id']); ?>" required class="required frm_input">
-                <?php } else { ?>
-                    <input type="hidden" name="cn_id" id="cn_id" value="<?php echo($ca['cn_id']); ?>">
-                    <?php echo($ca['cn_id']); ?>
-                <?php } ?>
+                <input type="hidden" name="cn_id" id="cn_id" value="<?php echo($ca['cn_id']); ?>">
+                <?php echo($ca['cn_id']); ?>
             </td>
         </tr>
         </tbody>

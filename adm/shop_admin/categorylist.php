@@ -263,7 +263,7 @@ $colspan = 10;
     <input type="submit" value="일괄수정" class="btn_02 btn">
 
     <?php if ($is_admin == 'super') {?>
-    <a href="./categoryform.php" id="cate_add" class="btn btn_01">분류 추가</a>
+    <a href="../channel_check.php?url=<?php echo(urlencode('./shop_admin/categoryform.php')); ?>" id="cate_add" class="btn btn_01">분류 추가</a>
     <?php } ?>
 </div>
 
