@@ -691,3 +691,71 @@ if (run_replace('safe_admin_add_script_boolean', false) === false) {
     $config['cf_add_script'] = '';
     $config['cf_add_meta'] = '';
 }
+
+// 모듈
+function get_module_dir()
+{
+    $result_array = array();
+
+    $dirname = G5_PATH . '/' . G5_MODULE_DIR . '/';
+    $handle = opendir($dirname);
+    while ($file = readdir($handle)) {
+        if ($file == '.' || $file == '..') {
+            continue;
+        }
+
+        if (is_dir($dirname . $file)) {
+            $module_path = $dirname . $file;
+            if (is_file($module_path . '/index.php') && is_file($module_path . '/head.php') && is_file($module_path . '/tail.php')) {
+                $result_array[] = $file;
+            }
+        }
+    }
+    closedir($handle);
+    natsort($result_array);
+
+    return $result_array;
+}
+
+// 모듈정보
+function get_module_info($dir)
+{
+    $info = array();
+    $path = G5_PATH . '/' . G5_MODULE_DIR . '/' . $dir;
+
+    if (is_dir($path)) {
+        $screenshot = $path . '/screenshot.png';
+        $screenshot_url = '';
+        if (is_file($screenshot)) {
+            $size = @getimagesize($screenshot);
+
+            if ($size[2] == 3) {
+                $screenshot_url = str_replace(G5_PATH, G5_URL, $screenshot);
+            }
+        }
+
+        $info['screenshot'] = $screenshot_url;
+
+        $text = $path . '/readme.txt';
+        if (is_file($text)) {
+            $content = file($text, false);
+            $content = array_map('trim', $content);
+
+            preg_match('#^Module Name:(.+)$#i', $content[0], $m0);
+            preg_match('#^Version:(.+)$#i', $content[1], $m1);
+            preg_match('#^Detail:(.+)$#i', $content[2], $m2);
+            preg_match('#^Default Table:(.+)$#i', $content[3], $m3);
+
+            $info['module_name'] = trim($m0[1]);
+            $info['version'] = trim($m1[1]);
+            $info['detail'] = trim($m2[1]);
+            $info['default_table'] = trim($m3[1]);
+        }
+
+        if (!$info['module_name']) {
+            $info['module_name'] = $dir;
+        }
+    }
+
+    return $info;
+}

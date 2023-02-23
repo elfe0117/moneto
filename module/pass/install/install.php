@@ -23,18 +23,18 @@ function sql_file($filename) {
 
             if (preg_match('/CREATE TABLE IF NOT EXISTS `(.*?)`/', $sql, $sql_tmp)) {
                 flush();
-                echo('<li>'.$sql_tmp[1].'</li>'.PHP_EOL);
+                echo($sql_tmp[1].PHP_EOL);
             }
 
-            //sql_query($sql, true);
+            sql_query($sql, true);
         }
     }
 }
 
 flush();
 
-echo('<ul>'.PHP_EOL);
+$filename = realpath(__FILE__);
+$filepath = substr($filename, 0, strlen(basename($filename)) *-1);
+sql_file($filepath.'install.sql');
 
-sql_file(realpath(__FILE__).'install.sql');
-
-echo('</ul>'.PHP_EOL);
+echo("쿼리 실행이 완료됐습니다.\n프로그램의 실행을 끝마치셔도 좋습니다.".PHP_EOL);

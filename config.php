@@ -88,6 +88,7 @@ define('G5_CONTENT_DIR',    'content');
 define('G5_LOCALE_DIR',     'locale');
 define('G5_LANG_DIR',       'lang');
 define('G5_CHANNEL_DIR',    'channel');
+define('G5_MODULE_DIR',     'module');
 
 // URL 은 브라우저상에서의 경로 (도메인으로 부터)
 if (G5_DOMAIN) {
