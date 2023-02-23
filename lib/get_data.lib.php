@@ -3,7 +3,7 @@ if (!defined('_GNUBOARD_')) exit;
 
 // 2023-02-03 채널별 환경설정 조회 기능 구현을 위한 함수인자 추가
 // function get_config($is_cache=false) > function get_config($is_cache=false, $ch_host='*')
-function get_config($is_cache=false, $ch_host='*'){
+function get_config($is_cache=false, $cn_id='*'){
     global $g5;
 
     static $cache = array();
@@ -16,10 +16,10 @@ function get_config($is_cache=false, $ch_host='*'){
 
     // 2023-02-03 채널별 환경설정 조회가 가능하게 쿼리문 수정
     // $sql = select * from {$g5['config_table']}
-    $sql = "SELECT *
-        FROM {$g5['config_table']} cf
-        INNER JOIN {$g5['channel_host_table']} ch ON cf.cn_id = ch.cn_id
-        WHERE (ch.ch_host = '{$ch_host}' OR cf.cn_id = '{$ch_host}')
+    $sql = " SELECT *
+        FROM {$g5['config_table']}
+        WHERE cn_id = '{$cn_id}'
+            OR cn_id = (SELECT cn_id FROM {$g5['channel_host_table']} WHERE ch_host = '{$cn_id}')
         LIMIT 0, 1 ";
 
     $cache = run_replace('get_config', sql_fetch($sql));

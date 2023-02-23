@@ -8,24 +8,27 @@ if ($is_admin != 'super') {
     alert('최고관리자만 접근 가능합니다.');
 }
 
+// 채널 ID
+$cn_id = isset($_GET['cn_id']) && !is_array($_GET['cn_id']) && $_GET['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_GET['cn_id'])) : '';
+
 // 채널 목록 정보 가져오기
-$array_cn = array();
+$cn_list = array();
 $sql = "SELECT *
     FROM {$g5['channel_table']}
     ORDER BY cn_id ASC ";
 $result = sql_query($sql);
 if ($result) {
     while($row = sql_fetch_array($result)) {
-        array_push($array_cn, $row);
+        array_push($cn_list, $row);
     }
     unset($result);
 }
 
-if (!count($array_cn)) {
+if (!count($cn_list)) {
     alert('채널이 한개 이상 생성되어야 합니다.', './channel_form.php');
 }
 
-$cf = get_config(true, $cn_id);
+$cf = get_config(false, $cn_id);
 
 if (!isset($cf['cf_add_script'])) {
     sql_query(
@@ -488,8 +491,8 @@ if ($cf['cf_sms_use'] && $cf['cf_icode_id'] && $cf['cf_icode_pw']) {
                         <td colspan="3">
                             <select id="cn_id" name="cn_id" required>
                                 <?php
-                                foreach($array_cn as $row_cn) {
-                                    echo(option_selected($row_cn['cn_id'], $cn['cn_id'], $row_cn['cn_id']));
+                                foreach($cn_list as $cn_row) {
+                                    echo(option_selected($cn_row['cn_id'], $cf['cn_id'], $cn_row['cn_id']));
                                 }
                                 ?>
                             </select>

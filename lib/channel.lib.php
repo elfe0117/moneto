@@ -98,6 +98,15 @@ function crt_channel_directory($cid) {
         $channel_data_sub_path = $channel_data_path.'/'.$ln_name;
         @symlink(G5_STORAGE_PATH.'/'.$ln_name, $channel_data_sub_path);
     }
+
+    // 채널 모듈 디렉토리 링크 생성
+    @symlink(G5_PATH.'/module', $channel_path.'/module');
+
+    // LOGO 파일 복사
+    $common_file_cp = array('logo_img','logo_img2','mobile_logo_img','mobile_logo_img2');
+    foreach($common_file_cp as $cp_name) {
+        @copy(G5_STORAGE_PATH.'/common/'.$cp_name, $channel_data_path.'/common/'.$cp_name);
+    }
 }
 
 // 채널 삭제
