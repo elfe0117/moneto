@@ -110,7 +110,7 @@ function get_board_db($cn_id, $bo_table, $is_cache=false){
 }
 
 function get_menu_db($use_mobile=0, $is_cache=false){
-    global $g5;
+    global $g5, $channel;
 
     static $cache = array();
 

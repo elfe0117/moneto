@@ -3,7 +3,7 @@ $sub_menu = '100610';
 require_once './_common.php';
 
 $cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';
-
+/*
 if ($w == "u" || $w == "d") {
     check_demo();
 }
@@ -15,6 +15,7 @@ if ($w == 'd') {
 }
 
 check_admin_token();
+*/
 
 $cn_name = isset($_POST['cn_name']) ? strip_tags(clean_xss_attributes($_POST['cn_name'])) : '';
 $cg_id = isset($_POST['cg_id']) ? (int)$_POST['cg_id'] : 0;
@@ -34,14 +35,14 @@ if ($w == '') {
         alert('이미 존재하는 정보입니다.');
     }
 
+    crt_channel_directory($cn_id);
+
     $sql = "INSERT INTO {$g5['channel_table']}
         SET {$sql_common}
             , cn_id = '{$cn_id}' ";
-    sql_query($sql);
+    sql_query($sql, false);
 
     sql_channel_config_insert($cn_id, $cn_name, $cf_admin, $cf_admin_email);
-
-    crt_channel_directory($cn_id);
 } else if ($w == 'u') {
     $sql = "UPDATE {$g5['channel_table']}
         SET {$sql_common}

@@ -5,7 +5,6 @@ if(defined('G5_THEME_PATH')) {
     require_once(G5_THEME_SHOP_PATH.'/index.php');
     return;
 }
-
 if (G5_IS_MOBILE) {
     include_once(G5_MSHOP_PATH.'/index.php');
     return;

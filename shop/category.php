@@ -3,10 +3,12 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
 function get_mshop_category($ca_id, $len)
 {
-    global $g5;
+    global $g5, $channel;
 
-    $sql = " select ca_id, ca_name from {$g5['g5_shop_category_table']}
-                where ca_use = '1' ";
+    $sql = " select ca_id, ca_name
+        from {$g5['g5_shop_category_table']}
+        where cn_id = '{$channel['cn_id']}'
+            AND ca_use = '1' ";
     if($ca_id)
         $sql .= " and ca_id like '$ca_id%' ";
     $sql .= " and length(ca_id) = '$len' order by ca_order, ca_id ";
