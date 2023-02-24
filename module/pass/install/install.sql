@@ -1,41 +1,52 @@
 -- --------------------------------------------------------
 
 --
--- Table structure for table `md_pass`
+-- Table structure for table `g5_profile`
 --
 
-DROP TABLE IF EXISTS `md_pass`;
-CREATE TABLE IF NOT EXISTS `md_pass` (
-  `ps_no` int NOT NULL auto_increment COMMENT '패스 번호',
-  `ps_id` varchar(20) NOT NULL default '' COMMENT '패스 ID',
-  `cn_id` varchar(20) NOT NULL default '' COMMENT '채널 ID',
-  `ps_admin` varchar(20) NOT NULL default '' COMMENT '패스 관리자',
-  `ps_layout` varchar(255) NOT NULL default '' COMMENT '패스 레이아웃',
-  `ps_bgcolor` varchar(255) NOT NULL default '' COMMENT '패스 배경색',
-  `ps_profile_img` varchar(255) NOT NULL default '' COMMENT '패스 프로필 이미지',
-  `ps_datetime` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '패스 등록일시',
-  PRIMARY KEY  (`ps_no`),
-  UNIQUE KEY `ps_id` (`ps_id`),
-  KEY `cn_id` (`cn_id`)
+DROP TABLE IF EXISTS `g5_profile`;
+CREATE TABLE IF NOT EXISTS `g5_profile` (
+  `pf_no` int NOT NULL auto_increment COMMENT '프로필 번호',
+  `pf_id` varchar(20) NOT NULL default '' COMMENT '프로필 ID',
+  `pf_admin` varchar(20) NOT NULL default '' COMMENT '프로필 관리자',
+  `pf_name` mediumtext NOT NULL COMMENT '프로필 명',
+  `pf_summary` mediumtext NOT NULL COMMENT '프로필 소개',
+  `pf_img` varchar(255) NOT NULL default '' COMMENT '프로필 이미지',
+  `pf_datetime` datetime NOT NULL default '' COMMENT '프로필 등록일시',
+  PRIMARY KEY  (`pf_no`),
+  UNIQUE KEY `pf_id` (`pf_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `md_pass_block`
+-- Table structure for table `g5_profile_block`
 --
 
-DROP TABLE IF EXISTS `md_pass_block`;
-CREATE TABLE IF NOT EXISTS `md_pass_block` (
-  `pb_no` int NOT NULL auto_increment COMMENT '패스블록 번호',
-  `ps_no` int NOT NULL default '0' COMMENT '패스 번호',
-  `pb_type` varchar(20) NOT NULL default '' COMMENT '패스블록 유형(link-링크, text-텍스트, image-이미지, seperator-구분선, movie-동영상, calender-캘린더)',
-  `pb_order` int NOT NULL default '0' COMMENT '패스블록 순번',
-  `ps_data` mediumtext NOT NULL COMMENT '패스블록 데이터',
-  `pb_share` tinyint NOT NULL default '0' COMMENT '패스블록 공개(0-즉시공개, 1-예약공개)',
-  `pb_begin_datetime` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '패스블록 시작 일시',
-  `pb_end_datetime` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '패스블록 종료 일시',
+DROP TABLE IF EXISTS `g5_profile_block`;
+CREATE TABLE IF NOT EXISTS `g5_profile_block` (
+  `pb_no` int NOT NULL auto_increment COMMENT '프로필블록 번호',
+  `pf_id` varchar(20) NOT NULL default '' COMMENT '프로필 ID',
+  `ft_id` varchar(20) NOT NULL default '' COMMENT '기능 ID',
+  `pb_data` mediumtext NOT NULL default '' COMMENT '프로필블록 데이터',
+  `pb_order` int NOT NULL default '0' COMMENT '프로필블록 순번',
   PRIMARY KEY  (`pb_no`),
-  KEY `ps_no` (`ps_no`),
+  KEY `pf_id` (`pf_id`),
   KEY `pb_order` (`pb_order`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `g5_function`
+--
+
+DROP TABLE IF EXISTS `g5_function`;
+CREATE TABLE IF NOT EXISTS `g5_function` (
+  `ft_no` int NOT NULL auto_increment COMMENT '기능 번호',
+  `ft_id` varchar(20) NOT NULL default '' COMMENT '기능 ID',
+  `ft_name` varchar(255) NOT NULL default '' COMMENT '기능 명',
+  `ft_summary` mediumtext NOT NULL COMMENT '기능 소개',
+  `ft_datetime` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '기능 등록일시',
+  PRIMARY KEY  (`ft_no`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
