@@ -8,8 +8,11 @@ include_once('./config.php');
 // 패스 라이브러리
 include_once('./common.lib.php');
 
+// 프로필
 $profile = array();
 
-// 디스플레이 파라메터 구하기
 $dp = get_display_parameter();
+$pfid = get_profile_id_parameter();
+
+$profile = get_profile($pfid);
 ?>
