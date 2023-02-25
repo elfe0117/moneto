@@ -21,3 +21,24 @@ function get_profile($pfid) {
         LIIMIT 0, 1 ";
     return sql_fetch($sql);
 }
+
+// 프로필 블록 목록 구하기
+function get_profile_block_list($pfid) {
+    global $g5;
+
+    $pb_list = array();
+
+    $sql = " SELECT *
+        FROM {$g5['profile_block_table']}
+        WHERE pf_id = '{$pfid}'
+        ORDER BY pb_order ASC ";
+    $result = sql_query($sql);
+    if ($result) {
+        while($row = sql_fetch_array($result)) {
+            array_push($pb_list, $row);
+        }
+        unset($result);
+    }
+
+    return $pb_list;
+}
