@@ -3956,8 +3956,8 @@ function safe_replace_regex($str, $str_case=''){
 }
 
 function get_real_client_ip(){
-    if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
-        $_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+    if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+        $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
     }
 
     $real_ip = $_SERVER['REMOTE_ADDR'];
