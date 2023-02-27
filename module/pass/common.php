@@ -15,3 +15,9 @@ $dp = get_display_parameter();
 $pfid = get_profile_id_parameter();
 
 $profile = get_profile($pfid);
+
+// 관리자 여부 확인
+$is_pass_admin = false;
+if (isset($profile['pf_admin']) && $profile['pf_admin'] == $member['mb_id']) {
+    $is_pass_admin = true;
+}
