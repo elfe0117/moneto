@@ -16,7 +16,7 @@ function get_profile($pfid) {
     global $g5;
 
     $sql = " SELECT *
-        FROM {$5['profile_table']}
+        FROM {$g5['profile_table']}
         WHERE pf_id = '{$pfid}'
         LIIMIT 0, 1 ";
     return sql_fetch($sql);
