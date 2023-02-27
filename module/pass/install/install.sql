@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `g5_profile` (
   `pf_name` mediumtext NOT NULL COMMENT '프로필 명',
   `pf_summary` mediumtext NOT NULL COMMENT '프로필 소개',
   `pf_img` varchar(255) NOT NULL default '' COMMENT '프로필 이미지',
-  `pf_datetime` datetime NOT NULL default '' COMMENT '프로필 등록일시',
+  `pf_datetime` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '프로필 등록일시',
   PRIMARY KEY  (`pf_no`),
   UNIQUE KEY `pf_id` (`pf_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
