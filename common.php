@@ -58,6 +58,11 @@ include_once($g5_path['path'].'/config.php');   // 설정 파일
 
 unset($g5_path);
 
+// 클라우드 플레어 IP 오류 보완
+if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+    $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
+}
+
 // IIS 에서 SERVER_ADDR 서버변수가 없다면
 if(! isset($_SERVER['SERVER_ADDR'])) {
     $_SERVER['SERVER_ADDR'] = isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : '';
