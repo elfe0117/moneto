@@ -18,7 +18,8 @@ function get_profile($pfid) {
     $sql = " SELECT *
         FROM {$g5['profile_table']}
         WHERE pf_id = '{$pfid}'
-        LIIMIT 0, 1 ";
+        LIMIT 0, 1 ";
+        echo $sql;
     return sql_fetch($sql);
 }
 
