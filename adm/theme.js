@@ -1,5 +1,6 @@
 $(function() {
     $(".theme_active").on("click", function() {
+        var cn_id = $(this).data("channel");
         var theme = $(this).data("theme");
         var name  = $(this).data("name");
 
@@ -16,6 +17,7 @@ $(function() {
             type: "POST",
             url: "./theme_update.php",
             data: {
+                "cn_id": cn_id,
                 "theme": theme,
                 "set_default_skin": set_default_skin
             },
@@ -33,6 +35,7 @@ $(function() {
     });
 
     $(".theme_deactive").on("click", function() {
+        var cn_id = $(this).data("channel");
         var theme = $(this).data("theme");
         var name  = $(this).data("name");
 
@@ -43,6 +46,7 @@ $(function() {
             type: "POST",
             url: "./theme_update.php",
             data: {
+                "cn_id": cn_id,
                 "theme": theme,
                 "type": "reset"
             },
@@ -60,6 +64,7 @@ $(function() {
     });
 
     $(".theme_preview").on("click", function() {
+        var cn_id = $(this).data("channel");
         var theme = $(this).data("theme");
 
         $("#theme_detail").remove();
@@ -68,6 +73,7 @@ $(function() {
             type: "POST",
             url: "./theme_detail.php",
             data: {
+                "cn_id": cn_id,
                 "theme": theme
             },
             cache: false,

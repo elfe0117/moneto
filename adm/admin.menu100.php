@@ -3,7 +3,8 @@ $menu['menu100'] = array(
     array('100000', $lang_json['adm']['admin.menu100']['1'], G5_ADMIN_URL . '/config_list.php',   'config'),
     array('100100', $lang_json['adm']['admin.menu100']['2'], G5_ADMIN_URL . '/config_list.php',   'cf_basic'),
     array('100200', $lang_json['adm']['admin.menu100']['3'], G5_ADMIN_URL . '/auth_list.php',     'cf_auth'),
-    array('100280', $lang_json['adm']['admin.menu100']['4'], G5_ADMIN_URL . '/theme.php',     'cf_theme', 1),
+
+    array('100280', $lang_json['adm']['admin.menu100']['4'], G5_ADMIN_URL . '/channel_check.php?url='.urldecode('./theme.php'),     'cf_theme', 1),
     array('100290', $lang_json['adm']['admin.menu100']['5'], G5_ADMIN_URL . '/menu_list.php',     'cf_menu', 1),
     array('100300', $lang_json['adm']['admin.menu100']['6'], G5_ADMIN_URL . '/sendmail_test.php', 'cf_mailtest'),
     array('100310', $lang_json['adm']['admin.menu100']['7'], G5_ADMIN_URL . '/newwinlist.php', 'scf_poplayer'),

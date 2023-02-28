@@ -837,32 +837,34 @@ CREATE TABLE IF NOT EXISTS `g5_autosave` (
 
 DROP TABLE IF EXISTS `g5_qa_config`;
 CREATE TABLE IF NOT EXISTS `g5_qa_config` (
-  `qa_title` varchar(255) NOT NULL DEFAULT'',
-  `qa_category` varchar(255) NOT NULL DEFAULT'',
+  `qa_no` int NOT NULL auto_increment COMMENT '1:1문의설정 번호',
+  `cn_id` varchar(20) NOT NULL DEFAULT '' COMMENT '채널 ID',
+  `qa_title` varchar(255) NOT NULL DEFAULT '',
+  `qa_category` varchar(255) NOT NULL DEFAULT '',
   `qa_skin` varchar(255) NOT NULL DEFAULT '',
   `qa_mobile_skin` varchar(255) NOT NULL DEFAULT '',
-  `qa_use_email` tinyint(4) NOT NULL DEFAULT '0',
-  `qa_req_email` tinyint(4) NOT NULL DEFAULT '0',
-  `qa_use_hp` tinyint(4) NOT NULL DEFAULT '0',
-  `qa_req_hp` tinyint(4) NOT NULL DEFAULT '0',
-  `qa_use_sms` tinyint(4) NOT NULL DEFAULT '0',
+  `qa_use_email` tinyint NOT NULL DEFAULT '0',
+  `qa_req_email` tinyint NOT NULL DEFAULT '0',
+  `qa_use_hp` tinyint NOT NULL DEFAULT '0',
+  `qa_req_hp` tinyint NOT NULL DEFAULT '0',
+  `qa_use_sms` tinyint NOT NULL DEFAULT '0',
   `qa_send_number` varchar(255) NOT NULL DEFAULT '0',
   `qa_admin_hp` varchar(255) NOT NULL DEFAULT '',
   `qa_admin_email` varchar(255) NOT NULL DEFAULT '',
-  `qa_use_editor` tinyint(4) NOT NULL DEFAULT '0',
-  `qa_subject_len` int(11) NOT NULL DEFAULT '0',
-  `qa_mobile_subject_len` int(11) NOT NULL DEFAULT '0',
-  `qa_page_rows` int(11) NOT NULL DEFAULT '0',
-  `qa_mobile_page_rows` int(11) NOT NULL DEFAULT '0',
-  `qa_image_width` int(11) NOT NULL DEFAULT '0',
-  `qa_upload_size` int(11) NOT NULL DEFAULT '0',
-  `qa_insert_content` text NOT NULL,
+  `qa_use_editor` tinyint NOT NULL DEFAULT '0',
+  `qa_subject_len` int NOT NULL DEFAULT '0',
+  `qa_mobile_subject_len` int NOT NULL DEFAULT '0',
+  `qa_page_rows` int NOT NULL DEFAULT '0',
+  `qa_mobile_page_rows` int NOT NULL DEFAULT '0',
+  `qa_image_width` int NOT NULL DEFAULT '0',
+  `qa_upload_size` int NOT NULL DEFAULT '0',
+  `qa_insert_content` mediumtext NOT NULL,
   `qa_include_head` varchar(255) NOT NULL DEFAULT '',
   `qa_include_tail` varchar(255) NOT NULL DEFAULT '',
-  `qa_content_head` text NOT NULL,
-  `qa_content_tail` text NOT NULL,
-  `qa_mobile_content_head` text NOT NULL,
-  `qa_mobile_content_tail` text NOT NULL,
+  `qa_content_head` mediumtext NOT NULL,
+  `qa_content_tail` mediumtext NOT NULL,
+  `qa_mobile_content_head` mediumtext NOT NULL,
+  `qa_mobile_content_tail` mediumtext NOT NULL,
   `qa_1_subj` varchar(255) NOT NULL DEFAULT '',
   `qa_2_subj` varchar(255) NOT NULL DEFAULT '',
   `qa_3_subj` varchar(255) NOT NULL DEFAULT '',
@@ -872,7 +874,9 @@ CREATE TABLE IF NOT EXISTS `g5_qa_config` (
   `qa_2` varchar(255) NOT NULL DEFAULT '',
   `qa_3` varchar(255) NOT NULL DEFAULT '',
   `qa_4` varchar(255) NOT NULL DEFAULT '',
-  `qa_5` varchar(255) NOT NULL DEFAULT ''
+  `qa_5` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY  (`qa_no`),
+  UNIQUE KEY `cn_id` (`cn_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -884,6 +888,7 @@ CREATE TABLE IF NOT EXISTS `g5_qa_config` (
 DROP TABLE IF EXISTS `g5_qa_content`;
 CREATE TABLE IF NOT EXISTS `g5_qa_content` (
   `qa_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cn_id` varchar(20) NOT NULL DEFAULT '' COMMENT '채널 ID',
   `qa_num` int(11) NOT NULL DEFAULT '0',  
   `qa_parent` int(11) NOT NULL DEFAULT '0',
   `qa_related` int(11) NOT NULL DEFAULT '0',
@@ -911,6 +916,7 @@ CREATE TABLE IF NOT EXISTS `g5_qa_content` (
   `qa_4` varchar(255) NOT NULL DEFAULT '',
   `qa_5` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`qa_id`),
+  KEY `cn_id` (`cn_id`),
   KEY `qa_num_parent` (`qa_num`,`qa_parent`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

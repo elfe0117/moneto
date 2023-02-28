@@ -5,6 +5,13 @@ require_once G5_EDITOR_LIB;
 
 auth_check_menu($auth, $sub_menu, 'r');
 
+// 채널 ID
+$cn_id = isset($_REQUEST['cn_id']) && !is_array($_REQUEST['cn_id']) && $_REQUEST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cn_id'])) : '';    
+$cn = get_channel($cn_id);
+if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
+    alert('올바른 채널 ID를 입력하세요.');
+}
+
 $g5['title'] = '1:1문의 설정';
 require_once './admin.head.php';
 
@@ -12,6 +19,8 @@ require_once './admin.head.php';
 if (!sql_query(" DESCRIBE `{$g5['qa_config_table']}` ", false)) {
     sql_query(
         " CREATE TABLE IF NOT EXISTS `{$g5['qa_config_table']}` (
+                  `qa_no` int NOT NULL auto_increment COMMENT '1:1문의설정 번호',
+                  `cn_id` varchar(20) NOT NULL DEFAULT '' COMMENT '채널 ID',
                   `qa_title` varchar(255) NOT NULL DEFAULT'',
                   `qa_category` varchar(255) NOT NULL DEFAULT'',
                   `qa_skin` varchar(255) NOT NULL DEFAULT '',
@@ -46,13 +55,16 @@ if (!sql_query(" DESCRIBE `{$g5['qa_config_table']}` ", false)) {
                   `qa_2` varchar(255) NOT NULL DEFAULT '',
                   `qa_3` varchar(255) NOT NULL DEFAULT '',
                   `qa_4` varchar(255) NOT NULL DEFAULT '',
-                  `qa_5` varchar(255) NOT NULL DEFAULT ''
+                  `qa_5` varchar(255) NOT NULL DEFAULT '',
+                  PRIMARY KEY  (`qa_no`),
+                  UNIQUE KEY `cn_id` (`cn_id`)
                 )",
         true
     );
     sql_query(
         " CREATE TABLE IF NOT EXISTS `{$g5['qa_content_table']}` (
                   `qa_id` int(11) NOT NULL AUTO_INCREMENT,
+                  `cn_id` varchar(20) NOT NULL DEFAULT '' COMMENT '채널 ID',
                   `qa_num` int(11) NOT NULL DEFAULT '0',
                   `qa_parent` int(11) NOT NULL DEFAULT '0',
                   `qa_related` int(11) NOT NULL DEFAULT '0',
@@ -80,6 +92,7 @@ if (!sql_query(" DESCRIBE `{$g5['qa_config_table']}` ", false)) {
                   `qa_4` varchar(255) NOT NULL DEFAULT '',
                   `qa_5` varchar(255) NOT NULL DEFAULT '',
                   PRIMARY KEY (`qa_id`),
+                  KEY `cn_id` (`cn_id`),
                   KEY `qa_num_parent` (`qa_num`,`qa_parent`)
                 )",
         true
@@ -92,16 +105,16 @@ if (strpos($row['Type'], 'text') === false) {
     sql_query(" ALTER TABLE `{$g5['qa_content_table']}` CHANGE `qa_content` `qa_content` text NOT NULL ", true);
 }
 
-$qaconfig = get_qa_config();
+$qaconfig = get_qa_config($cn_id);
 
 if (empty($qaconfig)) {
     $sql = " insert into `{$g5['qa_config_table']}`
-                ( qa_title, qa_category, qa_skin, qa_mobile_skin, qa_use_email, qa_req_email, qa_use_hp, qa_req_hp, qa_use_editor, qa_subject_len, qa_mobile_subject_len, qa_page_rows, qa_mobile_page_rows, qa_image_width, qa_upload_size, qa_insert_content )
+                ( cn_id, qa_title, qa_category, qa_skin, qa_mobile_skin, qa_use_email, qa_req_email, qa_use_hp, qa_req_hp, qa_use_editor, qa_subject_len, qa_mobile_subject_len, qa_page_rows, qa_mobile_page_rows, qa_image_width, qa_upload_size, qa_insert_content )
               values
-                ( '1:1문의', '회원|포인트', 'basic', 'basic', '1', '0', '1', '0', '1', '60', '30', '15', '15', '600', '1048576', '' ) ";
+                ( '{$cn_id}', '1:1문의', '회원|포인트', 'basic', 'basic', '1', '0', '1', '0', '1', '60', '30', '15', '15', '600', '1048576', '' ) ";
     sql_query($sql);
 
-    $qaconfig = get_qa_config();
+    $qaconfig = get_qa_config($cn_id);
 }
 
 // 관리자 이메일필드 추가
@@ -130,7 +143,6 @@ if (!isset($qaconfig['qa_include_head'])) {
 
 <form name="fqaconfigform" id="fqaconfigform" method="post" onsubmit="return fqaconfigform_submit(this);" autocomplete="off">
     <input type="hidden" name="token" value="" id="token">
-
     <section id="anc_cf_qa_config">
         <h2 class="h2_frm">1:1문의 설정</h2>
 
@@ -142,6 +154,13 @@ if (!isset($qaconfig['qa_include_head'])) {
                     <col>
                 </colgroup>
                 <tbody>
+                    <tr>
+                        <th scope="row"><label for="cn_id">채널 ID</label></th>
+                        <td>
+                            <input type="hidden" name="cn_id" id="cn_id" value="<?php echo($cn_id); ?>">
+                            <?php echo($cn_id); ?>
+                        </td>
+                    </tr>
                     <tr>
                         <th scope="row"><label for="qa_title">타이틀<strong class="sound_only">필수</strong></label></th>
                         <td>

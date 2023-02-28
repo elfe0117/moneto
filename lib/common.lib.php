@@ -3002,17 +3002,20 @@ function certify_count_check($mb_id, $type)
 }
 
 // 1:1문의 설정로드
-function get_qa_config($fld='*', $is_cache=false)
+function get_qa_config($cnid='', $fld='*', $is_cache=false)
 {
-    global $g5;
-
+    global $g5, $channel;
     static $cache = array();
+
+    if (!$cnid) {
+        $cnid = $channel['cn_id'];
+    }
 
     if( $is_cache && !empty($cache) ){
         return $cache;
     }
 
-    $sql = " select * from {$g5['qa_config_table']} ";
+    $sql = " select * from {$g5['qa_config_table']} WHERE cn_id = '{$cnid}' LIMIT 0, 1 ";
     $cache = run_replace('get_qa_config', sql_fetch($sql));
 
     return $cache;
