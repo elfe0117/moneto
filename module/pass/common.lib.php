@@ -19,7 +19,6 @@ function get_profile($pfid) {
         FROM {$g5['profile_table']}
         WHERE pf_id = '{$pfid}'
         LIMIT 0, 1 ";
-        echo $sql;
     return sql_fetch($sql);
 }
 
