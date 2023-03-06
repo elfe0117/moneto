@@ -21,3 +21,6 @@ $menu['menu400'] = array(
     array('400750', '추가배송비관리', G5_ADMIN_URL . '/shop_admin/sendcostlist.php', 'scf_sendcost', 1),
     array('400410', '미완료주문', G5_ADMIN_URL . '/shop_admin/inorderlist.php', 'scf_inorder', 1),
 );
+
+
+$menu['menu400'][] = array('400380', '브랜드관리', G5_ADMIN_URL . '/shop_admin/brand_list.php', 'scf_brand');
