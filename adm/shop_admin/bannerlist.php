@@ -185,8 +185,9 @@ $colspan = 9;
 
     <?php
     }
+    
     if ($i == 0) {
-    echo '<tr><td colspan="'.$colspan.'" class="empty_table">자료가 없습니다.</td></tr>';
+        echo '<tr><td colspan="'.$colspan.'" class="empty_table">자료가 없습니다.</td></tr>';
     }
     ?>
     </tbody>
