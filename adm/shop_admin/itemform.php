@@ -142,13 +142,14 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
 // 분류리스트
 $category_select = '';
 $script = '';
-$sql = " select * from {$g5['g5_shop_category_table']} WHERE cn_id = '{$cn_id}' ";
+$sql = " SELECT *
+    FROM {$g5['g5_shop_category_table']}
+    WHERE cn_id = '{$cn_id}' ";
 if ($is_admin != 'super')
     $sql .= " AND ca_mb_id = '{$member['mb_id']}' ";
-$sql .= " order by ca_order, ca_id ";
+$sql .= " ORDER BY ca_order, ca_id ASC ";
 $result = sql_query($sql);
-for ($i=0; $row=sql_fetch_array($result); $i++)
-{
+for($i = 0; $row = sql_fetch_array($result); $i++) {
     $len = strlen($row['ca_id']) / 2 - 1;
 
     $nbsp = "";
