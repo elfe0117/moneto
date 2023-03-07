@@ -38,10 +38,10 @@ if (!$sst) {
 
 $sql_order = " ORDER BY {$sst} {$sod} ";
 
-$sql_common .= $sql_search;
-
-// 테이블의 전체 레코드수만 얻음
-$sql = " SELECT COUNT(*) as cnt " . $sql_common;
+$sql = " SELECT COUNT(*) AS cnt
+    {$sql_common}
+    {$sql_search}
+    {$sql_order} ";
 $row = sql_fetch($sql);
 $total_count = $row['cnt'];
 
