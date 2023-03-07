@@ -38,7 +38,8 @@ if ($w == '') {
 
     $sql = "INSERT INTO {$g5['channel_table']}
         SET {$sql_common}
-            , cn_id = '{$cn_id}' ";
+            , cn_id = '{$cn_id}'
+            , cn_datetime = '".G5_TIME_YMDHIS."' ";
     sql_query($sql, false);
 
     sql_channel_config_insert($cn_id, $cn_name, $cf_admin, $cf_admin_email);
