@@ -132,16 +132,16 @@ $colspan = 9;
         $bn_new_win = ($row['bn_new_win']) ? 'target="_blank"' : '';
 
         $bimg = get_channel_data_path($row['cn_id']).'/banner/'.$row['bn_id'];
-        if(file_exists($bimg)) {
+        if (file_exists($bimg)) {
             $size = @getimagesize($bimg);
             if($size[0] && $size[0] > 800)
                 $width = 800;
             else
                 $width = $size[0];
 
-            $bn_img = "";
-           
-            $bn_img .= '<img src="'.get_channel_data_url($row['cn_id'], false).'/banner/'.$row['bn_id'].'?'.preg_replace('/[^0-9]/i', '', $row['bn_time']).'" width="'.$width.'" alt="'.get_text($row['bn_alt']).'">';
+            $bn_img = '<img src="'.get_channel_data_url($row['cn_id'], false).'/banner/'.$row['bn_id'].'?'.preg_replace('/[^0-9]/i', '', $row['bn_time']).'" width="'.$width.'" alt="'.get_text($row['bn_alt']).'">';
+        } else {
+            $bn_img = '';
         }
 
         switch($row['bn_device']) {
