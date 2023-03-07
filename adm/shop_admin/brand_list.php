@@ -71,7 +71,7 @@ $colspan = 4;
                     <input type="checkbox" name="chk[]" value="<?php echo($i); ?>" id="chk_<?php echo($i); ?>">
                 </td>
                 <td class="td_id"><?php echo($row['cn_id']); ?></td>
-                <td class="td_left"><?php echo($row['br_name']); ?></td>
+                <td class="td_left"><input type="text" id="br_name[<?php echo($i); ?>]" name="br_name[<?php echo($i); ?>]" value="<?php echo(get_text($row['br_name'])); ?>" class="tbl_input"></td>
                 <td class="td_mng">
                     <a href="./brand_form.php?<?php echo($qstr); ?>&amp;w=u&amp;br_no=<?php echo($row['br_no']); ?>" class="btn btn_03">수정</a>
                 </td>
