@@ -24,16 +24,16 @@ if ($_POST['act_button'] == "선택수정") {
         $post_br_name = (isset($_POST['br_name'][$k]) && $_POST['br_name'][$k]) ? strip_tags(clean_xss_attributes($_POST['br_name'][$k])) : '';
 
         $sql = "SELECT *
-            FROM {$g5['g5_shop_brand_talbe']}
+            FROM {$g5['g5_shop_brand_table']}
             WHERE br_no = '{$post_br_no}'
             LIMIT 0, 1 ";
         $br_datas[] = $br = sql_fetch($sql);
 
-        if (!(isset($br['br_no']) && $br_no['br_no'])) {
-            $msg .= $br_no['br_no'] . ' : 자료가 존재하지 않습니다.\\n';
+        if (!(isset($br['br_no']) && $br['br_no'])) {
+            $msg .= $br['br_no'] . ' : 자료가 존재하지 않습니다.\\n';
         } else {
             $sql = " UPDATE {$g5['g5_shop_brand_table']}
-                SET br_name = '{$post_br_name}',
+                SET br_name = '{$post_br_name}'
                 WHERE br_no = '{$br['br_no']}' ";
             sql_query($sql);
         }
@@ -51,7 +51,7 @@ if ($_POST['act_button'] == "선택수정") {
             LIMIT 0, 1 ";
         $br_datas[] = $br = sql_fetch($sql);
 
-        if (!$cn['br_no']) {
+        if (!$br['br_no']) {
             $msg .= $br['br_no'] . ' : 자료가 존재하지 않습니다.\\n';
         } else {
             $sql = "DELETE
