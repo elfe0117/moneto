@@ -17,6 +17,13 @@ if (!$sst) {
 
 $sql_order = " ORDER BY {$sst} {$sod} ";
 
+$sql_common .= $sql_search;
+
+// 테이블의 전체 레코드수만 얻음
+$sql = " SELECT COUNT(*) as cnt " . $sql_common;
+$row = sql_fetch($sql);
+$total_count = $row['cnt'];
+
 $rows = $config['cf_page_rows'];
 $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page < 1) {
