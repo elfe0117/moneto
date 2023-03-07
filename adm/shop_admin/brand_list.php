@@ -9,7 +9,7 @@ $sql_common = " FROM {$g5['g5_shop_brand_table']} ";
 $sql_search = " WHERE (1) ";
 
 if (!$sst) {
-    $sst = "br_id";
+    $sst = "br_no";
     $sod = "ASC";
 }
 
@@ -61,19 +61,19 @@ $colspan = 4;
             <?php
             $i = 0;
             if ($result) {
-                while($row = sql_fech_array($result)) {
+                while($row = sql_fetch_array($result)) {
                     $bg = 'bg' . ($i % 2);
             ?>
             <tr class="<?php echo($bg); ?>">
                 <td class="td_chk">
-                    <input type="hidden" name="br_id[<?php echo($i); ?>]" value="<?php echo($row['br_id']); ?>" id="br_id_<?php echo($i); ?>">
+                    <input type="hidden" name="br_no[<?php echo($i); ?>]" value="<?php echo($row['br_no']); ?>" id="br_no_<?php echo($i); ?>">
                     <label for="chk_<?php echo($i); ?>" class="sound_only"><?php echo(get_text($row['br_name'])); ?></label>
                     <input type="checkbox" name="chk[]" value="<?php echo($i); ?>" id="chk_<?php echo($i); ?>">
                 </td>
                 <td class="td_id"><?php echo($row['cn_id']); ?></td>
                 <td class="td_left"><?php echo($row['br_name']); ?></td>
                 <td class="td_mng">
-
+                    <a href="./brand_form.php?<?php echo($qstr); ?>&amp;w=u&amp;br_no=<?php echo($row['br_no']); ?>" class="btn btn_03">수정</a>
                 </td>
             </tr>
             <?php
@@ -94,7 +94,7 @@ $colspan = 4;
     <input type="submit" name="act_button" value="선택수정" onclick="document.pressed=this.value" class="btn btn_02">
     <input type="submit" name="act_button" value="선택삭제" onclick="document.pressed=this.value" class="btn btn_02">
     <?php if ($is_admin == 'super') { ?>
-    <a href="./brand_form.php" id="brand_add" class="btn btn_01">브랜드추가</a>
+    <a href="../channel_check.php?url=<?php echo(urlencode('./shop_admin/brand_form.php')); ?>" id="brand_add" class="btn btn_01">브랜드추가</a>
     <?php } ?>
 </div>
 
