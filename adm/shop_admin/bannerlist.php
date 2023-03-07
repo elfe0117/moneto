@@ -8,42 +8,59 @@ $bn_position = (isset($_GET['bn_position']) && in_array($_GET['bn_position'], ar
 $bn_device = (isset($_GET['bn_device']) && in_array($_GET['bn_device'], array('pc', 'mobile'))) ? $_GET['bn_device'] : 'both';
 $bn_time = (isset($_GET['bn_time']) && in_array($_GET['bn_time'], array('ing', 'end'))) ? $_GET['bn_time'] : '';
 
-$where = ' where ';
-$sql_search = '';
+$sql_common = " FROM {$g5['g5_shop_banner_table']} ";
 
-if ( $bn_position ){
-    $sql_search .= " $where bn_position = '$bn_position' ";
-    $where = ' and ';
-    $qstr .= "&amp;bn_position=$bn_position";
+$sql_search = " WHERE (1) ";
+
+if (isset($bn_position) && $bn_position) {
+    $sql_search .= " AND bn_position = {$bn_position} ";
+    $qstr .= "&amp;bn_position={$bn_position}";
 }
 
-if ( $bn_device && $bn_device !== 'both' ){
-    $sql_search .= " $where bn_device = '$bn_device' ";
-    $where = ' and ';
-    $qstr .= "&amp;bn_device=$bn_device";
+if (isset($bn_device) && $bn_device && $bn_device !== 'both') {
+    $sql_search .= " AND bn_device = {$bn_device} ";
+    $qstr .= "&amp;bn_device={$bn_device}";
 }
 
-if ( $bn_time ){
-    $sql_search .= ($bn_time === 'ing') ? " $where '".G5_TIME_YMDHIS."' between bn_begin_time and bn_end_time " : " $where bn_end_time < '".G5_TIME_YMDHIS."' ";
-    $where = ' and ';
-    $qstr .= "&amp;bn_time=$bn_time";
+if (isset($bn_time) && $bn_time) {
+    if ($bn_time === 'ing') {
+        $sql_search .= " AND '".G5_TIME_YMDHIS."' BETWEEN bn_begin_time AND bn_end_time ";
+    } else {
+        $sql_search .= " AND bn_end_time < '".G5_TIME_YMDHIS."' ";
+    }
+    $qstr .= "&amp;bn_time={$bn_time}";
 }
 
-$g5['title'] = '배너관리';
-include_once (G5_ADMIN_PATH.'/admin.head.php');
+if (!$sst) {
+    $sst = "bn_order, bn_id";
+    $sod = "DESC";
+}
 
-$sql_common = " from {$g5['g5_shop_banner_table']} ";
+$sql_order = " ORDER BY {$sst} {$sod} ";
+
 $sql_common .= $sql_search;
 
 // 테이블의 전체 레코드수만 얻음
-$sql = " select count(*) as cnt " . $sql_common;
+$sql = " SELECT COUNT(*) as cnt " . $sql_common;
 $row = sql_fetch($sql);
 $total_count = $row['cnt'];
 
 $rows = $config['cf_page_rows'];
 $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
-if ($page < 1) { $page = 1; } // 페이지가 없으면 첫 페이지 (1 페이지)
+if ($page < 1) {
+    $page = 1; // 페이지가 없으면 첫 페이지 (1 페이지)
+}
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
+
+$sql = " SELECT *
+    {$sql_common}
+    {$sql_search}
+    {$sql_order}
+    LIMIT {$from_record}, {$rows} ";
+$result = sql_query($sql);
+
+$g5['title'] = '배너관리';
+include_once (G5_ADMIN_PATH.'/admin.head.php');
 
 $colspan = 9;
 ?>
@@ -80,7 +97,7 @@ $colspan = 9;
 </div>
 
 <div class="btn_fixed_top">
-    <a href="./bannerform.php" class="btn_01 btn">배너추가</a>
+    <a href="../channel_check.php?url=<?php echo(urlencode('./shop_admin/bannerform.php')); ?>" class="btn_01 btn">배너추가</a>
 </div>
 
 <div class="tbl_head01 tbl_wrap">
@@ -114,7 +131,7 @@ $colspan = 9;
         // 새창 띄우기인지
         $bn_new_win = ($row['bn_new_win']) ? 'target="_blank"' : '';
 
-        $bimg = G5_STORAGE_PATH.'/channel/'.$row['cn_id'].'/banner/'.$row['bn_id'];
+        $bimg = get_channel_data_path($row['cn_id']).'/banner/'.$row['bn_id'];
         if(file_exists($bimg)) {
             $size = @getimagesize($bimg);
             if($size[0] && $size[0] > 800)
@@ -124,7 +141,7 @@ $colspan = 9;
 
             $bn_img = "";
            
-            $bn_img .= '<img src="'.G5_STORAGE_URL.'/channel/'.$row['cn_id'].'/banner/'.$row['bn_id'].'?'.preg_replace('/[^0-9]/i', '', $row['bn_time']).'" width="'.$width.'" alt="'.get_text($row['bn_alt']).'">';
+            $bn_img .= '<img src="'.get_channel_data_url($row['cn_id'], false).'/banner/'.$row['bn_id'].'?'.preg_replace('/[^0-9]/i', '', $row['bn_time']).'" width="'.$width.'" alt="'.get_text($row['bn_alt']).'">';
         }
 
         switch($row['bn_device']) {

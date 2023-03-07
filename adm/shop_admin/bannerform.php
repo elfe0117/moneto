@@ -4,18 +4,8 @@ include_once('./_common.php');
 
 auth_check_menu($auth, $sub_menu, "w");
 
-// 채널 목록 정보 가져오기
-$array_cn = array();
-$sql = "SELECT *
-    FROM {$g5['channel_table']}
-    ORDER BY cn_id ASC ";
-$result = sql_query($sql);
-if ($result) {
-    while($row = sql_fetch_array($result)) {
-        array_push($array_cn, $row);
-    }
-    unset($result);
-}
+// 채널 ID
+$cn_id = isset($_REQUEST['cn_id']) && !is_array($_REQUEST['cn_id']) && $_REQUEST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cn_id'])) : '';
 
 $bn_id = isset($_REQUEST['bn_id']) ? preg_replace('/[^0-9]/', '', $_REQUEST['bn_id']) : 0;
 $bn = array(
@@ -36,6 +26,8 @@ if ($w=="u")
     $html_title .= ' 수정';
     $sql = " select * from {$g5['g5_shop_banner_table']} where bn_id = '$bn_id' ";
     $bn = sql_fetch($sql);
+
+    $cn_id = $bn['cn_id'];
 }
 else
 {
@@ -43,6 +35,8 @@ else
     $bn['bn_url']        = "http://";
     $bn['bn_begin_time'] = date("Y-m-d 00:00:00", time());
     $bn['bn_end_time']   = date("Y-m-d 00:00:00", time()+(60*60*24*31));
+
+    $bn['cn_id'] = $cn_id;
 }
 
 // 접속기기 필드 추가
@@ -68,15 +62,10 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
     </colgroup>
     <tbody>
     <tr>
-        <th scope="row">채널 ID</th>
+        <th scope="row"><label for="cn_id">채널 ID<strong class="sound_only"> 필수</strong></label></th>
         <td>
-            <select id="cn_id" name="cn_id" required>
-                <?php
-                foreach($array_cn as $row_cn) {
-                    echo(option_selected($row_cn['cn_id'], $bn['cn_id'], $row_cn['cn_id']));
-                }
-                ?>
-            </select>
+            <input type="hidden" name="cn_id" id="cn_id" value="<?php echo($bn['cn_id']); ?>" required class="frm_input required">
+            <?php echo($bn['cn_id']); ?>
         </td>
     </tr>
     <tr>
@@ -85,7 +74,7 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
             <input type="file" name="bn_bimg">
             <?php
             $bimg_str = "";
-            $bimg = G5_STORAGE_PATH."/channel/{$bn['cn_id']}/banner/{$bn['bn_id']}";
+            $bimg = get_channel_data_path($cn_id)."/banner/{$bn['bn_id']}";
             if (file_exists($bimg) && $bn['bn_id']) {
                 $size = @getimagesize($bimg);
                 if($size[0] && $size[0] > 750)
@@ -94,7 +83,7 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
                     $width = $size[0];
 
                 echo '<input type="checkbox" name="bn_bimg_del" value="1" id="bn_bimg_del"> <label for="bn_bimg_del">삭제</label>';
-                $bimg_str = '<img src="'.G5_STORAGE_URL.'/channel/'.$bn['cn_id'].'/banner/'.$bn['bn_id'].'" width="'.$width.'">';
+                $bimg_str = '<img src="'.get_channel_data_url($cn_id, false).'/banner/'.$bn['bn_id'].'" width="'.$width.'">';
             }
             if ($bimg_str) {
                 echo '<div class="banner_or_img">';
