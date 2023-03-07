@@ -39,7 +39,7 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
 if (!$sst)
 {
-    $sst  = "cn_id, ca_id";
+    $sst  = "cn_id, ca_order, ca_id";
     $sod = "asc";
 }
 $sql_order = "order by $sst $sod";
@@ -134,18 +134,20 @@ $colspan = 10;
         $s_level = '<div><label for="ca_name_'.$i.'" '.$class.'><span class="sound_only">'.$p_ca_name.''.($level+1).'단 분류</span></label></div>';
         $s_level_input_size = 25 - $level *2; // 하위 분류일 수록 입력칸 넓이 작아짐 - 지운아빠 2013-04-02
 
-        if ($level+2 < 6) $s_add = '<a href="./categoryform.php?ca_id='.$row['ca_id'].'&amp;'.$qstr.'" class="btn btn_03">추가</a> '; // 분류는 5단계까지만 가능
+        if ($level+2 < 6) $s_add = '<a href="./categoryform.php?ca_no='.$row['cca_noa_id'].'&amp;'.$qstr.'" class="btn btn_03">추가</a> '; // 분류는 5단계까지만 가능
         else $s_add = '';
-        $s_upd = '<a href="./categoryform.php?w=u&amp;ca_id='.$row['ca_id'].'&amp;'.$qstr.'" class="btn btn_02"><span class="sound_only">'.get_text($row['ca_name']).' </span>수정</a> ';
+        $s_upd = '<a href="./categoryform.php?w=u&amp;ca_no='.$row['ca_no'].'&amp;'.$qstr.'" class="btn btn_02"><span class="sound_only">'.get_text($row['ca_name']).' </span>수정</a> ';
 
         if ($is_admin == 'super')
-            $s_del = '<a href="./categoryformupdate.php?w=d&amp;ca_id='.$row['ca_id'].'&amp;'.$qstr.'" onclick="return delete_confirm(this);" class="btn btn_02"><span class="sound_only">'.get_text($row['ca_name']).' </span>삭제</a> ';
+            $s_del = '<a href="./categoryformupdate.php?w=d&amp;ca_no='.$row['ca_no'].'&amp;'.$qstr.'" onclick="return delete_confirm(this);" class="btn btn_02"><span class="sound_only">'.get_text($row['ca_name']).' </span>삭제</a> ';
 
         // 해당 분류에 속한 상품의 수
         $sql1 = " select COUNT(*) as cnt from {$g5['g5_shop_item_table']}
-                      where ca_id = '{$row['ca_id']}'
-                      or ca_id2 = '{$row['ca_id']}'
-                      or ca_id3 = '{$row['ca_id']}' ";
+                      where cn_id = '{$row['cn_id']}'
+                        AND (ca_id = '{$row['ca_id']}'
+                            OR ca_id2 = '{$row['ca_id']}'
+                            OR ca_id3 = '{$row['ca_id']}'
+                        ) ";
         $row1 = sql_fetch($sql1);
 
         // 스킨 Path

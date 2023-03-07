@@ -6,6 +6,9 @@ auth_check_menu($auth, $sub_menu, "w");
 
 // 채널 ID
 $cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';
+
+$ca_no = isset($_POST['$ca_no']) && $_POST['$ca_no'] ? (int)$_POST['ca_no'] : 0;
+
 $cn = get_channel($cn_id);
 if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
     alert('정확한 채널 ID를 입력하세요.');
@@ -201,6 +204,8 @@ if ($w == "")
                     ca_name = '$ca_name',
                     $sql_common ";
     sql_query($sql);
+
+    $ca_no = sql_insert_id();
 }
 else if ($w == "u")
 {
@@ -260,7 +265,7 @@ if(function_exists('get_admin_captcha_by'))
 
 if ($w == "" || $w == "u")
 {
-    goto_url("./categoryform.php?w=u&amp;ca_id=$ca_id&amp;$qstr");
+    goto_url("./categoryform.php?w=u&amp;ca_no=$ca_no&amp;$qstr");
 } else {
     goto_url("./categorylist.php?$qstr");
 }

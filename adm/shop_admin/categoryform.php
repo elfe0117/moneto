@@ -7,7 +7,8 @@ auth_check_menu($auth, $sub_menu, "w");
 
 $cn_id = isset($_REQUEST['cn_id']) && !is_array($_REQUEST['cn_id']) && $_REQUEST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cn_id'])) : '';
 
-$ca_id = isset($_GET['ca_id']) ? preg_replace('/[^0-9a-z]/i', '', $_GET['ca_id']) : '';
+$ca_no = isset($_GET['ca_no']) && $_GET['ca_no'] ? (int)$_GET['ca_no'] : 0;
+
 $ca = array(
 'ca_skin_dir'=>'',
 'ca_mobile_skin_dir'=>'',
@@ -96,7 +97,7 @@ if ($w == "")
 }
 else if ($w == "u")
 {
-    $sql = " select * from {$g5['g5_shop_category_table']} where ca_id = '$ca_id' ";
+    $sql = " select * from {$g5['g5_shop_category_table']} where ca_no = '{$ca_no}' ";
     $ca = sql_fetch($sql);
     if (! (isset($ca['ca_id']) && $ca['ca_id']))
         alert("자료가 없습니다.");
@@ -104,6 +105,7 @@ else if ($w == "u")
     $html_title = $ca['ca_name'] . " 수정";
     $ca['ca_name'] = get_text($ca['ca_name']);
 
+    $ca_no = $ca['ca_no'];
     $cn_id = $ca['cn_id'];
 }
 
@@ -166,6 +168,7 @@ else {
 
 <form name="fcategoryform" action="./categoryformupdate.php" onsubmit="return fcategoryformcheck(this);" method="post" enctype="multipart/form-data">
 
+<input type="hidden" name="ca_no" value="<?php echo $ca_no; ?>">
 <input type="hidden" name="w" value="<?php echo $w; ?>">
 <input type="hidden" name="sst" value="<?php echo $sst; ?>">
 <input type="hidden" name="sod" value="<?php echo $sod; ?>">
