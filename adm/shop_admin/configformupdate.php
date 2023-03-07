@@ -28,15 +28,18 @@ if(! (isset($_POST['de_admin_company_tel']) && check_vaild_callback($_POST['de_a
 // 로그인을 바로 이 주소로 하는 경우 쇼핑몰설정값이 사라지는 현상을 방지
 if (!$_POST['de_admin_company_owner']) goto_url("./configform.php");
 
-if (! empty($_POST['logo_img_del']))  @unlink(G5_DATA_PATH."/common/logo_img");
-if (! empty($_POST['logo_img_del2']))  @unlink(G5_DATA_PATH."/common/logo_img2");
-if (! empty($_POST['mobile_logo_img_del']))  @unlink(G5_DATA_PATH."/common/mobile_logo_img");
-if (! empty($_POST['mobile_logo_img_del2']))  @unlink(G5_DATA_PATH."/common/mobile_logo_img2");
+// 채널 데이터 경로
+$channel_data_path = get_channel_data_path($cn_id);
 
-if ($_FILES['logo_img']['name']) upload_file($_FILES['logo_img']['tmp_name'], "logo_img", G5_DATA_PATH."/common");
-if ($_FILES['logo_img2']['name']) upload_file($_FILES['logo_img2']['tmp_name'], "logo_img2", G5_DATA_PATH."/common");
-if ($_FILES['mobile_logo_img']['name']) upload_file($_FILES['mobile_logo_img']['tmp_name'], "mobile_logo_img", G5_DATA_PATH."/common");
-if ($_FILES['mobile_logo_img2']['name']) upload_file($_FILES['mobile_logo_img2']['tmp_name'], "mobile_logo_img2", G5_DATA_PATH."/common");
+if (! empty($_POST['logo_img_del']))  @unlink($channel_data_path."/common/logo_img");
+if (! empty($_POST['logo_img_del2']))  @unlink($channel_data_path."/common/logo_img2");
+if (! empty($_POST['mobile_logo_img_del']))  @unlink($channel_data_path."/common/mobile_logo_img");
+if (! empty($_POST['mobile_logo_img_del2']))  @unlink($channel_data_path."/common/mobile_logo_img2");
+
+if ($_FILES['logo_img']['name']) upload_file($_FILES['logo_img']['tmp_name'], "logo_img", $channel_data_path."/common");
+if ($_FILES['logo_img2']['name']) upload_file($_FILES['logo_img2']['tmp_name'], "logo_img2", $channel_data_path."/common");
+if ($_FILES['mobile_logo_img']['name']) upload_file($_FILES['mobile_logo_img']['tmp_name'], "mobile_logo_img", $channel_data_path."/common");
+if ($_FILES['mobile_logo_img2']['name']) upload_file($_FILES['mobile_logo_img2']['tmp_name'], "mobile_logo_img2", $channel_data_path."/common");
 
 $de_kcp_mid = isset($_POST['de_kcp_mid']) ? substr($_POST['de_kcp_mid'], 0, 3) : '';
 $cf_icode_server_port = isset($cf_icode_server_port) ? preg_replace('/[^0-9]/', '', $cf_icode_server_port) : '7295';

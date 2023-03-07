@@ -28,8 +28,12 @@ if ($w == 'u') {
         FROM {$g5['g5_shop_default_table']}
         WHERE de_id = '{$de_id}' ";
     $de = sql_fetch($sql);
+
+    $cn_id = $de['cn_id'];
 } else {
     $html_title .= ' 등록';
+
+    $de['cn_id'] = $cn_id;
 }
 
 $g5['title'] = '쇼핑몰설정';
@@ -1322,7 +1326,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <?php echo help("쇼핑몰 상단로고를 직접 올릴 수 있습니다. 이미지 파일만 가능합니다."); ?>
                 <input type="file" name="logo_img" id="logo_img">
                 <?php
-                $logo_img = G5_DATA_PATH."/common/logo_img";
+                $logo_img = get_channel_data_path($cn_id)."/common/logo_img";
                 if (file_exists($logo_img))
                 {
                     $size = getimagesize($logo_img);
@@ -1331,7 +1335,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <label for="logo_img_del"><span class="sound_only">상단로고이미지</span> 삭제</label>
                 <span class="scf_img_logoimg"></span>
                 <div id="logoimg" class="banner_or_img">
-                    <img src="<?php echo G5_DATA_URL; ?>/common/logo_img" alt="">
+                    <img src="<?php echo get_channel_data_url($cn_id, false); ?>/common/logo_img" alt="">
                     <button type="button" class="sit_wimg_close">닫기</button>
                 </div>
                 <script>
@@ -1346,7 +1350,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <?php echo help("쇼핑몰 하단로고를 직접 올릴 수 있습니다. 이미지 파일만 가능합니다."); ?>
                 <input type="file" name="logo_img2" id="logo_img2">
                 <?php
-                $logo_img2 = G5_DATA_PATH."/common/logo_img2";
+                $logo_img2 = get_channel_data_path($cn_id)."/common/logo_img2";
                 if (file_exists($logo_img2))
                 {
                     $size = getimagesize($logo_img2);
@@ -1355,7 +1359,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <label for="logo_img_del2"><span class="sound_only">하단로고이미지</span> 삭제</label>
                 <span class="scf_img_logoimg2"></span>
                 <div id="logoimg2" class="banner_or_img">
-                    <img src="<?php echo G5_DATA_URL; ?>/common/logo_img2" alt="">
+                    <img src="<?php echo get_channel_data_url($cn_id, false); ?>/common/logo_img2" alt="">
                     <button type="button" class="sit_wimg_close">닫기</button>
                 </div>
                 <script>
@@ -1370,7 +1374,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <?php echo help("모바일 쇼핑몰 상단로고를 직접 올릴 수 있습니다. 이미지 파일만 가능합니다."); ?>
                 <input type="file" name="mobile_logo_img" id="mobile_logo_img">
                 <?php
-                $mobile_logo_img = G5_DATA_PATH."/common/mobile_logo_img";
+                $mobile_logo_img = get_channel_data_path($cn_id)."/common/mobile_logo_img";
                 if (file_exists($mobile_logo_img))
                 {
                     $size = getimagesize($mobile_logo_img);
@@ -1379,7 +1383,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <label for="mobile_logo_img_del"><span class="sound_only">모바일 상단로고이미지</span> 삭제</label>
                 <span class="scf_img_mobilelogoimg"></span>
                 <div id="mobilelogoimg" class="banner_or_img">
-                    <img src="<?php echo G5_DATA_URL; ?>/common/mobile_logo_img" alt="">
+                    <img src="<?php echo get_channel_data_url($cn_id, false); ?>/common/mobile_logo_img" alt="">
                     <button type="button" class="sit_wimg_close">닫기</button>
                 </div>
                 <script>
@@ -1394,7 +1398,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <?php echo help("모바일 쇼핑몰 하단로고를 직접 올릴 수 있습니다. 이미지 파일만 가능합니다."); ?>
                 <input type="file" name="mobile_logo_img2" id="mobile_logo_img2">
                 <?php
-                $mobile_logo_img2 = G5_DATA_PATH."/common/mobile_logo_img2";
+                $mobile_logo_img2 = get_channel_data_path($cn_id)."/common/mobile_logo_img2";
                 if (file_exists($mobile_logo_img2))
                 {
                     $size = getimagesize($mobile_logo_img2);
@@ -1403,7 +1407,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <label for="mobile_logo_img_del2"><span class="sound_only">모바일 하단로고이미지</span> 삭제</label>
                 <span class="scf_img_mobilelogoimg2"></span>
                 <div id="mobilelogoimg2" class="banner_or_img">
-                    <img src="<?php echo G5_DATA_URL; ?>/common/mobile_logo_img2" alt="">
+                    <img src="<?php echo get_channel_data_url($cn_id, false); ?>/common/mobile_logo_img2" alt="">
                     <button type="button" class="sit_wimg_close">닫기</button>
                 </div>
                 <script>
