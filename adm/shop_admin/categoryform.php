@@ -103,6 +103,8 @@ else if ($w == "u")
 
     $html_title = $ca['ca_name'] . " 수정";
     $ca['ca_name'] = get_text($ca['ca_name']);
+
+    $cn_id = $ca['cn_id'];
 }
 
 $g5['title'] = $html_title;
@@ -567,7 +569,8 @@ function fcategoryformcheck(f)
             url: "./ajax.ca_id.php",
             type: "POST",
             data: {
-                "ca_id": f.ca_id.value
+                "ca_id": f.ca_id.value,
+                "cn_id": f.cn_id.value
             },
             dataType: "json",
             async: false,
