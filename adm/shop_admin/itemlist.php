@@ -43,7 +43,7 @@ if ($sfl == "")  $sfl = "it_name";
 
 $sql_common = " from {$g5['g5_shop_item_table']} a ,
                      {$g5['g5_shop_category_table']} b
-               where (a.ca_id = b.ca_id";
+               where (a.cn_id = b.cn_id AND a.ca_id = b.ca_id";
 if ($is_admin != 'super')
     $sql_common .= " and b.ca_mb_id = '{$member['mb_id']}'";
 $sql_common .= ") ";
