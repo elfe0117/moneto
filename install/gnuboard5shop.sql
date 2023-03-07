@@ -1,6 +1,22 @@
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `g5_shop_brand`
+--
+
+DROP TABLE IF EXISTS `g5_shop_brand`;
+CREATE TABLE IF NOT EXISTS `g5_shop_brand` (
+  `br_no` int(11) NOT NULL AUTO_INCREMENT COMMENT '브랜드 번호',
+  `cn_id` varchar(20) NOT NULL DEFAULT '' COMMENT '채널 ID',
+  `br_name` varchar(255) NOT NULL DEFAULT '' COMMENT '브랜드 명',
+  `br_datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`br_no`),
+  KEY `cn_id` (`cn_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `g5_shop_banner`
 --
 
