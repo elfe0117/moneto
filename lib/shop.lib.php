@@ -2013,7 +2013,7 @@ function check_itemuse_write($it_id, $mb_id, $close=true)
 // 구매 본인인증 체크
 function shop_member_cert_check($id, $type)
 {
-    global $g5, $member;
+    global $g5, $member, $channel;
 
     $msg = '';
 
@@ -2029,7 +2029,7 @@ function shop_member_cert_check($id, $type)
                 if(!$ca_id)
                     continue;
 
-                $sql = " select ca_cert_use, ca_adult_use from {$g5['g5_shop_category_table']} where ca_id = '$ca_id' ";
+                $sql = " select ca_cert_use, ca_adult_use from {$g5['g5_shop_category_table']} where cn_id = '{$channel['cn_id']}' AND ca_id = '$ca_id' ";
                 $row = sql_fetch($sql);
 
                 if (($row['ca_cert_use'] || $row['ca_adult_use']) && strlen($member['mb_dupinfo']) == 64 && $member['mb_certify']) { // 본인 인증 된 계정 중에서 di로 저장 되었을 경우에만
@@ -2063,7 +2063,7 @@ function shop_member_cert_check($id, $type)
 
             break;
         case 'list':
-            $sql = " select * from {$g5['g5_shop_category_table']} where ca_id = '$id' ";
+            $sql = " select * from {$g5['g5_shop_category_table']} where cn_id = '{$channel['cn_id']}' AND ca_id = '$id' ";
             $ca = sql_fetch($sql);
 
             if (($ca['ca_cert_use'] || $ca['ca_adult_use']) && strlen($member['mb_dupinfo']) == 64 && $member['mb_certify']) { // 본인 인증 된 계정 중에서 di로 저장 되었을 경우에만

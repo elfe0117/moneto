@@ -3,11 +3,12 @@ include_once("./_common.php");
 
 $sql = "SELECT a.ca_id,
                 a.ca_adult_use AS ca_adult,
-                IF( SUBSTR(a.ca_id, 3) != \"\", (SELECT ca_adult_use FROM `{$g5['g5_shop_category_table']}` WHERE ca_id = SUBSTR(a.ca_id, 3)), 0) AS ca_adult_parent1,
-                IF( SUBSTR(a.ca_id, 5) != \"\", (SELECT ca_adult_use FROM `{$g5['g5_shop_category_table']}` WHERE ca_id = SUBSTR(a.ca_id, 5)), 0) AS ca_adult_parent2,
-                IF( SUBSTR(a.ca_id, 7) != \"\", (SELECT ca_adult_use FROM `{$g5['g5_shop_category_table']}` WHERE ca_id = SUBSTR(a.ca_id, 7)), 0) AS ca_adult_parent3, 
-                IF( SUBSTR(a.ca_id, 9) != \"\", (SELECT ca_adult_use FROM `{$g5['g5_shop_category_table']}` WHERE ca_id = SUBSTR(a.ca_id, 9)), 0) AS ca_adult_parent4
-                FROM `{$g5['g5_shop_category_table']}` AS a";
+                IF( SUBSTR(a.ca_id, 3) != \"\", (SELECT ca_adult_use FROM `{$g5['g5_shop_category_table']}` WHERE cn_id = '{$channel['cn_id']}' AND ca_id = SUBSTR(a.ca_id, 3)), 0) AS ca_adult_parent1,
+                IF( SUBSTR(a.ca_id, 5) != \"\", (SELECT ca_adult_use FROM `{$g5['g5_shop_category_table']}` WHERE cn_id = '{$channel['cn_id']}' AND ca_id = SUBSTR(a.ca_id, 5)), 0) AS ca_adult_parent2,
+                IF( SUBSTR(a.ca_id, 7) != \"\", (SELECT ca_adult_use FROM `{$g5['g5_shop_category_table']}` WHERE cn_id = '{$channel['cn_id']}' AND ca_id = SUBSTR(a.ca_id, 7)), 0) AS ca_adult_parent3, 
+                IF( SUBSTR(a.ca_id, 9) != \"\", (SELECT ca_adult_use FROM `{$g5['g5_shop_category_table']}` WHERE cn_id = '{$channel['cn_id']}' AND ca_id = SUBSTR(a.ca_id, 9)), 0) AS ca_adult_parent4
+                FROM `{$g5['g5_shop_category_table']}` AS a
+                WHERE a.cn_id = '{$channel['cn_id']}' ";
 $result = sql_query($sql);
 
 $category_adult_array = array();

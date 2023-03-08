@@ -9,7 +9,7 @@ include_once(G5_MSHOP_PATH.'/_head.php');
 $sql_common = " from {$g5['g5_shop_item_table']} a, {$g5['g5_shop_category_table']} b ";
 
 $where = array();
-$where[] = " (a.ca_id = b.ca_id and a.it_use = 1 and b.ca_use = 1) ";
+$where[] = " (a.ca_id = b.ca_id and a.it_use = 1 and b.ca_use = 1 AND b.cn_id = '{$channel['cn_id']}') ";
 
 $search_all = true;
 // 상세검색 이라면
