@@ -2,12 +2,12 @@
 $sub_menu = '400200';
 include_once('./_common.php');
 
-auth_check_menu($auth, $sub_menu, "w");
+//auth_check_menu($auth, $sub_menu, "w");
 
 // 채널 ID
 $cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';
 
-$ca_no = isset($_POST['$ca_no']) && $_POST['$ca_no'] ? (int)$_POST['ca_no'] : 0;
+$ca_no = isset($_POST['ca_no']) && $_POST['ca_no'] ? (int)$_POST['ca_no'] : 0;
 
 $cn = get_channel($cn_id);
 if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
@@ -221,7 +221,8 @@ else if ($w == "u")
         $len = strlen($ca_id);
         $sql = " update {$g5['g5_shop_category_table']}
                     set $sql_common
-                  where SUBSTRING(ca_id,1,$len) = '$ca_id' ";
+                  where cn_id = '{$cn_id}'
+                    AND SUBSTRING(ca_id,1,$len) = '$ca_id' ";
         if ($is_admin != 'super')
             $sql .= " and ca_mb_id = '{$member['mb_id']}' ";
         sql_query($sql);
