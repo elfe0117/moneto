@@ -3,7 +3,7 @@ $sub_menu = '100610';
 require_once './_common.php';
 
 $cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';
-/*
+
 if ($w == "u" || $w == "d") {
     check_demo();
 }
@@ -15,7 +15,7 @@ if ($w == 'd') {
 }
 
 check_admin_token();
-*/
+
 $cn_name = isset($_POST['cn_name']) ? strip_tags(clean_xss_attributes($_POST['cn_name'])) : '';
 $cg_id = isset($_POST['cg_id']) ? (int)$_POST['cg_id'] : 0;
 $cn_use = isset($_POST['cn_use']) ? (int)$_POST['cn_use'] : 0;
