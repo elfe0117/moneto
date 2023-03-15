@@ -128,7 +128,6 @@ $(function (){
 <div id="wrapper">
 
     <div id="aside">
-
         <?php include_once(G5_SHOP_SKIN_PATH.'/boxcategory.skin.php'); // 상품분류 ?>
         <?php include_once(G5_THEME_SHOP_PATH.'/category.php'); // 분류 ?>
         <?php if($default['de_type4_list_use']) { ?>

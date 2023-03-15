@@ -32,7 +32,7 @@ add_stylesheet('<link rel="stylesheet" href="'.G5_SHOP_CSS_URL.'/style.css">', 0
                 $cp_target = '<a href="./item.php?it_id='.$row3['it_id'].'">'.get_text($row3['it_name']).'</a>';
                 break;
             case '1':
-                $sql3 = " select ca_id, ca_name from {$g5['g5_shop_category_table']} where ca_id = '{$row['cp_target']}' ";
+                $sql3 = " select ca_id, ca_name from {$g5['g5_shop_category_table']} where cn_id = '{$channel['cn_id']}' AND ca_id = '{$row['cp_target']}' ";
                 $row3 = sql_fetch($sql3);
                 $cp_target = '<a href="./list.php?ca_id='.$row3['ca_id'].'">'.get_text($row3['ca_name']).'</a>';
                 break;
@@ -92,7 +92,7 @@ add_stylesheet('<link rel="stylesheet" href="'.G5_SHOP_CSS_URL.'/style.css">', 0
                 $cp_target = '<a href="./item.php?it_id='.$row3['it_id'].'">'.get_text($row3['it_name']).'</a>';
                 break;
             case '1':
-                $sql3 = " select ca_id, ca_name from {$g5['g5_shop_category_table']} where ca_id = '{$row['cp_target']}' ";
+                $sql3 = " select ca_id, ca_name from {$g5['g5_shop_category_table']} where cn_id = '{$channel['cn_id']}' AND ca_id = '{$row['cp_target']}' ";
                 $row3 = sql_fetch($sql3);
                 $cp_target = '<a href="./list.php?ca_id='.$row3['ca_id'].'">'.get_text($row3['ca_name']).'</a>';
                 break;

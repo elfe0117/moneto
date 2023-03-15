@@ -45,12 +45,14 @@ for ($i=0; $row=sql_fetch_array($result); $i++)
         else if ($row['bn_url'] && $row['bn_url'] != 'http://') {
             $banner .= '<a href="'.G5_SHOP_URL.'/bannerhit.php?bn_id='.$row['bn_id'].'&amp;url='.urlencode($row['bn_url']).'"'.$bn_new_win.' >';
         
-            echo $banner.'<span  style="background-image:url('.G5_DATA_URL.'/banner/'.$row['bn_id'].');" class="bn-img"><span class="bn-txt-wr"><span class="bn-txt">'.$row['bn_alt'].'<br><span class="btn_detail">자세히보기</span></span></span></span>';
+            //echo $banner.'<span  style="background-image:url('.G5_DATA_URL.'/banner/'.$row['bn_id'].');" class="bn-img"><span class="bn-txt-wr"><span class="bn-txt">'.$row['bn_alt'].'<br><span class="btn_detail">자세히보기</span></span></span></span>';
+            echo $banner.'<span  style="background-image:url('.G5_DATA_URL.'/banner/'.$row['bn_id'].');" class="bn-img"><span class="bn-txt-wr"><span class="btn_detail">자세히보기</span></span></span>';
             if($banner)
                 echo '</a>'.PHP_EOL;
         }
         else {
-            echo $banner.'<span  style="background-image:url('.G5_DATA_URL.'/banner/'.$row['bn_id'].');" class="bn-img"><span class="bn-txt-wr"><span class="bn-txt">'.$row['bn_alt'].'</span></span></span>';
+            //echo $banner.'<span  style="background-image:url('.G5_DATA_URL.'/banner/'.$row['bn_id'].');" class="bn-img"><span class="bn-txt-wr"><span class="bn-txt">'.$row['bn_alt'].'</span></span></span>';
+            echo $banner.'<span  style="background-image:url('.G5_DATA_URL.'/banner/'.$row['bn_id'].');" class="bn-img"><span class="bn-txt-wr"></span></span>';
         }
         echo '</li>'.PHP_EOL;
 

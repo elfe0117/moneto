@@ -1,4 +1,5 @@
 <?php
+/*
 // 모듈 기본 경록
 $basepath = pathinfo(__FILE__)['dirname'];
 define(G5_MODULE_PASS_PATH, $basepath);
@@ -22,3 +23,4 @@ $is_pass_admin = false;
 if (isset($profile['pf_admin']) && $profile['pf_admin'] == $member['mb_id']) {
     $is_pass_admin = true;
 }
+*/

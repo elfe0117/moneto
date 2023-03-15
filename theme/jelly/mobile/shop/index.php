@@ -12,15 +12,13 @@ include_once(G5_THEME_MSHOP_PATH.'/shop.head.php');
 <?php echo display_banner('메인', 'mainbanner.10.skin.php'); ?>
 
 <div class="idx_c">
-     <?php include_once(G5_MSHOP_SKIN_PATH.'/main.event.skin.php'); // 이벤트 ?>
+     <?php
+     include_once(G5_MSHOP_SKIN_PATH.'/main.event.skin.php'); // 이벤트
+     ?>
 </div>
 <?php echo display_banner('왼쪽', 'boxbanner.skin.php'); ?>
-<div class="idx_c">
-   
 
-</div>
-
-
+<div class="idx_c"></div>
 
 <div class="idx_c">
     <?php if($default['de_mobile_type3_list_use']) { ?>

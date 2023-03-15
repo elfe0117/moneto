@@ -432,6 +432,24 @@ set_session('ss_cid', $channel['cn_id']);
 @define('G5_DATA_URL', G5_URL.'/channel/'.$channel['cn_id'].'/data');
 @define('G5_DATA_PATH', G5_PATH.'/channel/'.$channel['cn_id'].'/data');
 
+////////////////////////////////////////////////////////////////////////////////
+// 모듈 설정
+////////////////////////////////////////////////////////////////////////////////
+$config['cf_module'] = isset($_REQUEST['md']) ? trim($_REQUEST['md']) : '';
+if (isset($config['cf_module']) && $config['cf_module']) {
+    $module_path = G5_PATH.'/'.G5_MODULE_DIR.'/'.$config['cf_module'];
+    if (is_dir($module_path)) {
+        define('G5_MODULE_PATH', $module_path);
+        define('G5_MODULE_URL', G5_URL.'/'.G5_MODULE_DIR.'/'.$config['cf_module']);
+    }
+    unset($module_path);
+}
+
+// 모듈 설정 불러오기
+if(defined('G5_MODULE_PATH') && is_file(G5_MODULE_PATH.'/module.config.php')) {
+    include_once(G5_MODULE_PATH.'/module.config.php');
+}
+
 //==============================================================================
 // 공용 변수
 //------------------------------------------------------------------------------

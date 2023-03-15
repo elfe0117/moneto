@@ -142,7 +142,7 @@ box-shadow: 0 2px 9px rgba(0,0,0,0.1)}
     #btn_cate{display:none}
     .menu{display:block !important}
     .menu:after {display:block;visibility:hidden;clear:both;content:""}
-    .menu_wr{float:left;}
+    .menu_wr{float:left;height: 45px;line-height: 45px;}
 
     .btn_login .btn_ol{width:auto;vertical-align:top}
     .btn_login .btn_ol .txt{color:#717989;display:inline-block;margin-left:5px}
