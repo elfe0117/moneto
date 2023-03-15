@@ -54,6 +54,7 @@ add_stylesheet('<link rel="stylesheet" href="'.G5_MSHOP_SKIN_URL.'/style.css">',
             $sql2 = " select b.*
                                 from `{$g5['g5_shop_event_item_table']}` a left join `{$g5['g5_shop_item_table']}` b on (a.it_id = b.it_id)
                                 where a.ev_id = '{$row['ev_id']}'
+                                    AND b.cn_id = '{$channel['cn_id']}'
                                 order by it_id desc
                                 limit 0, 2 ";
             $result2 = sql_query($sql2);

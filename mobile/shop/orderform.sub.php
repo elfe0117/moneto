@@ -48,7 +48,8 @@ ob_start();
                         b.it_notax
                    from {$g5['g5_shop_cart_table']} a left join {$g5['g5_shop_item_table']} b on ( a.it_id = b.it_id )
                   where a.od_id = '$s_cart_id'
-                    and a.ct_select = '1' ";
+                    and a.ct_select = '1'
+                    AND b.cn_id = '{$channel['cn_id']}' ";
         $sql .= " group by a.it_id ";
         $sql .= " order by a.ct_id ";
         $result = sql_query($sql);

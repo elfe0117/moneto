@@ -50,7 +50,7 @@ $gt = ">>>";
 $shop_url = G5_SHOP_URL;
 $data_url = G5_DATA_URL;
 
-$sql =" select * from {$g5['g5_shop_item_table']} where it_use = '1' and it_soldout = '0' order by ca_id";
+$sql =" select * from {$g5['g5_shop_item_table']} where cn_id = '{$channel['cn_id']}' AND it_use = '1' and it_soldout = '0' order by ca_id";
 $result = sql_query($sql);
 $totcnt = sql_num_rows($result);
 

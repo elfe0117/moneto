@@ -57,13 +57,14 @@ if (!$saved) {
 
 // 조회수 증가
 if (get_cookie('ck_it_id') != $it_id) {
-    sql_query(" update {$g5['g5_shop_item_table']} set it_hit = it_hit + 1 where it_id = '$it_id' "); // 1증가
+    sql_query(" update {$g5['g5_shop_item_table']} set it_hit = it_hit + 1 where cn_id = '{$channel['cn_id']}' AND it_id = '$it_id' "); // 1증가
     set_cookie("ck_it_id", $it_id, 3600); // 1시간동안 저장
 }
 
 // 이전 상품보기
 $sql = " select it_id, it_name from {$g5['g5_shop_item_table']}
-          where it_id > '$it_id'
+          where cn_id = '{$channel['cn_id']}'
+            AND it_id > '$it_id'
             and SUBSTRING(ca_id,1,4) = '".substr($it['ca_id'],0,4)."'
             and it_use = '1'
           order by it_id asc
@@ -81,7 +82,8 @@ if (isset($row['it_id']) && $row['it_id']) {
 
 // 다음 상품보기
 $sql = " select it_id, it_name from {$g5['g5_shop_item_table']}
-          where it_id < '$it_id'
+          where cn_id = '{$channel['cn_id']}'
+            AND it_id < '$it_id'
             and SUBSTRING(ca_id,1,4) = '".substr($it['ca_id'],0,4)."'
             and it_use = '1'
           order by it_id desc
@@ -112,7 +114,8 @@ if ($default['de_mobile_rel_list_use']) {
     $sql = " select count(*) as cnt
                from {$g5['g5_shop_item_relation_table']} a
                left join {$g5['g5_shop_item_table']} b on (a.it_id2=b.it_id)
-              where a.it_id = '{$it['it_id']}' and b.it_use='1' ";
+              where a.it_id = '{$it['it_id']}' and b.it_use='1'
+                AND b.cn_id = '{$channel['cn_id']}' ";
     $row = sql_fetch($sql);
     $item_relation_count = $row['cnt'];
 }

@@ -126,7 +126,8 @@ if($is_member) {
         if($cp['cp_method']) {
             $sql2 = " select it_id, ca_id, ca_id2, ca_id3
                         from {$g5['g5_shop_item_table']}
-                        where it_id = '$it_id' ";
+                        where it_id = '$it_id'
+                            AND cn_id = '{$channel['cn_id']}' ";
             $row2 = sql_fetch($sql2);
 
             if(!$row2['it_id'])

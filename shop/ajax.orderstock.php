@@ -53,7 +53,7 @@ for($i=0; $row=sql_fetch_array($result); $i++) {
     $ct_qty = $row['ct_qty'];
 
     // 해당 상품이 품절 또는 판매중지 상태인지 체크합니다.
-    $sql = " select it_soldout, it_use, ca_id, ca_id2, ca_id3 from {$g5['g5_shop_item_table']} where it_id = '".$row['it_id']."' ";
+    $sql = " select it_soldout, it_use, ca_id, ca_id2, ca_id3 from {$g5['g5_shop_item_table']} where it_id = '".$row['it_id']."' AND cn_id = '{$channel['cn_id']}' ";
     $item = sql_fetch($sql);
     
     $category_str = '';

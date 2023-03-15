@@ -28,7 +28,8 @@ $sql = " select a.ct_id,
                 a.it_sc_type,
                 b.ca_id
            from {$g5['g5_shop_cart_table']} a left join {$g5['g5_shop_item_table']} b on ( a.it_id = b.it_id )
-          where a.od_id = '$s_cart_id' ";
+          where a.od_id = '$s_cart_id'
+            AND b.cn_id = '{$channel['cn_id']}' ";
 $sql .= " group by a.it_id ";
 $sql .= " order by a.ct_id ";
 $result = sql_query($sql);

@@ -67,6 +67,7 @@ include_once(G5_THEME_MSHOP_PATH.'/shop.head.php');
                                 {$g5['g5_shop_item_table']} b
                           where a.mb_id = '{$member['mb_id']}'
                             and a.it_id  = b.it_id
+                            AND b.cn_id = '{$channel['cn_id']}'
                           order by a.wi_id desc
                           limit 0, 4 ";
                 $result = sql_query($sql);

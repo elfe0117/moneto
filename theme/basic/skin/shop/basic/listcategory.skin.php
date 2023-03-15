@@ -12,7 +12,7 @@ $sql = " select ca_id, ca_name from {$g5['g5_shop_category_table']} where cn_id 
 $result = sql_query($sql);
 while ($row=sql_fetch_array($result)) {
 
-    $row2 = sql_fetch(" select count(*) as cnt from {$g5['g5_shop_item_table']} where (ca_id like '{$row['ca_id']}%' or ca_id2 like '{$row['ca_id']}%' or ca_id3 like '{$row['ca_id']}%') and it_use = '1'  ");
+    $row2 = sql_fetch(" select count(*) as cnt from {$g5['g5_shop_item_table']} where (ca_id like '{$row['ca_id']}%' or ca_id2 like '{$row['ca_id']}%' or ca_id3 like '{$row['ca_id']}%') and it_use = '1' AND cn_id = '{$channel['cn_id']}'  ");
 
     $str .= '<li><a href="'.shop_category_url($row['ca_id']).'">'.$row['ca_name'].' ('.$row2['cnt'].')</a></li>';
     $exists = true;

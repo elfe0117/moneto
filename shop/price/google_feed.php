@@ -22,7 +22,7 @@ for ($i = 0; $row = sql_fetch_array($result); $i++ ) {
 
 $sql =" SELECT a.*, IFNULL((SELECT MAX(`io_stock_qty`) FROM `{$g5['g5_shop_item_option_table']}` WHERE `it_id` = a.`it_id` GROUP BY `it_id`), a.`it_stock_qty`) AS in_stock
         FROM `{$g5['g5_shop_item_table']}` as a
-        where a.`it_use` = '1' and a.`it_soldout` = '0' and a.`it_tel_inq` = '0' and a.`it_price` > '0' order by a.`ca_id`";
+        where a.`cn_id` = '{$channel['cn_id']}' AND a.`it_use` = '1' and a.`it_soldout` = '0' and a.`it_tel_inq` = '0' and a.`it_price` > '0' order by a.`ca_id`";
 $result = sql_query($sql);
 
 $xml = new SimpleXMLElement("<rss/>");

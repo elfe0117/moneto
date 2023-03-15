@@ -12,6 +12,7 @@ $sql = " select a.*,
                 {$g5['g5_shop_category_table']} b
           where a.it_id = '$it_id'
             and a.ca_id = b.ca_id
+            AND a.cn_id = '{$channel['cn_id']}'
             AND b.cn_id = '{$channel['cn_id']}' ";
 $it = sql_fetch($sql);
 if (!$it['it_id'])

@@ -5,7 +5,7 @@ $g5['title'] = '상품문의';
 include_once(G5_MSHOP_PATH.'/_head.php');
 
 $sql_common = " from `{$g5['g5_shop_item_qa_table']}` a join `{$g5['g5_shop_item_table']}` b on (a.it_id=b.it_id) ";
-$sql_search = " where (1) ";
+$sql_search = " where (1) AND b.cn_id = '{$channel['cn_id']}' ";
 
 if(!$sfl)
     $sfl = 'b.it_name';

@@ -109,6 +109,7 @@ for($k=0; $cp=sql_fetch_array($res); $k++) {
                                 {$g5['g5_shop_item_table']} b
                           where a.mb_id = '{$member['mb_id']}'
                             and a.it_id  = b.it_id
+                            AND b.cn_id = '{$channel['cn_id']}'
                           order by a.wi_id desc
                           limit 0, 8 ";
                 $result = sql_query($sql);

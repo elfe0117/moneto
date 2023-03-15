@@ -47,7 +47,7 @@ $gt = ">>>";
 $shop_url = G5_SHOP_URL;
 $data_url = G5_DATA_URL;
 
-$sql =" select * from {$g5['g5_shop_item_table']} where it_use = '1' and substring(it_update_time, 1, 10) = '".G5_TIME_YMD."' order by ca_id";
+$sql =" select * from {$g5['g5_shop_item_table']} where cn_id = '{$channel['cn_id']}' AND it_use = '1' and substring(it_update_time, 1, 10) = '".G5_TIME_YMD."' order by ca_id";
 $result = sql_query($sql);
 
 for ($i=0; $row=sql_fetch_array($result); $i++)
