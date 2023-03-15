@@ -30,7 +30,7 @@ if (!$_POST['de_admin_company_owner']) goto_url("./configform.php");
 
 // 채널 데이터 경로
 $channel_data_path = get_channel_data_path($cn_id);
-
+ 
 if (! empty($_POST['logo_img_del']))  @unlink($channel_data_path."/common/logo_img");
 if (! empty($_POST['logo_img_del2']))  @unlink($channel_data_path."/common/logo_img2");
 if (! empty($_POST['mobile_logo_img_del']))  @unlink($channel_data_path."/common/mobile_logo_img");

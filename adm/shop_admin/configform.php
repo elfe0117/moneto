@@ -256,7 +256,7 @@ if(!$de['de_kakaopay_cancelpwd']){
         </tr>
         </tbody>
         </table>
-    </div>
+    </div> 
 </sction>
 <section id="anc_scf_info">
     <h2 class="h2_frm">사업자정보</h2>
