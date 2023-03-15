@@ -9,3 +9,5 @@ $menu['menu200'] = array(
     array('200200', '포인트관리', G5_ADMIN_URL . '/point_list.php', 'mb_point'),
     array('200900', '투표관리', G5_ADMIN_URL . '/poll_list.php', 'mb_poll')
 );
+
+$menu['menu200'][] = array('200190', '회원등급관리', G5_ADMIN_URL . '/channel_check.php?url='.urldecode('./level_list.php'), 'mb_level');
