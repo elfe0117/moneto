@@ -47,8 +47,8 @@ for($i=0;$i<$count_chk_bn_id;$i++)
             // 원글이라면
             if (!$row['wr_is_comment'])
             {
-                if (!delete_point($row['mb_id'], $bo_table, $row['wr_id'], '쓰기'))
-                    insert_point($row['mb_id'], $board['bo_write_point'] * (-1), "{$board['bo_subject']} {$row['wr_id']} 글삭제");
+                if (!delete_point($channel['cn_id'], $row['mb_id'], $bo_table, $row['wr_id'], '쓰기'))
+                    insert_point($channel['cn_id'], $row['mb_id'], $board['bo_write_point'] * (-1), "{$board['bo_subject']} {$row['wr_id']} 글삭제");
 
                 // 업로드된 파일이 있다면 파일삭제
                 $sql2 = " select * from {$g5['board_file_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '{$row['wr_id']}' ";
@@ -72,8 +72,8 @@ for($i=0;$i<$count_chk_bn_id;$i++)
             else
             {
                 // 댓글 포인트 삭제
-                if (!delete_point($row['mb_id'], $bo_table, $row['wr_id'], '댓글'))
-                    insert_point($row['mb_id'], $board['bo_comment_point'] * (-1), "{$board['bo_subject']} {$write['wr_id']}-{$row['wr_id']} 댓글삭제");
+                if (!delete_point($channel['cn_id'], $row['mb_id'], $bo_table, $row['wr_id'], '댓글'))
+                    insert_point($channel['cn_id'], $row['mb_id'], $board['bo_comment_point'] * (-1), "{$board['bo_subject']} {$write['wr_id']}-{$row['wr_id']} 댓글삭제");
 
                 $count_comment++;
             }
@@ -128,8 +128,8 @@ for($i=0;$i<$count_chk_bn_id;$i++)
         $comment_reply = substr($write['wr_comment_reply'], 0, $len);
 
         // 코멘트 삭제
-        if (!delete_point($write['mb_id'], $bo_table, $comment_id, '댓글')) {
-            insert_point($write['mb_id'], $board['bo_comment_point'] * (-1), "{$board['bo_subject']} {$write['wr_parent']}-{$comment_id} 댓글삭제");
+        if (!delete_point($channel['cn_id'], $write['mb_id'], $bo_table, $comment_id, '댓글')) {
+            insert_point($channel['cn_id'], $write['mb_id'], $board['bo_comment_point'] * (-1), "{$board['bo_subject']} {$write['wr_parent']}-{$comment_id} 댓글삭제");
         }
 
         // 코멘트 삭제

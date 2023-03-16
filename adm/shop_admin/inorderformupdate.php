@@ -248,6 +248,7 @@ $od_hope_date = isset($data['od_hope_date']) ? clean_xss_tags($data['od_hope_dat
 // 주문서에 입력
 $sql = " insert {$g5['g5_shop_order_table']}
             set od_id             = '$od_id',
+                cn_id             = '{$od['cn_id']}',
                 mb_id             = '{$od['mb_id']}',
                 od_pwd            = '$od_pwd',
                 od_name           = '$od_name',
@@ -315,7 +316,7 @@ $result = sql_query($sql, true);
 
 // 회원이면서 포인트를 사용했다면 테이블에 사용을 추가
 if ($od['mb_id'] && $od_receipt_point)
-    insert_point($od['mb_id'], (-1) * $od_receipt_point, "주문번호 $od_id 결제");
+    insert_point($od['cn_id'], $od['mb_id'], (-1) * $od_receipt_point, "주문번호 $od_id 결제");
 
 // 쿠폰사용내역기록
 if($od['mb_id']) {

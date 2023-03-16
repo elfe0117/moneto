@@ -2366,11 +2366,11 @@ function save_order_point($ct_status="완료")
     $result = sql_query($sql);
     for ($i=0; $row=sql_fetch_array($result); $i++) {
         // 회원 ID 를 얻는다.
-        $od_row = sql_fetch("select od_id, mb_id from {$g5['g5_shop_order_table']} where od_id = '{$row['od_id']}' ");
+        $od_row = sql_fetch("select cn_id, od_id, mb_id from {$g5['g5_shop_order_table']} where od_id = '{$row['od_id']}' ");
         if ($od_row['mb_id'] && $row['ct_point'] > 0) { // 회원이면서 포인트가 0보다 크다면
             $po_point = $row['ct_point'] * $row['ct_qty'];
             $po_content = "주문번호 {$od_row['od_id']} ({$row['ct_id']}) 배송완료";
-            insert_point($od_row['mb_id'], $po_point, $po_content, "@delivery", $od_row['mb_id'], "{$od_row['od_id']},{$row['ct_id']}");
+            insert_point($od_row['cn_id'], $od_row['mb_id'], $po_point, $po_content, "@delivery", $od_row['mb_id'], "{$od_row['od_id']},{$row['ct_id']}");
         }
         sql_query("update {$g5['g5_shop_cart_table']} set ct_point_use = '1' where ct_id = '{$row['ct_id']}' ");
     }

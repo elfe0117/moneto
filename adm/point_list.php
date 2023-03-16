@@ -146,6 +146,7 @@ if (strstr($sfl, "mb_id")) {
 
                     <tr class="<?php echo $bg; ?>">
                         <td class="td_chk">
+                            <input type="hidden" name="cn_id[<?php echo $i ?>]" value="<?php echo $row['cn_id'] ?>" id="cn_id_<?php echo $i ?>">
                             <input type="hidden" name="mb_id[<?php echo $i ?>]" value="<?php echo $row['mb_id'] ?>" id="mb_id_<?php echo $i ?>">
                             <input type="hidden" name="po_id[<?php echo $i ?>]" value="<?php echo $row['po_id'] ?>" id="po_id_<?php echo $i ?>">
                             <label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo $row['po_content'] ?> 내역</label>

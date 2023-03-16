@@ -71,7 +71,7 @@ if(function_exists('update_auth_session_token')) update_auth_session_token($mb['
 
 // 포인트 체크
 if($config['cf_use_point']) {
-    $sum_point = get_point_sum($mb['mb_id']);
+    $sum_point = get_point_sum($channel['cn_id'], $mb['mb_id']);
 
     $sql= " update {$g5['member_table']} set mb_point = '$sum_point' where mb_id = '{$mb['mb_id']}' ";
     sql_query($sql);

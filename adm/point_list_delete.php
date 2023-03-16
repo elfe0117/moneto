@@ -54,7 +54,7 @@ for ($i = 0; $i < $count; $i++) {
     sql_query($sql);
 
     // 포인트 UPDATE
-    $sum_point = get_point_sum($_POST['mb_id'][$k]);
+    $sum_point = get_point_sum($_POST['cn_id'][$k], $_POST['mb_id'][$k]);
     $sql = " update {$g5['member_table']} set mb_point = '$sum_point' where mb_id = '{$str_mb_id}' ";
     sql_query($sql);
 }

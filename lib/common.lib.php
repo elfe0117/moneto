@@ -991,7 +991,7 @@ function get_yn_select($name, $selected='1', $event='')
 
 
 // 포인트 부여
-function insert_point($mb_id, $point, $content='', $rel_table='', $rel_id='', $rel_action='', $expire=0)
+function insert_point($cn_id='', $mb_id, $point, $content='', $rel_table='', $rel_id='', $rel_action='', $expire=0)
 {
     global $config;
     global $g5;
@@ -1009,13 +1009,14 @@ function insert_point($mb_id, $point, $content='', $rel_table='', $rel_id='', $r
     if (!$mb['mb_id']) { return 0; }
 
     // 회원포인트
-    $mb_point = get_point_sum($mb_id);
+    $mb_point = get_point_sum($cn_id, $mb_id);
 
     // 이미 등록된 내역이라면 건너뜀
     if ($rel_table || $rel_id || $rel_action)
     {
         $sql = " select count(*) as cnt from {$g5['point_table']}
-                  where mb_id = '$mb_id'
+                  where cn_id = '{$cn_id}'
+                    AND mb_id = '$mb_id'
                     and po_rel_table = '$rel_table'
                     and po_rel_id = '$rel_id'
                     and po_rel_action = '$rel_action' ";
@@ -1041,7 +1042,8 @@ function insert_point($mb_id, $point, $content='', $rel_table='', $rel_id='', $r
     $po_mb_point = $mb_point + $point;
 
     $sql = " insert into {$g5['point_table']}
-                set mb_id = '$mb_id',
+                set cn_id = '{$cn_id}',
+                    mb_id = '$mb_id',
                     po_datetime = '".G5_TIME_YMDHIS."',
                     po_content = '".addslashes($content)."',
                     po_point = '$point',
@@ -1194,7 +1196,7 @@ function delete_expire_point($mb_id, $point)
 }
 
 // 포인트 내역 합계
-function get_point_sum($mb_id)
+function get_point_sum($cn_id='', $mb_id)
 {
     global $g5, $config;
 
@@ -1213,7 +1215,8 @@ function get_point_sum($mb_id)
             $po_expired = 1;
 
             $sql = " insert into {$g5['point_table']}
-                        set mb_id = '$mb_id',
+                        set cn_id = '{$cn_id}',
+                            mb_id = '$mb_id',
                             po_datetime = '".G5_TIME_YMDHIS."',
                             po_content = '".addslashes($content)."',
                             po_point = '$point',
@@ -1235,7 +1238,8 @@ function get_point_sum($mb_id)
         // 유효기간이 있을 때 기간이 지난 포인트 expired 체크
         $sql = " update {$g5['point_table']}
                     set po_expired = '1'
-                    where mb_id = '$mb_id'
+                    where cn_id = '{$cn_id}'
+                        AND mb_id = '$mb_id'
                       and po_expired <> '1'
                       and po_expire_date <> '9999-12-31'
                       and po_expire_date < '".G5_TIME_YMD."' ";
@@ -1245,7 +1249,8 @@ function get_point_sum($mb_id)
     // 포인트합
     $sql = " select sum(po_point) as sum_po_point
                 from {$g5['point_table']}
-                where mb_id = '$mb_id' ";
+                where cn_id = '{$cn_id}'
+                    AND mb_id = '$mb_id' ";
     $row = sql_fetch($sql);
 
     return $row['sum_po_point'];
@@ -1271,7 +1276,7 @@ function get_expire_point($mb_id)
 }
 
 // 포인트 삭제
-function delete_point($mb_id, $rel_table, $rel_id, $rel_action)
+function delete_point($cn_id='', $mb_id, $rel_table, $rel_id, $rel_action)
 {
     global $g5;
 
@@ -1280,7 +1285,8 @@ function delete_point($mb_id, $rel_table, $rel_id, $rel_action)
     {
         // 포인트 내역정보
         $sql = " select * from {$g5['point_table']}
-                    where mb_id = '$mb_id'
+                    where cn_id = '{$cn_id}',
+                        AND mb_id = '$mb_id'
                       and po_rel_table = '$rel_table'
                       and po_rel_id = '$rel_id'
                       and po_rel_action = '$rel_action' ";
@@ -1298,7 +1304,8 @@ function delete_point($mb_id, $rel_table, $rel_id, $rel_action)
         }
 
         $result = sql_query(" delete from {$g5['point_table']}
-                     where mb_id = '$mb_id'
+                     where cn_id = '{$cn_id}'
+                        AND mb_id = '$mb_id'
                        and po_rel_table = '$rel_table'
                        and po_rel_id = '$rel_id'
                        and po_rel_action = '$rel_action' ", false);
@@ -1307,13 +1314,14 @@ function delete_point($mb_id, $rel_table, $rel_id, $rel_action)
         if(isset($row['po_point'])) {
             $sql = " update {$g5['point_table']}
                         set po_mb_point = po_mb_point - '{$row['po_point']}'
-                        where mb_id = '$mb_id'
+                        where cn_id = '{$cn_id}'
+                            AND mb_id = '$mb_id'
                           and po_id > '{$row['po_id']}' ";
             sql_query($sql);
         }
 
         // 포인트 내역의 합을 구하고
-        $sum_point = get_point_sum($mb_id);
+        $sum_point = get_point_sum($cn_id, $mb_id);
 
         // 포인트 UPDATE
         $sql = " update {$g5['member_table']} set mb_point = '$sum_point' where mb_id = '$mb_id' ";
@@ -3332,12 +3340,12 @@ function conv_unescape_nl($str)
 }
 
 // 회원 삭제
-function member_delete($mb_id, $cn_id='')
+function member_delete($mb_id)
 {
     global $config;
     global $g5;
 
-    $sql = " select mb_name, mb_nick, mb_ip, mb_recommend, mb_memo, mb_level from {$g5['member_table']} where mb_id= '".$mb_id."' ";
+    $sql = " select cn_id, mb_name, mb_nick, mb_ip, mb_recommend, mb_memo, mb_level from {$g5['member_table']} where mb_id= '".$mb_id."' ";
     $mb = sql_fetch($sql);
 
     // 이미 삭제된 회원은 제외
@@ -3347,7 +3355,7 @@ function member_delete($mb_id, $cn_id='')
     if ($mb['mb_recommend']) {
         $row = sql_fetch(" select count(*) as cnt from {$g5['member_table']} where mb_id = '".addslashes($mb['mb_recommend'])."' ");
         if ($row['cnt'])
-            insert_point($mb['mb_recommend'], $config['cf_recommend_point'] * (-1), $mb_id.'님의 회원자료 삭제로 인한 추천인 포인트 반환', "@member", $mb['mb_recommend'], $mb_id.' 추천인 삭제');
+            insert_point($mb['cn_id'], $mb['mb_recommend'], $config['cf_recommend_point'] * (-1), $mb_id.'님의 회원자료 삭제로 인한 추천인 포인트 반환', "@member", $mb['mb_recommend'], $mb_id.' 추천인 삭제');
     }
 
     // 회원자료는 정보만 없앤 후 아이디는 보관하여 다른 사람이 사용하지 못하도록 함 : 061025
