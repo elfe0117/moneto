@@ -10,7 +10,13 @@ auth_check_menu($auth, $sub_menu, 'w');
 
 check_admin_token();
 
-$cn_id              = (isset($_POST['cn_id']) && $_POST['cn_id']) ? preg_replace('/[^a-z0-9_]/i', '', (string)$_POST['cn_id']) : '';
+// 채널 ID
+$cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';
+$cn = sql_fetch("SELECT * FROM {$g5['channel_table']} WHERE cn_id = '{$cn_id}' ");
+if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
+    alert('채널정보가 존재하지 않습니다.');
+}
+
 $gr_id              = isset($_POST['gr_id']) ? preg_replace('/[^a-z0-9_]/i', '', (string)$_POST['gr_id']) : '';
 $bo_admin           = isset($_POST['bo_admin']) ? preg_replace('/[^a-z0-9_\, \|\#]/i', '', $_POST['bo_admin']) : '';
 $bo_subject         = isset($_POST['bo_subject']) ? strip_tags(clean_xss_attributes($_POST['bo_subject'])) : '';

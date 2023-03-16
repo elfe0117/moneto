@@ -5,6 +5,8 @@ require_once G5_EDITOR_LIB;
 
 auth_check_menu($auth, $sub_menu, 'w');
 
+
+
 // 채널 목록 정보 가져오기
 $array_cn = array();
 $sql = "SELECT *
@@ -148,6 +150,7 @@ $board_default = array(
 'bo_mobile_content_tail'=>'',
 'bo_insert_content'=>'',
 'bo_sort_field'=>'',
+'cn_id' => ''
 );
 
 for ($i = 0; $i <= 10; $i++) {
@@ -164,6 +167,13 @@ $readonly = "";
 $sound_only = "";
 $required_valid = "";
 if ($w == '') {
+    // 채널 ID
+    $cn_id = isset($_REQUEST['cn_id']) && !is_array($_REQUEST['cn_id']) && $_REQUEST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cn_id'])) : '';    
+    $cn = get_channel($cn_id);
+    if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
+        alert('올바른 채널 ID를 입력하세요.');
+    }
+
     $html_title .= ' 생성';
 
     $required = 'required';
@@ -200,6 +210,7 @@ if ($w == '') {
     $board['bo_use_secret'] = 0;
     $board['bo_include_head'] = '_head.php';
     $board['bo_include_tail'] = '_tail.php';
+    $board['cn_id'] = $cn_id;
 } elseif ($w == 'u') {
     $html_title .= ' 수정';
 
@@ -258,6 +269,13 @@ $pg_anchor = '<ul class="anchor">
         </colgroup>
         <tbody>
         <tr>
+            <th scope="row"><label for="cn_id">채널<strong class="sound_only">필수</strong></label></th>
+            <td colspan="2">
+                <input type="hidden" name="cn_id" id="cn_id" value="<?php echo($board['cn_id']); ?>" required class="required frm_input">
+                <?php echo($board['cn_id']); ?>
+            </td>
+        </tr>
+        <tr>
             <th scope="row"><label for="bo_table">TABLE<?php echo $sound_only ?></label></th>
             <td colspan="2">
                 <input type="text" name="bo_table" value="<?php echo $board['bo_table'] ?>" id="bo_table" <?php echo $required ?> <?php echo $readonly ?> class="frm_input <?php echo $readonly ?> <?php echo $required ?> <?php echo $required_valid ?>" maxlength="20">
@@ -267,18 +285,6 @@ $pg_anchor = '<ul class="anchor">
                     <a href="<?php echo get_pretty_url($board['cn_id'], $board['bo_table']) ?>" class="btn_frmline">게시판 바로가기</a>
                     <a href="./board_list.php?<?php echo $qstr;?>" class="btn_frmline">목록으로</a>
                 <?php } ?>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row"><label for="cn_id">채널<strong class="sound_only">필수</strong></label></th>
-            <td colspan="2">
-                <select id="cn_id" name="cn_id" required>
-                    <?php
-                    foreach($array_cn as $row_cn) {
-                        echo(option_selected($row_cn['cn_id'], $board['cn_id'], $row_cn['cn_id']));
-                    }
-                    ?>
-                </select>
             </td>
         </tr>
         <tr>

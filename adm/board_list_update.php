@@ -7,7 +7,9 @@ check_demo();
 $post_count_chk = (isset($_POST['chk']) && is_array($_POST['chk'])) ? count($_POST['chk']) : 0;
 $chk            = (isset($_POST['chk']) && is_array($_POST['chk'])) ? $_POST['chk'] : array();
 $act_button     = isset($_POST['act_button']) ? strip_tags($_POST['act_button']) : '';
+$board_channel  = (isset($_POST['board_channel']) && is_array($_POST['board_channel'])) ? $_POST['board_channel'] : array();
 $board_table    = (isset($_POST['board_table']) && is_array($_POST['board_table'])) ? $_POST['board_table'] : array();
+
 
 if (!$post_count_chk) {
     alert($act_button . " 하실 항목을 하나 이상 체크하세요.");
@@ -34,6 +36,7 @@ if ($act_button === "선택수정") {
         $post_bo_use_sns = isset($_POST['bo_use_sns'][$k]) ? clean_xss_tags($_POST['bo_use_sns'][$k], 1, 1) : '';
         $post_bo_order = isset($_POST['bo_order'][$k]) ? clean_xss_tags($_POST['bo_order'][$k], 1, 1) : '';
         $post_board_table = isset($_POST['board_table'][$k]) ? clean_xss_tags($_POST['board_table'][$k], 1, 1) : '';
+        $post_board_channel = isset($_POST['board_table'][$k]) ? clean_xss_tags($_POST['board_table'][$k], 1, 1) : '';
 
         if ($is_admin != 'super') {
             $sql = " select count(*) as cnt from {$g5['board_table']} a, {$g5['group_table']} b
@@ -61,7 +64,8 @@ if ($act_button === "선택수정") {
                         bo_use_search       = '" . sql_real_escape_string($post_bo_use_search) . "',
                         bo_use_sns          = '" . sql_real_escape_string($post_bo_use_sns) . "',
                         bo_order            = '" . sql_real_escape_string($post_bo_order) . "'
-                  where bo_table            = '" . sql_real_escape_string($post_board_table) . "' ";
+                  where cn_id               = '" . sql_real_escape_string($post_board_channel) . "'
+                    AND bo_table            = '" . sql_real_escape_string($post_board_table) . "' ";
 
         sql_query($sql);
     }
@@ -83,6 +87,7 @@ if ($act_button === "선택수정") {
         $k = isset($_POST['chk'][$i]) ? (int) $_POST['chk'][$i] : 0;
 
         // include 전에 $bo_table 값을 반드시 넘겨야 함
+        $tmp_cn_id = isset($_POST['board_channel'][$k]) ? trim(clean_xss_tags($_POST['board_channel'][$k], 1, 1)) : '';
         $tmp_bo_table = isset($_POST['board_table'][$k]) ? trim(clean_xss_tags($_POST['board_table'][$k], 1, 1)) : '';
 
         if (preg_match("/^[A-Za-z0-9_]+$/", $tmp_bo_table)) {
