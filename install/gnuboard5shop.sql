@@ -697,6 +697,8 @@ CREATE TABLE IF NOT EXISTS `g5_shop_order` (
   `od_shop_memo` text NOT NULL,
   `od_mod_history` text NOT NULL,
   `od_status` varchar(255) NOT NULL DEFAULT '',  
+  `od_fixed_flag` tinyint NOT NULL DEFAULT '0' COMMENT '주문 확정여부(0-미확정, 1-확정)',  
+  `od_fixed_price` int NOT NULL DEFAULT '0' COMMENT '주문 확정금액',
   `od_hope_date` date NOT NULL DEFAULT '0000-00-00',  
   `od_settle_case` varchar(255) NOT NULL DEFAULT '',
   `od_other_pay_type` varchar(100) NOT NULL DEFAULT '',
