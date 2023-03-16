@@ -4,6 +4,13 @@ require_once "./_common.php";
 
 auth_check_menu($auth, $sub_menu, 'w');
 
+// 채널 ID
+$cn_id = isset($_GET['cn_id']) && !is_array($_GET['cn_id']) && $_GET['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_GET['cn_id'])) : '';
+$cn = get_channel($cn_id);
+if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
+    alert_close('채널ID가 존재하지 않습니다.');
+}
+
 $g5['title'] = '게시판 복사';
 require_once G5_PATH . '/head.sub.php';
 
@@ -20,6 +27,7 @@ if (empty($bo_table)) {
     <h1><?php echo $g5['title']; ?></h1>
 
     <form name="fboardcopy" id="fboardcopy" action="./board_copy_update.php" onsubmit="return fboardcopy_check(this);" method="post">
+        <input type="hidden" name="cn_id" id="cn_id" value="<?php echo($cn_id); ?>">
         <input type="hidden" name="bo_table" value="<?php echo $bo_table ?>" id="bo_table">
         <input type="hidden" name="token" value="">
         <div class=" new_win_con">
