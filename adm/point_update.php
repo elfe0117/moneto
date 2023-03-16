@@ -5,6 +5,12 @@ require_once './_common.php';
 auth_check_menu($auth, $sub_menu, 'w');
 
 check_admin_token();
+// 채널 ID
+$cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';
+$cn = get_channel($cn_id);
+if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
+    alert('존재하는 채널ID가 아닙니다.', './point_list.php?', $qstr);
+}
 
 $mb_id = isset($_POST['mb_id']) ? strip_tags(clean_xss_attributes($_POST['mb_id'])) : '';
 $po_point = isset($_POST['po_point']) ? (int)strip_tags(clean_xss_attributes($_POST['po_point'])) : 0;
