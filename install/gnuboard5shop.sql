@@ -47,6 +47,7 @@ DROP TABLE IF EXISTS `g5_shop_cart`;
 CREATE TABLE IF NOT EXISTS `g5_shop_cart` (
   `ct_id` int(11) NOT NULL AUTO_INCREMENT,
   `od_id` bigint(20) unsigned NOT NULL,
+  `cn_id` varchar(20) NOT NULL DEFAULT '' COMMENT '채널 ID',
   `mb_id` varchar(255) NOT NULL DEFAULT '',
   `it_id` varchar(20) NOT NULL DEFAULT '',
   `it_name` varchar(255) NOT NULL DEFAULT '',
@@ -76,6 +77,7 @@ CREATE TABLE IF NOT EXISTS `g5_shop_cart` (
   `ct_select_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`ct_id`),
   KEY `od_id` (`od_id`),
+  KEY `cn_id` (`cn_id`),
   KEY `it_id` (`it_id`),
   KEY `ct_status` (`ct_status`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -655,6 +657,7 @@ CREATE TABLE IF NOT EXISTS `g5_shop_item_relation` (
 DROP TABLE IF EXISTS `g5_shop_order`;
 CREATE TABLE IF NOT EXISTS `g5_shop_order` (
   `od_id` bigint(20) unsigned NOT NULL,
+  `cn_id` varchar(20) NOT NULL DEFAULT '' COMMENT '채널 ID', 
   `mb_id` varchar(255) NOT NULL DEFAULT '',  
   `od_name` varchar(20) NOT NULL DEFAULT '',
   `od_email` varchar(100) NOT NULL DEFAULT '',
@@ -718,6 +721,7 @@ CREATE TABLE IF NOT EXISTS `g5_shop_order` (
   `od_pwd` varchar(255) NOT NULL DEFAULT '',
   `od_ip` varchar(25) NOT NULL DEFAULT '',
   PRIMARY KEY (`od_id`),
+  KEY `cn_id` (`cn_id`),
   KEY `index2` (`mb_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -756,11 +760,13 @@ DROP TABLE IF EXISTS `g5_shop_order_data`;
 CREATE TABLE IF NOT EXISTS `g5_shop_order_data` (
   `od_id` bigint(20) unsigned NOT NULL,
   `cart_id` bigint(20) unsigned NOT NULL,
+  `cn_id` varchar(20) NOT NULL DEFAULT '' COMMENT '채널 ID',
   `mb_id` varchar(20) NOT NULL DEFAULT '',
   `dt_pg` varchar(255) NOT NULL DEFAULT '',
   `dt_data` text NOT NULL,
   `dt_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  KEY `od_id` (`od_id`)
+  KEY `od_id` (`od_id`),
+  KEY `cn_id` (`cn_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
