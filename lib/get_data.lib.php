@@ -200,7 +200,7 @@ function get_content_by_field($write_table, $type='bbs', $where_field='', $where
 // 게시판 첨부파일 테이블에서 하나의 행을 읽음
 function get_board_file_db($bo_table, $wr_id, $fields='*', $add_where='', $is_cache=false)
 {
-    global $g5;
+    global $g5, $channel;
 
     static $cache = array();
 
@@ -212,7 +212,7 @@ function get_board_file_db($bo_table, $wr_id, $fields='*', $add_where='', $is_ca
     }
 
     $sql = " select $fields from {$g5['board_file_table']}
-                where bo_table = '$bo_table' and wr_id = '$wr_id' $add_where order by bf_no limit 0, 1 ";
+                where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '$wr_id' $add_where order by bf_no limit 0, 1 ";
 
     $cache[$key] = sql_fetch($sql);
 
@@ -296,7 +296,7 @@ function get_qacontent_db($qa_id, $is_cache=false){
 }
 
 function get_thumbnail_find_cache($bo_table, $wr_id, $wr_key){
-    global $g5;
+    global $g5, $channel;
 
     if( $cache_content = g5_latest_cache_data($bo_table, array(), $wr_id) ){
         if( $wr_key === 'content' ){
@@ -307,7 +307,7 @@ function get_thumbnail_find_cache($bo_table, $wr_id, $wr_key){
     }
 
     if( $wr_key === 'content' ){
-        $write_table = $g5['write_prefix'].$bo_table;
+        $write_table = $g5['write_prefix'].$channel['cn_id'].'_'.$bo_table;
         return get_write($write_table, $wr_id, true);
     }
 
@@ -500,11 +500,11 @@ function get_memo_not_read($mb_id, $add_where='')
 }
 
 function get_scrap_totals($mb_id=''){
-    global $g5;
+    global $g5, $channel;
 
     $add_where = $mb_id ? " and mb_id = '$mb_id' " : '';
 
-    $sql = " select count(*) as cnt from {$g5['scrap_table']} where 1=1 $add_where";
+    $sql = " select count(*) as cnt from {$g5['scrap_table']} where cn_id = '{$channel['cn_id']}' $add_where";
     $row = sql_fetch($sql, false);
 
     return isset($row['cnt']) ? $row['cnt'] : 0;

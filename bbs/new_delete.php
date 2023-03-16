@@ -24,10 +24,10 @@ for($i=0;$i<$count_chk_bn_id;$i++)
     $save_bo_table[$i] = $bo_table;
 	$save_wr_id[$i] = $wr_id;
 
-    $write_table = $g5['write_prefix'].$bo_table;
+    $write_table = $g5['write_prefix'].$channel['cn_id'].'_'.$bo_table;
 
     if ($board['bo_table'] != $bo_table)
-        $board = sql_fetch(" select bo_subject, bo_write_point, bo_comment_point, bo_notice from {$g5['board_table']} where bo_table = '$bo_table' ");
+        $board = sql_fetch(" select bo_subject, bo_write_point, bo_comment_point, bo_notice from {$g5['board_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' ");
 
     $write = get_write($write_table, $wr_id);
     if (!$write) continue;
@@ -51,13 +51,13 @@ for($i=0;$i<$count_chk_bn_id;$i++)
                     insert_point($row['mb_id'], $board['bo_write_point'] * (-1), "{$board['bo_subject']} {$row['wr_id']} 글삭제");
 
                 // 업로드된 파일이 있다면 파일삭제
-                $sql2 = " select * from {$g5['board_file_table']} where bo_table = '$bo_table' and wr_id = '{$row['wr_id']}' ";
+                $sql2 = " select * from {$g5['board_file_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '{$row['wr_id']}' ";
                 $result2 = sql_query($sql2);
                 while ($row2 = sql_fetch_array($result2)){
 
-                    $delete_file = run_replace('delete_file_path', G5_DATA_PATH.'/file/'.$bo_table.'/'.str_replace('../', '', $row2['bf_file']), $row2);
+                    $delete_file = run_replace('delete_file_path', G5_DATA_PATH.'/file/'.$channel['cn_id'].'/'.$bo_table.'/'.str_replace('../', '', $row2['bf_file']), $row2);
                     if( file_exists($delete_file) ){
-                        @unlink(G5_DATA_PATH.'/file/'.$bo_table.'/'.$row2['bf_file']);
+                        @unlink(G5_DATA_PATH.'/file/'.$channel['cn_id'].'/'.$bo_table.'/'.$row2['bf_file']);
                     }
                     // 이미지파일이면 썸네일삭제
                     if(preg_match("/\.({$config['cf_image_extension']})$/i", $row2['bf_file'])) {
@@ -65,7 +65,7 @@ for($i=0;$i<$count_chk_bn_id;$i++)
                     }
                 }
                 // 파일테이블 행 삭제
-                sql_query(" delete from {$g5['board_file_table']} where bo_table = '$bo_table' and wr_id = '{$row['wr_id']}' ");
+                sql_query(" delete from {$g5['board_file_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '{$row['wr_id']}' ");
 
                 $count_write++;
             }
@@ -88,10 +88,10 @@ for($i=0;$i<$count_chk_bn_id;$i++)
         }
 
         // 최근게시물 삭제
-        sql_query(" delete from {$g5['board_new_table']} where bo_table = '$bo_table' and wr_parent = '{$write['wr_id']}' ");
+        sql_query(" delete from {$g5['board_new_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_parent = '{$write['wr_id']}' ");
 
         // 스크랩 삭제
-        sql_query(" delete from {$g5['scrap_table']} where bo_table = '$bo_table' and wr_id = '{$write['wr_id']}' ");
+        sql_query(" delete from {$g5['scrap_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '{$write['wr_id']}' ");
 
         // 공지사항 삭제
         $notice_array = explode(",", trim($board['bo_notice']));
@@ -105,12 +105,12 @@ for($i=0;$i<$count_chk_bn_id;$i++)
                 $lf = ',';
         }
         $bo_notice = trim($bo_notice);
-        sql_query(" update {$g5['board_table']} set bo_notice = '$bo_notice' where bo_table = '$bo_table' ");
+        sql_query(" update {$g5['board_table']} set bo_notice = '$bo_notice' where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' ");
 
         if ($pressed == '선택삭제') {
             // 글숫자 감소
             if ($count_write > 0 || $count_comment > 0) {
-                sql_query(" update {$g5['board_table']} set bo_count_write = bo_count_write - '$count_write', bo_count_comment = bo_count_comment - '$count_comment' where bo_table = '$bo_table' ");
+                sql_query(" update {$g5['board_table']} set bo_count_write = bo_count_write - '$count_write', bo_count_comment = bo_count_comment - '$count_comment' where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' ");
             }
         }
     }
@@ -143,10 +143,10 @@ for($i=0;$i<$count_chk_bn_id;$i++)
         sql_query(" update $write_table set wr_comment = wr_comment - 1, wr_last = '{$row['wr_last']}' where wr_id = '{$write['wr_parent']}' ");
 
         // 코멘트 숫자 감소
-        sql_query(" update {$g5['board_table']} set bo_count_comment = bo_count_comment - 1 where bo_table = '$bo_table' ");
+        sql_query(" update {$g5['board_table']} set bo_count_comment = bo_count_comment - 1 where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' ");
 
         // 새글 삭제
-        sql_query(" delete from {$g5['board_new_table']} where bo_table = '$bo_table' and wr_id = '$comment_id' ");
+        sql_query(" delete from {$g5['board_new_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '$comment_id' ");
     }
 }
 

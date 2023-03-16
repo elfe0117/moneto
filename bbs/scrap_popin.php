@@ -34,6 +34,7 @@ if ($write['wr_is_comment'])
 
 $sql = " select count(*) as cnt from {$g5['scrap_table']}
             where mb_id = '{$member['mb_id']}'
+            AND cn_id = '{$channel['cn_id']}'
             and bo_table = '$bo_table'
             and wr_id = '$wr_id' ";
 $row = sql_fetch($sql);

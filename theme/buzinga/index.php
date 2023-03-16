@@ -42,7 +42,8 @@ include_once(G5_THEME_PATH.'/head.php');
     //  최신글
     $sql = " select bo_table
                 from `{$g5['board_table']}` a left join `{$g5['group_table']}` b on (a.gr_id=b.gr_id)
-                where a.bo_device <> 'mobile' ";
+                where a.cn_id = '{$channel['cn_id']}'
+                    AND a.bo_device <> 'mobile' ";
     if(!$is_admin)
 	$sql .= " and a.bo_use_cert = '' ";
     $sql .= " and a.bo_table not in ('notice', 'gallery') ";     //공지사항과 갤러리 게시판은 제외

@@ -14,7 +14,13 @@ if ($is_admin != 'super' && $w == '') {
 
 check_admin_token();
 
-$cn_id = (isset($_POST['cn_id']) && $_POST['cn_id']) ? trim($_POST['cn_id']) : '';
+// 채널 ID
+$cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';    
+$cn = get_channel($cn_id);
+if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
+    alert('올바른 채널 ID를 입력하세요.');
+}
+
 $gr_id = isset($_POST['gr_id']) ? $_POST['gr_id'] : '';
 
 if (!preg_match("/^([A-Za-z0-9_]{1,10})$/", $gr_id)) {

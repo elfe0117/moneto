@@ -327,10 +327,10 @@ function download_file_nonce_is_valid($nonce, $bo_table, $wr_id)
 // 게시글에 첨부된 파일을 얻는다. (배열로 반환)
 function get_file($bo_table, $wr_id)
 {
-    global $g5, $qstr, $board;
+    global $g5, $qstr, $board, $channel;
 
     $file['count'] = 0;
-    $sql = " select * from {$g5['board_file_table']} where bo_table = '$bo_table' and wr_id = '$wr_id' order by bf_no ";
+    $sql = " select * from {$g5['board_file_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '$wr_id' order by bf_no ";
     $result = sql_query($sql);
     $nonce = download_file_nonce_key($bo_table, $wr_id);
     while ($row = sql_fetch_array($result))
@@ -2451,7 +2451,7 @@ function delete_board_thumbnail($bo_table, $file)
         return;
 
     $fn = preg_replace("/\.[^\.]+$/i", "", basename($file));
-    $files = glob(G5_DATA_PATH.'/file/'.$bo_table.'/thumb-'.$fn.'*');
+    $files = glob(G5_DATA_PATH.'/file/'.$channel['cn_id'].'/'.$bo_table.'/thumb-'.$fn.'*');
     if (is_array($files)) {
         foreach ($files as $filename)
             unlink($filename);
@@ -3332,7 +3332,7 @@ function conv_unescape_nl($str)
 }
 
 // 회원 삭제
-function member_delete($mb_id)
+function member_delete($mb_id, $cn_id='')
 {
     global $config;
     global $g5;

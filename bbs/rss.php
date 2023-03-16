@@ -18,7 +18,7 @@ function specialchars_replace($str, $len=0) {
     return $str;
 }
 
-$sql = " select gr_id, bo_subject, bo_page_rows, bo_read_level, bo_use_rss_view from {$g5['board_table']} where bo_table = '$bo_table' ";
+$sql = " select gr_id, bo_subject, bo_page_rows, bo_read_level, bo_use_rss_view from {$g5['board_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' ";
 $row = sql_fetch($sql);
 $subj2 = specialchars_replace($row['bo_subject'], 255);
 $lines = $row['bo_page_rows'];

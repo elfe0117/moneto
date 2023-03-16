@@ -33,9 +33,18 @@ if (!isset($group['gr_id'])) {
 
 $gr = array('gr_use_access' => 0, 'gr_admin' => '');
 if ($w == '') {
+    // 채널 ID
+    $cn_id = isset($_REQUEST['cn_id']) && !is_array($_REQUEST['cn_id']) && $_REQUEST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cn_id'])) : '';    
+    $cn = get_channel($cn_id);
+    if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
+        alert('올바른 채널 ID를 입력하세요.');
+    }
+
     $gr_id_attr = 'required';
     $sound_only = '<strong class="sound_only"> 필수</strong>';
     $html_title .= ' 생성';
+
+    $group['cn_id'] = $cn_id;
 } elseif ($w == 'u') {
     $gr_id_attr = 'readonly';
     $gr = sql_fetch(" select * from {$g5['group_table']} where gr_id = '$gr_id' ");
@@ -77,13 +86,8 @@ require_once './admin.head.php';
                 <tr>
                     <th scope="row"><label for="cn_id">채널 ID<strong class="sound_only"> 필수</strong></label></th>
                     <td>
-                        <select id="cn_id" name="cn_id" required>
-                            <?php
-                            foreach($array_cn as $row_cn) {
-                                echo(option_selected($row_cn['cn_id'], $group['cn_id'], $row_cn['cn_id']));
-                            }
-                            ?>
-                        </select>
+                        <input type="hidden" name="cn_id" id="cn_id" value="<?php echo($group['cn_id']); ?>" required class="required frm_input">
+                        <?php echo($group['cn_id']); ?>
                     </td>
                 </tr>
                 <tr>

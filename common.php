@@ -137,7 +137,7 @@ $_REQUEST = array_map_deep(G5_ESCAPE_FUNCTION,  $_REQUEST);
 $channel = array();
 $config = array();
 $member = array('mb_id'=>'', 'mb_level'=> 1, 'mb_name'=> '', 'mb_point'=> 0, 'mb_certify'=>'', 'mb_email'=>'', 'mb_open'=>'', 'mb_homepage'=>'', 'mb_tel'=>'', 'mb_hp'=>'', 'mb_zip1'=>'', 'mb_zip2'=>'', 'mb_addr1'=>'', 'mb_addr2'=>'', 'mb_addr3'=>'', 'mb_addr_jibeon'=>'', 'mb_signature'=>'', 'mb_profile'=>'');
-$board  = array('bo_table'=>'', 'bo_skin'=>'', 'bo_mobile_skin'=>'', 'bo_upload_count' => 0, 'bo_use_dhtml_editor'=>'', 'bo_subject'=>'', 'bo_image_width'=>0);
+$board  = array('cn_id'=>'', 'bo_table'=>'', 'bo_skin'=>'', 'bo_mobile_skin'=>'', 'bo_upload_count' => 0, 'bo_use_dhtml_editor'=>'', 'bo_subject'=>'', 'bo_image_width'=>0);
 $group  = array('gr_device'=>'', 'gr_subject'=>'');
 $g5     = array();
 if( version_compare( phpversion(), '8.0.0', '>=' ) ) { $g5 = array('title'=>''); }
@@ -691,7 +691,7 @@ if ($bo_table) {
     if (isset($board['bo_table']) && $board['bo_table']) {
         set_cookie("ck_bo_table", $board['bo_table'], 86400 * 1);
         $gr_id = $board['gr_id'];
-        $write_table = $g5['write_prefix'] . $bo_table; // 게시판 테이블 전체이름
+        $write_table = $g5['write_prefix'].$channel['cn_id'].'_'. $bo_table; // 게시판 테이블 전체이름
 
         if (isset($wr_id) && $wr_id) {
             $write = get_write($write_table, $wr_id);

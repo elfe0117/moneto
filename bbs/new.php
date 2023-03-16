@@ -4,7 +4,13 @@ include_once('./_common.php');
 $g5['title'] = '새글';
 include_once('./_head.php');
 
-$sql_common = " from {$g5['board_new_table']} a, {$g5['board_table']} b, {$g5['group_table']} c where a.bo_table = b.bo_table and b.gr_id = c.gr_id and b.bo_use_search = 1 ";
+$sql_common = " from {$g5['board_new_table']} a, {$g5['board_table']} b, {$g5['group_table']} c
+    where a.bo_table = b.bo_table
+        and b.gr_id = c.gr_id
+        and b.bo_use_search = 1
+        AND a.cn_id = '{$channel['cn_id']}'
+        AND b.cn_id = '{$channel['cn_id']}'
+        AND c.cn_id = '{$channel['cn_id']}' ";
 
 $gr_id = isset($_GET['gr_id']) ? substr(preg_replace('#[^a-z0-9_]#i', '', $_GET['gr_id']), 0, 10) : '';
 if ($gr_id) {
@@ -49,7 +55,7 @@ $list = array();
 $sql = " select a.*, b.bo_subject, b.bo_mobile_subject, c.gr_subject, c.gr_id {$sql_common} {$sql_order} limit {$from_record}, {$rows} ";
 $result = sql_query($sql);
 for ($i=0; $row=sql_fetch_array($result); $i++) {
-    $tmp_write_table = $g5['write_prefix'].$row['bo_table'];
+    $tmp_write_table = $g5['write_prefix'].$channel['cn_id'].'_'.$row['bo_table'];
 
     if ($row['wr_id'] == $row['wr_parent']) {
 

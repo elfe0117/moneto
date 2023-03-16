@@ -19,7 +19,7 @@ function get_noimage_thumbnail($bo_table, $noimg, $width, $height, $class='')
     $ext = array(1 => 'gif', 2 => 'jpg', 3 => 'png');
 
     $filename = 'no-image.'.$ext[$size[2]];
-    $filepath = G5_DATA_PATH.'/file/'.$bo_table;
+    $filepath = G5_DATA_PATH.'/file/'.$channel['cn_id'].'/'.$bo_table;
 
     $src_file = $filepath.'/'.$filename;
     if(!is_file($src_file)) {

@@ -15,7 +15,7 @@ if(! $count_chk_bo_table)
     alert('게시물을 '.$act.'할 게시판을 한개 이상 선택해 주십시오.', $url);
 
 // 원본 파일 디렉토리
-$src_dir = G5_DATA_PATH.'/file/'.$bo_table;
+$src_dir = G5_DATA_PATH.'/file/'.$channel['cn_id'].'/'.$bo_table;
 
 $save = array();
 $save_count_write = 0;
@@ -36,15 +36,15 @@ while ($row = sql_fetch_array($result))
         $move_bo_table = isset($_POST['chk_bo_table'][$i]) ? preg_replace('/[^a-z0-9_]/i', '', $_POST['chk_bo_table'][$i]) : '';
 
         // 취약점 18-0075 참고
-        $sql = "select * from {$g5['board_table']} where bo_table = '".sql_real_escape_string($move_bo_table)."' ";
+        $sql = "select * from {$g5['board_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '".sql_real_escape_string($move_bo_table)."' ";
         $move_board = sql_fetch($sql);
         // 존재하지 않다면
         if( !$move_board['bo_table'] ) continue;
 
-        $move_write_table = $g5['write_prefix'] . $move_bo_table;
+        $move_write_table = $g5['write_prefix'].$channel['cn_id'].'_'.$move_bo_table;
 
-        $src_dir = G5_DATA_PATH.'/file/'.$bo_table; // 원본 디렉토리
-        $dst_dir = G5_DATA_PATH.'/file/'.$move_bo_table; // 복사본 디렉토리
+        $src_dir = G5_DATA_PATH.'/file/'.$channel['cn_id'].'/'.$bo_table; // 원본 디렉토리
+        $dst_dir = G5_DATA_PATH.'/file/'.$channel['cn_id'].'/'.$move_bo_table; // 복사본 디렉토리
 
         $count_write = 0;
         $count_comment = 0;
@@ -122,7 +122,7 @@ while ($row = sql_fetch_array($result))
             {
                 $save_parent = $insert_id;
 
-                $sql3 = " select * from {$g5['board_file_table']} where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' order by bf_no ";
+                $sql3 = " select * from {$g5['board_file_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' order by bf_no ";
                 $result3 = sql_query($sql3);
                 for ($k=0; $row3 = sql_fetch_array($result3); $k++)
                 {
@@ -154,7 +154,8 @@ while ($row = sql_fetch_array($result))
                     }
 
                     $sql = " insert into {$g5['board_file_table']}
-                                set bo_table = '$move_bo_table',
+                                set cn_id = '{$channel['cn_id']}',
+                                     bo_table = '$move_bo_table',
                                      wr_id = '$insert_id',
                                      bf_no = '{$row3['bf_no']}',
                                      bf_source = '".addslashes($row3['bf_source'])."',
@@ -180,13 +181,13 @@ while ($row = sql_fetch_array($result))
                 if ($sw == 'move' && $i == 0)
                 {
                     // 스크랩 이동
-                    sql_query(" update {$g5['scrap_table']} set bo_table = '$move_bo_table', wr_id = '$save_parent' where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' ");
+                    sql_query(" update {$g5['scrap_table']} set bo_table = '$move_bo_table', wr_id = '$save_parent' where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' ");
 
                     // 최신글 이동
-                    sql_query(" update {$g5['board_new_table']} set bo_table = '$move_bo_table', wr_id = '$save_parent', wr_parent = '$save_parent' where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' ");
+                    sql_query(" update {$g5['board_new_table']} set bo_table = '$move_bo_table', wr_id = '$save_parent', wr_parent = '$save_parent' where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' ");
 
                     // 추천데이터 이동
-                    sql_query(" update {$g5['board_good_table']} set bo_table = '$move_bo_table', wr_id = '$save_parent' where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' ");
+                    sql_query(" update {$g5['board_good_table']} set bo_table = '$move_bo_table', wr_id = '$save_parent' where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' ");
                 }
             }
             else
@@ -196,7 +197,7 @@ while ($row = sql_fetch_array($result))
                 if ($sw == 'move')
                 {
                     // 최신글 이동
-                    sql_query(" update {$g5['board_new_table']} set bo_table = '$move_bo_table', wr_id = '$insert_id', wr_parent = '$save_parent' where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' ");
+                    sql_query(" update {$g5['board_new_table']} set bo_table = '$move_bo_table', wr_id = '$insert_id', wr_parent = '$save_parent' where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' ");
                 }
             }
 
@@ -210,8 +211,8 @@ while ($row = sql_fetch_array($result))
             run_event('bbs_move_copy', $row2, $move_bo_table, $insert_id, $next_wr_num, $sw);
         }
 
-        sql_query(" update {$g5['board_table']} set bo_count_write = bo_count_write + '$count_write' where bo_table = '$move_bo_table' ");
-        sql_query(" update {$g5['board_table']} set bo_count_comment = bo_count_comment + '$count_comment' where bo_table = '$move_bo_table' ");
+        sql_query(" update {$g5['board_table']} set bo_count_write = bo_count_write + '$count_write' where cn_id = '{$channel['cn_id']}' AND bo_table = '$move_bo_table' ");
+        sql_query(" update {$g5['board_table']} set bo_count_comment = bo_count_comment + '$count_comment' where cn_id = '{$channel['cn_id']}' AND bo_table = '$move_bo_table' ");
 
         delete_cache_latest($move_bo_table);
     }
@@ -244,13 +245,13 @@ if ($sw == 'move')
         }
 
         sql_query(" delete from $write_table where wr_parent = '{$save[$i]['wr_id']}' ");
-        sql_query(" delete from {$g5['board_new_table']} where bo_table = '$bo_table' and wr_id = '{$save[$i]['wr_id']}' ");
-        sql_query(" delete from {$g5['board_file_table']} where bo_table = '$bo_table' and wr_id = '{$save[$i]['wr_id']}' ");
+        sql_query(" delete from {$g5['board_new_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '{$save[$i]['wr_id']}' ");
+        sql_query(" delete from {$g5['board_file_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '{$save[$i]['wr_id']}' ");
     }
 
     // 공지사항이 이동되는 경우의 처리 begin
     $arr = array();
-    $sql = " select bo_notice from {$g5['board_table']} where bo_table = '{$bo_table}' ";
+    $sql = " select bo_notice from {$g5['board_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '{$bo_table}' ";
     $row = sql_fetch($sql);
     $arr_notice = explode(',', $row['bo_notice']);
     for ($i=0; $i<count($arr_notice); $i++) {
@@ -264,7 +265,7 @@ if ($sw == 'move')
     }
     // 공지사항이 이동되는 경우의 처리 end
 
-    sql_query(" update {$g5['board_table']} set bo_notice = '{$bo_notice}', bo_count_write = bo_count_write - '$save_count_write', bo_count_comment = bo_count_comment - '$save_count_comment' where bo_table = '$bo_table' ");
+    sql_query(" update {$g5['board_table']} set bo_notice = '{$bo_notice}', bo_count_write = bo_count_write - '$save_count_write', bo_count_comment = bo_count_comment - '$save_count_comment' where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' ");
 }
 
 $msg = '해당 게시물을 선택한 게시판으로 '.$act.' 하였습니다.';
