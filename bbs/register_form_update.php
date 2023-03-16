@@ -217,6 +217,7 @@ if ($w == '') {
     $sql = " insert into {$g5['member_table']}
                 set mb_id = '{$mb_id}',
                      mb_password = '".get_encrypt_string($mb_password)."',
+                     cn_id = '{$channel['cn_id']}',
                      mb_name = '{$mb_name}',
                      mb_nick = '{$mb_nick}',
                      mb_nick_date = '".G5_TIME_YMD."',
