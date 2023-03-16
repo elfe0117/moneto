@@ -655,6 +655,7 @@ CREATE TABLE IF NOT EXISTS `g5_menu` (
 DROP TABLE IF EXISTS `g5_point`;
 CREATE TABLE IF NOT EXISTS `g5_point` (
   `po_id` int(11) NOT NULL auto_increment,
+  `cn_id` varchar(20) NOT NULL default '' COMMENT '채널 ID',
   `mb_id` varchar(20) NOT NULL default '',
   `po_datetime` datetime NOT NULL default '0000-00-00 00:00:00',
   `po_content` varchar(255) NOT NULL default '',
@@ -667,7 +668,7 @@ CREATE TABLE IF NOT EXISTS `g5_point` (
   `po_rel_id` varchar(20) NOT NULL default '',
   `po_rel_action` varchar(100) NOT NULL default '',
   PRIMARY KEY  (`po_id`),
-  KEY `index1` (`mb_id`,`po_rel_table`,`po_rel_id`,`po_rel_action`),
+  KEY `index1` (`cn_id`,`mb_id`,`po_rel_table`,`po_rel_id`,`po_rel_action`),
   KEY `index2` (`po_expire_date`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
