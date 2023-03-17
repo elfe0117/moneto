@@ -900,13 +900,17 @@ function get_admin($admin='super', $fields='*')
 // 관리자인가?
 function is_admin($mb_id)
 {
-    global $config, $group, $board;
+    global $config, $group, $board, $master, $channel_group;
 
     if (!$mb_id) return '';
 
     $is_authority = '';
 
-    if ($config['cf_admin'] == $mb_id){
+    if ($config['cf_admin'] == $mb_id){ // 채널 관리자
+        $is_authority = 'super';
+    } else if (isset($master['ma_admin']) && $master['ma_admin'] && $master['ma_admin'] == $mb_id) { // 최고 관리자
+        $is_authority = 'super';
+    } else if (isset($channel_group['cg_admin']) && $channel_group['cg_admin'] && $channel_group['cg_admin'] == $mb_id) { // 채널 그룹 관리자
         $is_authority = 'super';
     } else if (isset($group['gr_admin']) && ($group['gr_admin'] == $mb_id)){
         $is_authority = 'group';

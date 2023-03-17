@@ -500,3 +500,49 @@ function sql_channel_config_insert($cid, $cf_title, $cf_admin, $cf_admin_email) 
             `de_member_reg_coupon_minimum` =  0 ";
     sql_query($sql);
 }
+
+// 채널그룹 정보 구하기
+function get_channel_group($cg_id, $is_cache=false) {
+    global $g5;
+
+    static $cache = array();
+
+    $cg_id = preg_replace('/[^0-9_]/i', '', $cg_id);
+    $cache = run_replace('get_group_db_cache', $cache, $cg_id, $is_cache);
+    $key = md5($cg_id);
+
+    if ($is_cache && isset($cache[$key])) {
+        return $cache[$key];
+    }
+
+    $sql = " SELECT *
+        FROM {$g5['channel_group_table']}
+        WHERE cg_id = '{$cg_id}'
+        LIMIT 0, 1 ";
+
+    $channel_group = run_replace('get_channel_group', sql_fetch($sql), $cg_id, $is_cache);
+    $cache[$key] = array_merge(array('cg_name'=>'', 'cg_use'=>''), (array) $channel_group);
+
+    return $cache[$key];
+}
+
+// 마스터 구하기
+function get_master($is_cache=false) {
+    global $g5;
+
+    static $cache = array();
+
+    $cache = run_replace('get_master_cache', $cache, $is_cache);
+
+    if( $is_cache && !empty($cache) ){
+        return $cache;
+    }
+
+    $sql = "SELECT *
+        FROM {$g5['master_table']}
+        LIMIT 0, 1 ";
+
+    $cache = run_replace('get_master', sql_fetch($sql));
+
+    return $cache;
+}

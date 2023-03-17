@@ -135,6 +135,8 @@ $_REQUEST = array_map_deep(G5_ESCAPE_FUNCTION,  $_REQUEST);
 // 완두콩님이 알려주신 보안관련 오류 수정
 // $member 에 값을 직접 넘길 수 있음
 $channel = array();
+$channel_group = array('cg_name'=>'', 'cg_use'=>'');
+$master = array();
 $config = array();
 $member = array('mb_id'=>'', 'mb_level'=> 1, 'mb_name'=> '', 'mb_point'=> 0, 'mb_certify'=>'', 'mb_email'=>'', 'mb_open'=>'', 'mb_homepage'=>'', 'mb_tel'=>'', 'mb_hp'=>'', 'mb_zip1'=>'', 'mb_zip2'=>'', 'mb_addr1'=>'', 'mb_addr2'=>'', 'mb_addr3'=>'', 'mb_addr_jibeon'=>'', 'mb_signature'=>'', 'mb_profile'=>'');
 $board  = array('cn_id'=>'', 'bo_table'=>'', 'bo_skin'=>'', 'bo_mobile_skin'=>'', 'bo_upload_count' => 0, 'bo_use_dhtml_editor'=>'', 'bo_subject'=>'', 'bo_image_width'=>0);
@@ -350,50 +352,13 @@ if(XenoPostToForm::check()) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// 언어 설정
-////////////////////////////////////////////////////////////////////////////////
-include_once(G5_LIB_PATH.'/language.lib.php'); // 언어 관련 함수 모음
-
-// 언어 불러오기
-$lang = get_language();
-$lang_path = G5_LANG_PATH.'/'.$lang.'.json';
-$lang_json = json_decode(file_get_contents($lang_path), true);
-if (!is_array($lang_json)) {
-    ?>
-    <!doctype html>
-    <html lang="ko">
-    <head>
-    <meta charset="utf-8">
-    <title>오류! 언어팩을 불러올 수 없습니다.</title>
-    <link rel="stylesheet" href="install/install.css">
-    </head>
-    <body>
-    
-    <div id="ins_bar">
-        <span id="bar_img">GNUBOARD5</span>
-        <span id="bar_txt">Message</span>
-    </div>
-    <h1>언어팩을 먼저 설치해주십시오.</h1>
-    
-    <div id="ins_ft">
-        <strong>GNUBOARD5</strong>
-        <p>GPL! OPEN SOURCE GNUBOARD</p>
-    </div>
-    
-    </body>
-    </html>
-    <?php
-    exit;
-}
-set_session('ss_lang', $lang);
-
-////////////////////////////////////////////////////////////////////////////////
 // 채널 설정
 ////////////////////////////////////////////////////////////////////////////////
 include_once(G5_LIB_PATH.'/channel.lib.php'); // 채널 관려 함수 모음
 
 // 채널 정보 가져오기
 $channel = get_channel();
+
 if (!(isset($channel['cn_id']) && $channel['cn_id'])) {
     ?>
     <!doctype html>
@@ -420,34 +385,6 @@ if (!(isset($channel['cn_id']) && $channel['cn_id'])) {
     </html>
     <?php
     exit;
-}
-set_session('ss_cid', $channel['cn_id']);
-
-////////////////////////////////////////////////////////////////////////////////
-// (채널) 디렉토리 관련 상수 정의
-////////////////////////////////////////////////////////////////////////////////
-//if ($channel['cn_id'] == G5_DEFAULT_CHANNEL) {
-//} else {
-//}
-@define('G5_DATA_URL', G5_URL.'/channel/'.$channel['cn_id'].'/data');
-@define('G5_DATA_PATH', G5_PATH.'/channel/'.$channel['cn_id'].'/data');
-
-////////////////////////////////////////////////////////////////////////////////
-// 모듈 설정
-////////////////////////////////////////////////////////////////////////////////
-$config['cf_module'] = isset($_REQUEST['md']) ? trim($_REQUEST['md']) : '';
-if (isset($config['cf_module']) && $config['cf_module']) {
-    $module_path = G5_PATH.'/'.G5_MODULE_DIR.'/'.$config['cf_module'];
-    if (is_dir($module_path)) {
-        define('G5_MODULE_PATH', $module_path);
-        define('G5_MODULE_URL', G5_URL.'/'.G5_MODULE_DIR.'/'.$config['cf_module']);
-    }
-    unset($module_path);
-}
-
-// 모듈 설정 불러오기
-if(defined('G5_MODULE_PATH') && is_file(G5_MODULE_PATH.'/module.config.php')) {
-    include_once(G5_MODULE_PATH.'/module.config.php');
 }
 
 //==============================================================================
@@ -500,6 +437,96 @@ if( $config['cf_cert_use'] || (defined('G5_YOUNGCART_VER') && G5_YOUNGCART_VER) 
     @session_start();
 }
 //==============================================================================
+
+////////////////////////////////////////////////////////////////////////////////
+// 언어 설정
+////////////////////////////////////////////////////////////////////////////////
+include_once(G5_LIB_PATH.'/language.lib.php'); // 언어 관련 함수 모음
+
+// 언어 불러오기
+$lang = get_language();
+$lang_path = G5_LANG_PATH.'/'.$lang.'.json';
+$lang_json = json_decode(file_get_contents($lang_path), true);
+if (!is_array($lang_json)) {
+    ?>
+    <!doctype html>
+    <html lang="ko">
+    <head>
+    <meta charset="utf-8">
+    <title>오류! 언어팩을 불러올 수 없습니다.</title>
+    <link rel="stylesheet" href="install/install.css">
+    </head>
+    <body>
+    
+    <div id="ins_bar">
+        <span id="bar_img">GNUBOARD5</span>
+        <span id="bar_txt">Message</span>
+    </div>
+    <h1>언어팩을 먼저 설치해주십시오.</h1>
+    
+    <div id="ins_ft">
+        <strong>GNUBOARD5</strong>
+        <p>GPL! OPEN SOURCE GNUBOARD</p>
+    </div>
+    
+    </body>
+    </html>
+    <?php
+    exit;
+}
+set_session('ss_lang', $lang);
+
+////////////////////////////////////////////////////////////////////////////////
+// 채널 (추가) 설정
+////////////////////////////////////////////////////////////////////////////////
+if (!get_channel_id_parameter() && $channel['cn_id'] != $_SESSION['ss_cid']) {
+    $channel = get_channel();
+    $config = get_config(true, $channel['cn_id']);
+}
+set_session('ss_cid', $channel['cn_id']);
+
+if (isset($channel['cg_id']) && $channel['cg_id']) {
+    $cg_id = $channel['cg_id'];
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 채널 그룹
+////////////////////////////////////////////////////////////////////////////////
+if (isset($cg_id) && !is_array($cg_id) && $cg_id) {
+    $channel_group = get_channel_group($cg_id, true);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 마스터
+////////////////////////////////////////////////////////////////////////////////
+$master = get_master(true);
+
+////////////////////////////////////////////////////////////////////////////////
+// (채널) 디렉토리 관련 상수 정의
+////////////////////////////////////////////////////////////////////////////////
+//if ($channel['cn_id'] == G5_DEFAULT_CHANNEL) {
+//} else {
+//}
+@define('G5_DATA_URL', G5_URL.'/channel/'.$channel['cn_id'].'/data');
+@define('G5_DATA_PATH', G5_PATH.'/channel/'.$channel['cn_id'].'/data');
+
+////////////////////////////////////////////////////////////////////////////////
+// 모듈 설정
+////////////////////////////////////////////////////////////////////////////////
+$config['cf_module'] = isset($_REQUEST['md']) ? trim($_REQUEST['md']) : '';
+if (isset($config['cf_module']) && $config['cf_module']) {
+    $module_path = G5_PATH.'/'.G5_MODULE_DIR.'/'.$config['cf_module'];
+    if (is_dir($module_path)) {
+        define('G5_MODULE_PATH', $module_path);
+        define('G5_MODULE_URL', G5_URL.'/'.G5_MODULE_DIR.'/'.$config['cf_module']);
+    }
+    unset($module_path);
+}
+
+// 모듈 설정 불러오기
+if(defined('G5_MODULE_PATH') && is_file(G5_MODULE_PATH.'/module.config.php')) {
+    include_once(G5_MODULE_PATH.'/module.config.php');
+}
 
 define('G5_HTTP_BBS_URL',  https_url(G5_BBS_DIR, false));
 define('G5_HTTPS_BBS_URL', https_url(G5_BBS_DIR, true));
@@ -731,7 +758,6 @@ if (isset($member['mb_id']) && $member['mb_id']) {
     $member['mb_id'] = '';
     $member['mb_level'] = 1; // 비회원의 경우 회원레벨을 가장 낮게 설정
 }
-
 
 if ($is_admin != 'super') {
     // 접근가능 IP

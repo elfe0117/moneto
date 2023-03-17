@@ -42,9 +42,12 @@ h2{font-size: 1.083em;font-weight: bold;margin:10px 0}
 #tnb a{color:#fff;padding:0 10px;display:block;line-height:30px;}
 #tnb .tnb_service{border-radius:3px;background:#4e5eb7;color:#fff;padding:0 10px;text-align:left;height:30px;line-height:30px;}
 #tnb .tnb_service:hover{background:#5969c3}
-#tnb button{width:100px;border:0;border-radius:3px;background:#4e5eb7;color:#fff;padding:0 30px 0 10px;text-align:left;height:30px;position:relative;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+#tnb button{width:150px;border:0;border-radius:3px;background:#4e5eb7;color:#fff;padding:0 30px 0 10px;text-align:left;height:30px;position:relative;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 #tnb button span{display:block;text-indent:-999px;overflow:hidden;width:30px;border-radius:3px;height:30px;position:absolute;top:0;right:0;background:url(../img/op_btn.png) 50% 50% no-repeat #5969c3}
 #tnb button:hover {background:#5969c3}
+#tnb .tnb_cn_area{display:none;background:#5e6dc2;width:100px;position:absolute;padding:5px;margin-top:1px;}
+#tnb .tnb_cn_area a{padding:0}
+#tnb .tnb_cn_area li{float:none;}
 #tnb .tnb_mb_area{display:none;background:#5e6dc2;width:100px;position:absolute;padding:5px;margin-top:1px;}
 #tnb .tnb_mb_area a{padding:0}
 #tnb .tnb_mb_area li{float:none;}
