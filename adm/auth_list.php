@@ -87,7 +87,6 @@ $colspan = 5;
                         <label for="chkall" class="sound_only">현재 페이지 회원 전체</label>
                         <input type="checkbox" name="chkall" value="1" id="chkall" onclick="check_all(this.form)">
                     </th>
-                    <th scope="col"><?php echo subject_sort_link('a.cn_id') ?>채널 ID</a></th>
                     <th scope="col"><?php echo subject_sort_link('a.mb_id') ?>회원아이디</a></th>
                     <th scope="col"><?php echo subject_sort_link('mb_nick') ?>닉네임</a></th>
                     <th scope="col">메뉴</th>
