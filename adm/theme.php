@@ -6,22 +6,20 @@ if ($is_admin != 'super') {
     alert('최고관리자만 접근 가능합니다.');
 }
 
-$cf = sql_fetch(" SELECT * FROM {$g5['config_table']} WHERE cn_id = '{$channel['cn_id']}' LIMIT 0, 1 ");
-
 // 테마 필드 추가
-if(!isset($cf['cf_theme'])) {
+if(!isset($config['cf_theme'])) {
     sql_query(" ALTER TABLE `{$g5['config_table']}`
                     ADD `cf_theme` varchar(255) NOT NULL DEFAULT '' AFTER `cf_title` ", true);
 }
 
 $theme = get_theme_dir();
-if($cf['cf_theme'] && in_array($cf['cf_theme'], $theme))
-    array_unshift($theme, $cf['cf_theme']);
+if($config['cf_theme'] && in_array($config['cf_theme'], $theme))
+    array_unshift($theme, $config['cf_theme']);
 $theme = array_values(array_unique($theme));
 $total_count = count($theme);
 
 // 설정된 테마가 존재하지 않는다면 cf_theme 초기화
-if($cf['cf_theme'] && !in_array($cf['cf_theme'], $theme))
+if($config['cf_theme'] && !in_array($config['cf_theme'], $theme))
     sql_query(" update {$g5['config_table']} set cf_theme = '' ");
 
 $g5['title'] = "테마설정";
@@ -46,7 +44,7 @@ include_once('./admin.head.php');
         else
             $screenshot = '<img src="'.G5_ADMIN_URL.'/img/theme_img.jpg" alt="">';
 
-        if($cf['cf_theme'] == $theme[$i]) {
+        if($config['cf_theme'] == $theme[$i]) {
             $btn_active = '<span class="theme_sl theme_sl_use">사용중</span><button type="button" class="theme_sl theme_deactive" data-channel="'.$channel['cn_id'].'" data-theme="'.$theme[$i].'" '.'data-name="'.$name.'">사용안함</button>';
         } else {
             $tconfig = get_theme_config_value($theme[$i], 'set_default_skin');
