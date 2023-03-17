@@ -1,7 +1,7 @@
 <?php
 $menu['menu100'] = array(
-    array('100000', $lang_json['adm']['admin.menu100']['1'], G5_ADMIN_URL . '/config_list.php',   'config'),
-    array('100100', $lang_json['adm']['admin.menu100']['2'], G5_ADMIN_URL . '/config_list.php',   'cf_basic'),
+    array('100000', $lang_json['adm']['admin.menu100']['1'], G5_ADMIN_URL . '/config_form.php',   'config'),
+    array('100100', $lang_json['adm']['admin.menu100']['2'], G5_ADMIN_URL . '/config_form.php',   'cf_basic'),
     array('100200', $lang_json['adm']['admin.menu100']['3'], G5_ADMIN_URL . '/auth_list.php',     'cf_auth'),
 
     array('100280', $lang_json['adm']['admin.menu100']['4'], G5_ADMIN_URL . '/channel_check.php?url='.urldecode('./theme.php'),     'cf_theme', 1),
