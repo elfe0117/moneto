@@ -8,27 +8,7 @@ if ($is_admin != 'super') {
     alert('최고관리자만 접근 가능합니다.');
 }
 
-// 채널 ID
-$cn_id = isset($_GET['cn_id']) && !is_array($_GET['cn_id']) && $_GET['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_GET['cn_id'])) : '';
-
-// 채널 목록 정보 가져오기
-$cn_list = array();
-$sql = "SELECT *
-    FROM {$g5['channel_table']}
-    ORDER BY cn_id ASC ";
-$result = sql_query($sql);
-if ($result) {
-    while($row = sql_fetch_array($result)) {
-        array_push($cn_list, $row);
-    }
-    unset($result);
-}
-
-if (!count($cn_list)) {
-    alert('채널이 한개 이상 생성되어야 합니다.', './channel_form.php');
-}
-
-$cf = get_config(false, $cn_id);
+$cf = get_config($channel['cn_id'], false);
 
 if (!isset($cf['cf_add_script'])) {
     sql_query(
@@ -469,7 +449,6 @@ if ($cf['cf_sms_use'] && $cf['cf_icode_id'] && $cf['cf_icode_pw']) {
 
 <form name="fconfigform" id="fconfigform" method="post" onsubmit="return fconfigform_submit(this);">
     <input type="hidden" name="cf_id" value="<?php echo($cf['cf_id']); ?>">
-    <input type="hidden" name="cn_id" value="<?php echo($cf['cn_id']); ?>">
     <input type="hidden" name="token" value="" id="token">
 
     <section id="anc_cf_basic">
@@ -486,18 +465,6 @@ if ($cf['cf_sms_use'] && $cf['cf_icode_id'] && $cf['cf_icode_pw']) {
                     <col>
                 </colgroup>
                 <tbody>
-                    <tr>
-                        <th scope="row"><label for="cn_id">채널 ID<strong class="sound_only"> 필수</strong></label></th>
-                        <td colspan="3">
-                            <select id="cn_id" name="cn_id" required>
-                                <?php
-                                foreach($cn_list as $cn_row) {
-                                    echo(option_selected($cn_row['cn_id'], $cf['cn_id'], $cn_row['cn_id']));
-                                }
-                                ?>
-                            </select>
-                        </td>
-                    </tr>
                     <tr>
                         <th scope="row"><label for="cf_title">홈페이지 제목<strong class="sound_only">필수</strong></label></th>
                         <td colspan="3"><input type="text" name="cf_title" value="<?php echo get_sanitize_input($cf['cf_title']); ?>" id="cf_title" required class="required frm_input" size="40"></td>
@@ -1561,7 +1528,6 @@ if ($cf['cf_sms_use'] && $cf['cf_icode_id'] && $cf['cf_icode_pw']) {
     </section>
 
     <div class="btn_fixed_top btn_confirm">
-        <a href="./config_list.php?<?php echo $qstr; ?>" class="btn btn_02">목록</a>
         <input type="submit" value="확인" class="btn_submit btn" accesskey="s">
     </div>
 

@@ -11,7 +11,6 @@ if ($is_admin != 'super') {
 }
 
 $cf_id = isset($_POST['cf_id']) ? strip_tags(clean_xss_attributes($_POST['cf_id'])) : '';
-$cn_id = isset($_POST['cn_id']) ? strip_tags(clean_xss_attributes($_POST['cn_id'])) : '';
 $cf_title = isset($_POST['cf_title']) ? strip_tags(clean_xss_attributes($_POST['cf_title'])) : '';
 $cf_admin = isset($_POST['cf_admin']) ? clean_xss_tags($_POST['cf_admin'], 1, 1) : '';
 $posts = array();
@@ -188,7 +187,7 @@ if (!$_POST['cf_cert_use']) {
 }
 
 $sql = " update {$g5['config_table']}
-            set cn_id = '{$cn_id}',
+            set cn_id = '{$channel['cn_id']}',
                 cf_title = '{$cf_title}',
                 cf_admin = '{$cf_admin}',
                 cf_admin_email = '{$_POST['cf_admin_email']}',
@@ -352,4 +351,4 @@ run_event('admin_config_form_update');
 
 update_rewrite_rules();
 
-goto_url('./config_form.php?'.$qstr.'&amp;w=u&amp;cf_id='.$cf_id.'&amp;cn_id='.$cn_id, false);
+goto_url('./config_form.php?'.$qstr.'&amp;w=u', false);

@@ -3,7 +3,7 @@ if (!defined('_GNUBOARD_')) exit;
 
 // 2023-02-03 채널별 환경설정 조회 기능 구현을 위한 함수인자 추가
 // function get_config($is_cache=false) > function get_config($is_cache=false, $ch_host='*')
-function get_config($is_cache=false, $cn_id='*'){
+function get_config($cn_id='*', $is_cache=false){
     global $g5;
 
     static $cache = array();

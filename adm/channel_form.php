@@ -26,7 +26,7 @@ if ($w == 'u') {
     $cn = get_channel($cn_id);
 
     // 기본환경설정 정보 구하기
-    $cf = get_config(true, $cn_id);
+    $cf = get_config($cn_id, true);
 
     $sql = "SELECT *
         FROM {$g5['profile_table']}

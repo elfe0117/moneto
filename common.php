@@ -393,7 +393,7 @@ if (!(isset($channel['cn_id']) && $channel['cn_id'])) {
 
 // 기본환경설정
 // 기본적으로 사용하는 필드만 얻은 후 상황에 따라 필드를 추가로 얻음
-$config = get_config(true, $channel['cn_id']);
+$config = get_config($channel['cn_id'], true);
 
 // 본인인증 또는 쇼핑몰 사용시에만 secure; SameSite=None 로 설정합니다.
 if( $config['cf_cert_use'] || (defined('G5_YOUNGCART_VER') && G5_YOUNGCART_VER) ) {
@@ -481,7 +481,7 @@ set_session('ss_lang', $lang);
 ////////////////////////////////////////////////////////////////////////////////
 if (!get_channel_id_parameter() && $channel['cn_id'] != $_SESSION['ss_cid']) {
     $channel = get_channel();
-    $config = get_config(true, $channel['cn_id']);
+    $config = get_config($channel['cn_id'], true);
 }
 set_session('ss_cid', $channel['cn_id']);
 

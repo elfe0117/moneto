@@ -157,27 +157,27 @@ function cmp_query_string($p, $qstr='') {
                 <li class="tnb_li"><button type="button" class="tnb_cn_btn">채널(<?php echo($channel['cn_name']); ?>)<span class="./img/btn_gnb.png">메뉴열기</span></button>
                     <ul class="tnb_cn_area">
                         <?php
-                        $sql = "SELECT *
+                        $cn_sql = "SELECT *
                             FROM {$g5['channel_table']}
                             WHERE (1 = 1) ";
 
                         if ($member['ma_admin'] != $member['mb_id']) {
-                            $sql .= " AND ( ";
-                            $sql .= " cn_id IN (SELECT cn_id FROM {$g5['config_table']} WHERE cf_admin = '{$member['mb_id']}' ) ";
-                            $sql .= " OR cg_id IN (SELECT cg_id FROM {$g5['channel_group_table']} WHERE cg_admin = '{$member['mb_id']}' ) ";
-                            $sql .= " ) ";
+                            $cn_sql .= " AND ( ";
+                            $cn_sql .= " cn_id IN (SELECT cn_id FROM {$g5['config_table']} WHERE cf_admin = '{$member['mb_id']}' ) ";
+                            $cn_sql .= " OR cg_id IN (SELECT cg_id FROM {$g5['channel_group_table']} WHERE cg_admin = '{$member['mb_id']}' ) ";
+                            $cn_sql .= " ) ";
                         }
 
-                        $sql .= " ORDER BY cn_name ASC ";
-                        $result = sql_query($sql);
-                        if ($result) {
-                            while($row = sql_fetch_array($result)) {
-                                $url = $_SERVER['PHP_SELF'].'?'.cmp_query_string(array('cid' => $row['cn_id']), $_SERVER['QUERY_STRING']);
+                        $cn_sql .= " ORDER BY cn_name ASC ";
+                        $cn_result = sql_query($cn_sql);
+                        if ($cn_result) {
+                            while($cn_row = sql_fetch_array($cn_result)) {
+                                $url = $_SERVER['PHP_SELF'].'?'.cmp_query_string(array('cid' => $cn_row['cn_id']), $_SERVER['QUERY_STRING']);
                         ?>
-                        <li><a href="<?php echo($url); ?>"><?php echo($row['cn_name']); ?></a></li>
+                        <li><a href="<?php echo($url); ?>"><?php echo($cn_row['cn_name']); ?></a></li>
                         <?php
                             }
-                            unset($result);
+                            unset($cn_result);
                         }
                         ?>
                     </ul>
