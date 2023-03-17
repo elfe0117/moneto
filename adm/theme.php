@@ -6,14 +6,7 @@ if ($is_admin != 'super') {
     alert('최고관리자만 접근 가능합니다.');
 }
 
-// 채널 ID
-$cn_id = isset($_REQUEST['cn_id']) && !is_array($_REQUEST['cn_id']) && $_REQUEST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cn_id'])) : '';    
-$cn = get_channel($cn_id);
-if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
-    alert('올바른 채널 ID를 입력하세요.');
-}
-
-$cf = sql_fetch(" SELECT * FROM {$g5['config_table']} WHERE cn_id = '{$cn_id}' LIMIT 0, 1 ");
+$cf = sql_fetch(" SELECT * FROM {$g5['config_table']} WHERE cn_id = '{$channel['cn_id']}' LIMIT 0, 1 ");
 
 // 테마 필드 추가
 if(!isset($cf['cf_theme'])) {
@@ -54,7 +47,7 @@ include_once('./admin.head.php');
             $screenshot = '<img src="'.G5_ADMIN_URL.'/img/theme_img.jpg" alt="">';
 
         if($cf['cf_theme'] == $theme[$i]) {
-            $btn_active = '<span class="theme_sl theme_sl_use">사용중</span><button type="button" class="theme_sl theme_deactive" data-channel="'.$cn_id.'" data-theme="'.$theme[$i].'" '.'data-name="'.$name.'">사용안함</button>';
+            $btn_active = '<span class="theme_sl theme_sl_use">사용중</span><button type="button" class="theme_sl theme_deactive" data-channel="'.$channel['cn_id'].'" data-theme="'.$theme[$i].'" '.'data-name="'.$name.'">사용안함</button>';
         } else {
             $tconfig = get_theme_config_value($theme[$i], 'set_default_skin');
             if($tconfig['set_default_skin'])
@@ -62,7 +55,7 @@ include_once('./admin.head.php');
             else
                 $set_default_skin = 'false';
 
-            $btn_active = '<button type="button" class="theme_sl theme_active" data-channel="'.$cn_id.'" data-theme="'.$theme[$i].'" '.'data-name="'.$name.'" data-set_default_skin="'.$set_default_skin.'">테마적용</button>';
+            $btn_active = '<button type="button" class="theme_sl theme_active" data-channel="'.$channel['cn_id'].'" data-theme="'.$theme[$i].'" '.'data-name="'.$name.'" data-set_default_skin="'.$set_default_skin.'">테마적용</button>';
         }
     ?>
     <li>
@@ -74,7 +67,7 @@ include_once('./admin.head.php');
         </div>
         <?php echo $btn_active; ?>
         <a href="./theme_preview.php?theme=<?php echo $theme[$i]; ?>" class="theme_pr" target="theme_preview">미리보기</a>
-        <button type="button" class="tmli_dt theme_preview" data-channel="<?php echo($cn_id); ?>" data-theme="<?php echo $theme[$i]; ?>">상세보기</button>
+        <button type="button" class="tmli_dt theme_preview" data-channel="<?php echo($channel['cn_id']); ?>" data-theme="<?php echo $theme[$i]; ?>">상세보기</button>
     </li>
     <?php
     }
