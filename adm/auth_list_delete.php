@@ -25,11 +25,14 @@ for ($i = 0; $i < $count; $i++) {
     // 실제 번호를 넘김
     $k = isset($_POST['chk'][$i]) ? (int) $_POST['chk'][$i] : 0;
 
-    $cn_id = (isset($_POST['cn_id'][$k]) && $_POST['cn_id'][$k]) ? trim($_POST['cn_id'][$k]) : '';
     $mb_id = isset($_POST['mb_id'][$k]) ? preg_replace('/[^a-zA-Z0-9_]/', '', $_POST['mb_id'][$k]) : '';
     $au_menu = isset($_POST['au_menu'][$k]) ? preg_replace('/[^a-zA-Z0-9_]/', '', $_POST['au_menu'][$k]) : '';
 
-    $sql = " delete from {$g5['auth_table']} where cn_id = '{$cn_id}' AND mb_id = '" . $mb_id . "' and au_menu = '" . $au_menu . "' ";
+    $sql = " delete
+        from {$g5['auth_table']}
+        where cn_id = '{$channel['cn_id']}'
+            AND mb_id = '" . $mb_id . "'
+            and au_menu = '" . $au_menu . "' ";
     sql_query($sql);
 
     run_event('adm_auth_delete_member', $mb_id, $au_menu);
