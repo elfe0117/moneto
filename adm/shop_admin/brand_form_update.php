@@ -2,8 +2,6 @@
 $sub_menu = '400380';
 require_once './_common.php';
 
-$cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';
-
 if ($w == "u" || $w == "d") {
     check_demo();
 }
@@ -25,7 +23,7 @@ $sql_common = "
 if ($w == '') {
     $sql = "INSERT INTO {$g5['g5_shop_brand_table']}
         SET {$sql_common}
-            , cn_id = '{$cn_id}'
+            , cn_id = '{$config['cn_id']}'
             , br_datetime = '".G5_TIME_YMDHIS."' ";
     sql_query($sql, false);
 

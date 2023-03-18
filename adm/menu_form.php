@@ -47,18 +47,6 @@ if ($new == 'new' || !$code) {
                 </colgroup>
                 <tbody>
                 <tr>
-                    <th scope="row"><label for="cn_id">채널 ID<strong class="sound_only"> 필수</strong></label></th>
-                    <td>
-                        <select id="cn_id" name="cn_id" required>
-                            <?php
-                            foreach($array_cn as $row_cn) {
-                                echo(option_selected($row_cn['cn_id'], '', $row_cn['cn_id']));
-                            }
-                            ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
                     <th scope="row"><label for="me_type">대상선택</label></th>
                     <td>
                         <select id="me_type" name="me_type">

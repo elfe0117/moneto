@@ -91,7 +91,7 @@ $colspan = 6;
     <div class="btn_fixed_top">
         <input type="submit" name="act_button" value="선택삭제" onclick="document.pressed=this.value" class="btn btn_02">
         <?php if ($is_admin == 'super') { ?>
-            <a href="./channel_check.php?url=<?php echo(urlencode('./channelhost_form.php')); ?>" id="channelhost_add" class="btn btn_01">채널추가</a>
+            <a href="./channelhost_form.php" id="channelhost_add" class="btn btn_01">채널추가</a>
         <?php } ?>
     </div>
 </form>

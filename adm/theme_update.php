@@ -7,13 +7,6 @@ if ($is_admin != 'super')
 
 admin_referer_check();
 
-// 채널 ID
-$cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';    
-$cn = get_channel($cn_id);
-if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
-    die('올바른 채널 ID를 입력하세요.');
-}
-
 $theme = isset($_POST['theme']) ? trim($_POST['theme']) : '';
 $post_type = isset($_POST['type']) ? clean_xss_tags($_POST['type'], 1, 1) : '';
 $post_set_default_skin = isset($_POST['set_default_skin']) ? clean_xss_tags($_POST['set_default_skin'], 1, 1) : '';
@@ -21,7 +14,7 @@ $post_set_default_skin = isset($_POST['set_default_skin']) ? clean_xss_tags($_PO
 $theme_dir = get_theme_dir();
 
 if($post_type == 'reset') {
-    $sql = " update {$g5['config_table']} set cf_theme = '' ";
+    $sql = " update {$g5['config_table']} set cf_theme = '' WHERE cn_id = '{$config['cn_id']}' ";
     sql_query($sql);
     die('');
 }
@@ -30,7 +23,7 @@ if(!in_array($theme, $theme_dir))
     die('선택하신 테마가 설치되어 있지 않습니다.');
 
 // 테마적용
-$sql = " update {$g5['config_table']} set cf_theme = '$theme' WHERE cn_id = '{$cn_id}' ";
+$sql = " update {$g5['config_table']} set cf_theme = '$theme' WHERE cn_id = '{$config['cn_id']}' ";
 sql_query($sql);
 
 // 테마 설정 스킨 적용
@@ -82,17 +75,17 @@ if($post_set_default_skin == 1) {
         }
 
         if(!empty($sql_common)) {
-            $sql = " update {$g5['config_table']} set " . implode(', ', $sql_common). " WHERE cn_id = '{$cn_id}' ";
+            $sql = " update {$g5['config_table']} set " . implode(', ', $sql_common). " WHERE cn_id = '{$config['cn_id']}' ";
             sql_query($sql);
         }
 
         if(!empty($qa_sql_common)) {
-            $sql = " update {$g5['qa_config_table']} set " . implode(', ', $qa_sql_common). " WHERE cn_id = '{$cn_id}' ";
+            $sql = " update {$g5['qa_config_table']} set " . implode(', ', $qa_sql_common). " WHERE cn_id = '{$config['cn_id']}' ";
             sql_query($sql);
         }
 
         if(!empty($de_sql_common)) {
-            $sql = " update {$g5['g5_shop_default_table']} set " . implode(', ', $de_sql_common). " WHERE cn_id = '{$cn_id}' ";
+            $sql = " update {$g5['g5_shop_default_table']} set " . implode(', ', $de_sql_common). " WHERE cn_id = '{$config['cn_id']}' ";
             sql_query($sql);
         }
     }

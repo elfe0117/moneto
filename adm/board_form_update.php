@@ -10,21 +10,11 @@ auth_check_menu($auth, $sub_menu, 'w');
 
 check_admin_token();
 
-// 채널 ID
-$cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';
-$cn = sql_fetch("SELECT * FROM {$g5['channel_table']} WHERE cn_id = '{$cn_id}' ");
-if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
-    alert('채널정보가 존재하지 않습니다.');
-}
-
 $gr_id              = isset($_POST['gr_id']) ? preg_replace('/[^a-z0-9_]/i', '', (string)$_POST['gr_id']) : '';
 $bo_admin           = isset($_POST['bo_admin']) ? preg_replace('/[^a-z0-9_\, \|\#]/i', '', $_POST['bo_admin']) : '';
 $bo_subject         = isset($_POST['bo_subject']) ? strip_tags(clean_xss_attributes($_POST['bo_subject'])) : '';
 $bo_mobile_subject  = isset($_POST['bo_mobile_subject']) ? strip_tags(clean_xss_attributes($_POST['bo_mobile_subject'])) : '';
 
-if (!$cn_id) {
-    alert('채널 ID는 반드시 선택하세요.');
-}
 if (!$gr_id) {
     alert('그룹 ID는 반드시 선택하세요.');
 }
@@ -84,7 +74,7 @@ if (function_exists('filter_input_include_path')) {
     $bo_include_tail = filter_input_include_path($bo_include_tail);
 }
 
-$channel_path = G5_DATA_PATH . '/' . $cn_id;
+$channel_path = G5_DATA_PATH . '/' . $config['cn_id'];
 
 // 채널 디렉토리 생성
 @mkdir($channel_path, G5_DIR_PERMISSION);
@@ -295,13 +285,13 @@ $sql_common .= " bo_insert_content   = '{$bo_insert_content}',
                 bo_10               = '{$bo_10}' ";
 
 if ($w == '') {
-    $row = sql_fetch(" select count(*) as cnt from {$g5['board_table']} where cn_id = '{$cn_id}' AND bo_table = '{$bo_table}' ");
+    $row = sql_fetch(" select count(*) as cnt from {$g5['board_table']} where cn_id = '{$config['cn_id']}' AND bo_table = '{$bo_table}' ");
     if ($row['cnt']) {
-        alert('['.$cn_id.'] '.$bo_table . ' 은(는) 이미 존재하는 TABLE 입니다.');
+        alert('['.$config['cn_id'].'] '.$bo_table . ' 은(는) 이미 존재하는 TABLE 입니다.');
     }
 
     $sql = " insert into {$g5['board_table']}
-                set cn_id = '{$cn_id}',
+                set cn_id = '{$config['cn_id']}',
                     bo_table = '{$bo_table}',
                     bo_count_write = '0',
                     bo_count_comment = '0',
@@ -314,7 +304,7 @@ if ($w == '') {
 
     $sql = implode("\n", $file);
 
-    $create_table = $g5['write_prefix'].$cn_id.'_'.$bo_table;
+    $create_table = $g5['write_prefix'].$config['cn_id'].'_'.$bo_table;
 
     // sql_board.sql 파일의 테이블명을 변환
     $source = array('/__TABLE_NAME__/', '/;/');
@@ -323,12 +313,12 @@ if ($w == '') {
     sql_query($sql, false);
 } elseif ($w == 'u') {
     // 게시판의 글 수
-    $sql = " select count(*) as cnt from {$g5['write_prefix']}{$cn_id}_{$bo_table} where wr_is_comment = 0 ";
+    $sql = " select count(*) as cnt from {$g5['write_prefix']}{$config['cn_id']}_{$bo_table} where wr_is_comment = 0 ";
     $row = sql_fetch($sql);
     $bo_count_write = $row['cnt'];
 
     // 게시판의 코멘트 수
-    $sql = " select count(*) as cnt from {$g5['write_prefix']}{$cn_id}_{$bo_table} where wr_is_comment = 1 ";
+    $sql = " select count(*) as cnt from {$g5['write_prefix']}{$config['cn_id']}_{$bo_table} where wr_is_comment = 1 ";
     $row = sql_fetch($sql);
     $bo_count_comment = $row['cnt'];
 
@@ -340,7 +330,7 @@ if ($w == '') {
     if (isset($_POST['proc_count'])) {
         // 원글을 얻습니다.
         //$sql = " select wr_id from {$g5['write_prefix']}{$bo_table} where wr_is_comment = 0 ";
-        $sql = " select a.wr_id, (count(b.wr_parent) - 1) as cnt from {$g5['write_prefix']}{$cn_id}_{$bo_table} a, {$g5['write_prefix']}{$cn_id}_{$bo_table} b where a.wr_id=b.wr_parent and a.wr_is_comment=0 group by a.wr_id ";
+        $sql = " select a.wr_id, (count(b.wr_parent) - 1) as cnt from {$g5['write_prefix']}{$config['cn_id']}_{$bo_table} a, {$g5['write_prefix']}{$config['cn_id']}_{$bo_table} b where a.wr_id=b.wr_parent and a.wr_is_comment=0 group by a.wr_id ";
         $result = sql_query($sql);
         for ($i = 0; $row = sql_fetch_array($result); $i++) {
             /*
@@ -349,7 +339,7 @@ if ($w == '') {
             $row2 = sql_fetch($sql2);
             */
 
-            sql_query(" update {$g5['write_prefix']}{$cn_id}_{$bo_table} set wr_comment = '{$row['cnt']}' where wr_id = '{$row['wr_id']}' ");
+            sql_query(" update {$g5['write_prefix']}{$config['cn_id']}_{$bo_table} set wr_comment = '{$row['cnt']}' where wr_id = '{$row['wr_id']}' ");
         }
     }
 
@@ -360,7 +350,7 @@ if ($w == '') {
         $tmp_array = explode(",", $board['bo_notice']);
         for ($i = 0; $i < count($tmp_array); $i++) {
             $tmp_wr_id = trim($tmp_array[$i]);
-            $row = sql_fetch(" select count(*) as cnt from {$g5['write_prefix']}{$cn_id}_{$bo_table} where wr_id = '{$tmp_wr_id}' ");
+            $row = sql_fetch(" select count(*) as cnt from {$g5['write_prefix']}{$config['cn_id']}_{$bo_table} where wr_id = '{$tmp_wr_id}' ");
             if ($row['cnt']) {
                 $bo_notice .= $lf . $tmp_wr_id;
                 $lf = ",";
@@ -373,7 +363,7 @@ if ($w == '') {
                     bo_count_write = '{$bo_count_write}',
                     bo_count_comment = '{$bo_count_comment}',
                     {$sql_common}
-              where cn_id = '{$cn_id}'
+              where cn_id = '{$config['cn_id']}'
                 AND bo_table = '{$bo_table}' ";
     sql_query($sql);
 }
@@ -555,15 +545,15 @@ for ($i = 1; $i <= 10; $i++) {
 }
 
 if ($all_fields) {
-    sql_query(" update {$g5['board_table']} set cn_id = '{$cn_id}' AND bo_table = bo_table {$all_fields} ");
+    sql_query(" update {$g5['board_table']} set cn_id = '{$config['cn_id']}' AND bo_table = bo_table {$all_fields} ");
 }
 
-delete_cache_latest($cn_id.'_'.$bo_table);
+delete_cache_latest($config['cn_id'].'_'.$bo_table);
 
 if (function_exists('get_admin_captcha_by')) {
     get_admin_captcha_by('remove');
 }
 
-run_event('admin_board_form_update', $cn_id.'_'.$bo_table, $w);
+run_event('admin_board_form_update', $config['cn_id'].'_'.$bo_table, $w);
 
-goto_url("./board_form.php?w=u&amp;cn_id={$cn_id}&amp;bo_table={$bo_table}&amp;{$qstr}");
+goto_url("./board_form.php?w=u&amp;bo_table={$bo_table}&amp;{$qstr}");

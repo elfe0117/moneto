@@ -62,7 +62,7 @@ $result = sql_query($sql);
 $g5['title'] = '배너관리';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 
-$colspan = 9;
+$colspan = 8;
 ?>
 
 <div class="local_ov01 local_ov">
@@ -105,7 +105,6 @@ $colspan = 9;
     <caption><?php echo $g5['title']; ?> 목록</caption>
     <thead>
     <tr>
-        <th scope="col" rowspan="2" id="cn_id">채널</th>
         <th scope="col" rowspan="2" id="th_id">ID</th>
         <th scope="col" id="th_dvc">접속기기</th>
         <th scope="col" id="th_loc">위치</th>
@@ -163,7 +162,6 @@ $colspan = 9;
     ?>
 
     <tr class="<?php echo $bg; ?>">
-        <td headers="cn_id" rowspan="2" class="td_num"><?php echo $row['cn_id']; ?></td>
         <td headers="th_id" rowspan="2" class="td_num"><?php echo $row['bn_id']; ?></td>
         <td headers="th_dvc"><?php echo $bn_device; ?></td>
         <td headers="th_loc"><?php echo $row['bn_position']; ?></td>

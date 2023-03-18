@@ -5,8 +5,6 @@ include_once(G5_EDITOR_LIB);
 
 auth_check_menu($auth, $sub_menu, "w");
 
-$cn_id = isset($_REQUEST['cn_id']) && !is_array($_REQUEST['cn_id']) && $_REQUEST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cn_id'])) : '';
-
 $ca_no = isset($_GET['ca_no']) && $_GET['ca_no'] ? (int)$_GET['ca_no'] : 0;
 
 $ca = array(
@@ -38,10 +36,6 @@ if ($is_admin != 'super')
 
 if ($w == "")
 {
-    if (!$cn_id) {
-        alert("잘못된 접근입니다.");
-    }
-
     if ($is_admin != 'super' && !$ca_id)
         alert("최고관리자만 1단계 분류를 추가할 수 있습니다.");
 
@@ -79,7 +73,6 @@ if ($w == "")
     else // 1단계 분류
     {
         $html_title = "1단계분류추가";
-        $ca['cn_id'] = $cn_id;
         $ca['ca_use'] = 1;
         $ca['ca_explan_html'] = 1;
         $ca['ca_img_width']  = $default['de_simg_width'];
@@ -106,14 +99,12 @@ else if ($w == "u")
     $ca['ca_name'] = get_text($ca['ca_name']);
 
     $ca_no = $ca['ca_no'];
-    $cn_id = $ca['cn_id'];
 }
 
 $g5['title'] = $html_title;
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 
 $pg_anchor ='<ul class="anchor">
-<li><a href="#anc_cn_info">채널정보</a></li>
 <li><a href="#anc_scatefrm_basic">필수입력</a></li>
 <li><a href="#anc_scatefrm_optional">선택입력</a></li>
 <li><a href="#anc_scatefrm_extra">여분필드</a></li>';
@@ -176,30 +167,6 @@ else {
 <input type="hidden" name="stx" value="<?php echo $stx; ?>">
 <input type="hidden" name="page" value="<?php echo $page; ?>">
 <input type="hidden" name="ca_explan_html" value="<?php echo $ca['ca_explan_html']; ?>">
-
-<section id="anc_cn_info">
-    <h2 class="h2_frm">채널정보</h2>
-    <?php echo $pg_anchor; ?>
-
-    <div class="tbl_frm01 tbl_wrap">
-        <table>
-        <caption>분류 추가 필수입력</caption>
-        <colgroup>
-            <col class="grid_4">
-            <col>
-        </colgroup>
-        <tbody>
-        <tr>
-            <th scope="row"><label for="cn_id">채널 ID</label></th>
-            <td>
-                <input type="hidden" name="cn_id" id="cn_id" value="<?php echo($ca['cn_id']); ?>">
-                <?php echo($ca['cn_id']); ?>
-            </td>
-        </tr>
-        </tbody>
-        </table>
-    </div>
-</sction>
 
 <section id="anc_scatefrm_basic">
     <h2 class="h2_frm">필수입력</h2>
@@ -572,8 +539,7 @@ function fcategoryformcheck(f)
             url: "./ajax.ca_id.php",
             type: "POST",
             data: {
-                "ca_id": f.ca_id.value,
-                "cn_id": f.cn_id.value
+                "ca_id": f.ca_id.value
             },
             dataType: "json",
             async: false,

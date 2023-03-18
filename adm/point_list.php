@@ -209,10 +209,6 @@ if (strstr($sfl, "mb_id")) {
                 </colgroup>
                 <tbody>
                     <tr>
-                        <th scope="row"><label for="cn_id">채널ID<strong class="sound_only">필수</strong></label></th>
-                        <td><input type="text" name="cn_id" id="cn_id" value="<?php echo($cn_id); ?>" required class="required frm_input"></td>
-                    </tr>
-                    <tr>
                         <th scope="row"><label for="mb_id">회원아이디<strong class="sound_only">필수</strong></label></th>
                         <td><input type="text" name="mb_id" value="<?php echo $mb_id ?>" id="mb_id" class="required frm_input" required></td>
                     </tr>

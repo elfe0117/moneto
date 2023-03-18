@@ -5,28 +5,27 @@ if ($is_admin != 'super') {
     die('최고관리자만 접근 가능합니다.');
 }
 
-$cn_id = (isset($_REQUEST['cn_id']) && $_REQUEST['cn_id']) ? preg_replace('/[^a-z0-9_]/i', '', (string)$_REQUEST['cn_id']) : '';
 $type = isset($_REQUEST['type']) ? preg_replace('/[^0-9a-z_]/i', '', $_REQUEST['type']) : '';
 
 switch ($type) {
     case 'group':
         $sql = " SELECT cn_id, gr_id AS id, gr_subject AS subject
             FROM {$g5['group_table']}
-            WHERE cn_id = '{$cn_id}'
+            WHERE cn_id = '{$config['cn_id']}'
             ORDER BY gr_order ASC,
                 gr_id ASC ";
         break;
     case 'board':
         $sql = " SELECT cn_id, bo_table AS id, bo_subject AS subject, gr_id
             FROM {$g5['board_table']}
-            WHERE cn_id = '{$cn_id}'
+            WHERE cn_id = '{$config['cn_id']}'
             ORDER BY bo_order ASC,
                 bo_table ASC ";
         break;
     case 'content':
         $sql = " SELECT cn_id, co_id AS id, co_subject AS subject
             FROM {$g5['content_table']}
-            WHERE cn_id = '{$cn_id}'
+            WHERE cn_id = '{$config['cn_id']}'
             ORDER BY co_id ASC ";
         break;
     default:

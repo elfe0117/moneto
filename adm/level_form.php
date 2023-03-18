@@ -6,15 +6,13 @@ if ($is_admin != 'super') {
     alert('최고관리자만 접근 가능합니다.');
 }
 
-// 채널 ID
-$cn_id = isset($_REQUEST['cn_id']) && !is_array($_REQUEST['cn_id']) && $_REQUEST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cn_id'])) : '';
 $lv_type = 'member';
 
 $lv_list = array();
 
 $sql = " SELECT *
     FROM {$g5['level_table']}
-    WHERE cn_id = '{$cn_id}'
+    WHERE cn_id = '{$config['cn_id']}'
         AND lv_type = '{$lv_type}'
     ORDER BY lv_value ASC ";
 $result = sql_query($sql);
@@ -30,7 +28,6 @@ require_once './admin.head.php';
 ?>
 
 <form name="flevelform" id="flevelform" method="post" onsubmit="return flevelform_submit(this);">
-    <input type="hidden" name="cn_id" value="<?php echo($cn_id); ?>">
     <input type="hidden" name="lv_type" value="<?php echo($lv_type); ?>">
     <input type="hidden" name="token" value="" id="token">
 

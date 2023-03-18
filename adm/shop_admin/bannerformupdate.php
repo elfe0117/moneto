@@ -13,12 +13,7 @@ else
 
 check_admin_token();
 
-$cn_id = (isset($_REQUEST['cn_id']) && $_REQUEST['cn_id']) ? preg_replace('/[^a-z0-9_]/i', '', (string)$_REQUEST['cn_id']) : '';
-if (!$cn_id) {
-    alert('채널 ID는 반드시 선택하세요.');
-}
-
-$banner_path = get_channel_data_path($cn_id).'/banner';
+$banner_path = get_channel_data_path($config['cn_id']).'/banner';
 
 // 배너 디렉토리 생성
 @mkdir($banner_path, G5_DIR_PERMISSION);
@@ -60,7 +55,7 @@ if ($w=="")
     sql_query(" alter table {$g5['g5_shop_banner_table']} auto_increment=1 ");
 
     $sql = " insert into {$g5['g5_shop_banner_table']}
-                set cn_id         = '{$cn_id}',
+                set cn_id         = '{$config['cn_id']}',
                     bn_alt        = '$bn_alt',
                     bn_url        = '$bn_url',
                     bn_device     = '$bn_device',
@@ -79,7 +74,7 @@ if ($w=="")
 else if ($w=="u")
 {
     $sql = " update {$g5['g5_shop_banner_table']}
-                set cn_id         = '{$cn_id}',
+                set cn_id         = '{$config['cn_id']}',
                     bn_alt        = '$bn_alt',
                     bn_url        = '$bn_url',
                     bn_device     = '$bn_device',

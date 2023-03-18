@@ -28,7 +28,6 @@ for ($i = 0; $i < $count; $i++) {
     $_POST['me_link'][$i] = is_array($_POST['me_link']) ? clean_xss_tags(clean_xss_attributes(preg_replace('/[ ]{2,}|[\t]/', '', $_POST['me_link'][$i]), 1)) : '';
     $_POST['me_link'][$i] = html_purifier($_POST['me_link'][$i]);
 
-    $cn_id   = is_array($_POST['cn_id']) ? preg_replace('/[^a-z0-9_]/i', '', (string)$_POST['cn_id'][$i]) : '';
     $code    = is_array($_POST['code']) ? strip_tags($_POST['code'][$i]) : '';
     $me_name = is_array($_POST['me_name']) ? strip_tags($_POST['me_name'][$i]) : '';
     $me_link = (preg_match('/^javascript/i', $_POST['me_link'][$i]) || preg_match('/script:/i', $_POST['me_link'][$i])) ? G5_URL : strip_tags(clean_xss_attributes($_POST['me_link'][$i]));
@@ -41,7 +40,7 @@ for ($i = 0; $i < $count; $i++) {
     if ($group_code == $code) {
         $sql = " select MAX(SUBSTRING(me_code,3,2)) as max_me_code
                     from {$g5['menu_table']}
-                    where cn_id = '{$cn_id}'
+                    where cn_id = '{$config['cn_id']}'
                         AND SUBSTRING(me_code,1,2) = '$primary_code' ";
         $row = sql_fetch($sql);
 
@@ -53,7 +52,7 @@ for ($i = 0; $i < $count; $i++) {
     } else {
         $sql = " select MAX(SUBSTRING(me_code,1,2)) as max_me_code
                     from {$g5['menu_table']}
-                    where cn_id = '{$cn_id}'
+                    where cn_id = '{$config['cn_id']}'
                         AND LENGTH(me_code) = '2' ";
         $row = sql_fetch($sql);
 
@@ -67,7 +66,7 @@ for ($i = 0; $i < $count; $i++) {
 
     // 메뉴 등록
     $sql = " INSERT INTO {$g5['menu_table']}
-                SET cn_id           = '{$cn_id}',
+                SET cn_id           = '{$config['cn_id']}',
                     me_code         = '" . $me_code . "',
                     me_name         = '" . $me_name . "',
                     me_link         = '" . $me_link . "',

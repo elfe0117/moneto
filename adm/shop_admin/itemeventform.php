@@ -116,18 +116,6 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
     </tr>
     <?php } ?>
     <tr>
-        <th scope="row"><label for="cn_id">채널 ID<strong class="sound_only"> 필수</strong></label></th>
-        <td>
-            <select id="cn_id" name="cn_id" required>
-                <?php
-                foreach($array_cn as $row_cn) {
-                    echo(option_selected($row_cn['cn_id'], $ev['cn_id'], $row_cn['cn_id']));
-                }
-                ?>
-            </select>
-        </td>
-    </tr>
-    <tr>
         <th scope="row"><label for="ev_skin">출력스킨</label></th>
         <td>
             <?php echo help('기본으로 제공하는 스킨은 '.str_replace(G5_PATH.'/', '', G5_SHOP_SKIN_PATH).'/list.*.skin.php 입니다.'.PHP_EOL.G5_SHOP_DIR.'/event.php?ev_id=1234567890&amp;skin=userskin.php 처럼 직접 만든 스킨을 사용할 수도 있습니다.'); ?>

@@ -17,7 +17,6 @@ if ($result) {
     unset($result);
 }
 
-$cn_id = (isset($_REQUEST['cn_id']) && $_REQUEST['cn_id']) ? preg_replace('/[^a-z0-9_]/i', '', (string)$_REQUEST['cn_id']) : '';
 $cp_id = isset($_REQUEST['cp_id']) ? clean_xss_tags($_REQUEST['cp_id'], 1, 1) : '';
 $cp = array(
 'cp_method'=>'',
@@ -36,7 +35,7 @@ $g5['title'] = '쿠폰관리';
 if ($w == 'u') {
     $html_title = '쿠폰 수정';
 
-    $sql = " select * from {$g5['g5_shop_coupon_table']} where cn_id = '{$cn_id}' AND cp_id = '$cp_id' ";
+    $sql = " select * from {$g5['g5_shop_coupon_table']} where cn_id = '{$config['cn_id']}' AND cp_id = '$cp_id' ";
     $cp = sql_fetch($sql);
     if (!$cp['cp_id']) alert('등록된 자료가 없습니다.');
 }
@@ -76,18 +75,6 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
         <col>
     </colgroup>
     <tbody>
-    <tr>
-        <th scope="row"><label for="cn_id">채널 ID</label></th>
-        <td>
-            <select id="cn_id" name="cn_id" required>
-                <?php
-                foreach($array_cn as $row_cn) {
-                    echo(option_selected($row_cn['cn_id'], $cp['cn_id'], $row_cn['cn_id']));
-                }
-                ?>
-            </select>
-        </td>
-    </tr>
     <tr>
         <th scope="row"><label for="cp_subject">쿠폰이름</label></th>
         <td>

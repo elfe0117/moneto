@@ -17,7 +17,6 @@ $(function() {
             type: "POST",
             url: "./theme_update.php",
             data: {
-                "cn_id": cn_id,
                 "theme": theme,
                 "set_default_skin": set_default_skin
             },
@@ -46,7 +45,6 @@ $(function() {
             type: "POST",
             url: "./theme_update.php",
             data: {
-                "cn_id": cn_id,
                 "theme": theme,
                 "type": "reset"
             },
@@ -73,7 +71,6 @@ $(function() {
             type: "POST",
             url: "./theme_detail.php",
             data: {
-                "cn_id": cn_id,
                 "theme": theme
             },
             cache: false,

@@ -8,16 +8,9 @@ auth_check_menu($auth, $sub_menu, 'w');
 
 check_admin_token();
 
-// 채널 ID
-$cn_id = isset($_REQUEST['cn_id']) && !is_array($_REQUEST['cn_id']) && $_REQUEST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cn_id'])) : '';    
-$cn = get_channel($cn_id);
-if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
-    alert('올바른 채널 ID를 입력하세요.');
-}
-
 $error_msg = '';
 
-$qaconfig = get_qa_config($cn_id);
+$qaconfig = get_qa_config($config['cn_id']);
 
 $check_keys = array('qa_title', 'qa_category', 'qa_skin', 'qa_mobile_skin', 'qa_use_email', 'qa_req_email', 'qa_use_hp', 'qa_req_hp', 'qa_use_sms', 'qa_send_number', 'qa_admin_hp', 'qa_admin_email', 'qa_subject_len', 'qa_mobile_subject_len', 'qa_page_rows', 'qa_mobile_page_rows', 'qa_image_width', 'qa_upload_size');
 

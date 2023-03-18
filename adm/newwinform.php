@@ -73,18 +73,6 @@ require_once G5_ADMIN_PATH . '/admin.head.php';
             </colgroup>
             <tbody>
                 <tr>
-                    <th scope="row"><label for="cn_id">채널 ID<strong class="sound_only"> 필수</strong></label></th>
-                    <td>
-                        <select id="cn_id" name="cn_id" required>
-                            <?php
-                            foreach($array_cn as $row_cn) {
-                                echo(option_selected($row_cn['cn_id'], $nw['cn_id'], $row_cn['cn_id']));
-                            }
-                            ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
                     <th scope="row"><label for="nw_division">구분</label></th>
                     <td>
                         <?php echo help("커뮤니티에 표시될 것인지 쇼핑몰에 표시될 것인지를 설정합니다."); ?>

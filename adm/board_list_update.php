@@ -87,7 +87,6 @@ if ($act_button === "선택수정") {
         $k = isset($_POST['chk'][$i]) ? (int) $_POST['chk'][$i] : 0;
 
         // include 전에 $bo_table 값을 반드시 넘겨야 함
-        $tmp_cn_id = isset($_POST['board_channel'][$k]) ? trim(clean_xss_tags($_POST['board_channel'][$k], 1, 1)) : '';
         $tmp_bo_table = isset($_POST['board_table'][$k]) ? trim(clean_xss_tags($_POST['board_table'][$k], 1, 1)) : '';
 
         if (preg_match("/^[A-Za-z0-9_]+$/", $tmp_bo_table)) {

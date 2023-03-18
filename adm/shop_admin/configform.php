@@ -18,7 +18,6 @@ check_log_folder(G5_SHOP_PATH.'/inicis/key', false);
 $html_title = '쇼핑몰설정';
 
 $de_id = (isset($_GET['de_id']) && $_GET['de_id']) ? (int)$_GET['de_id'] : 0; // 쇼핑몰설정 ID
-$cn_id = isset($_GET['cn_id']) && !is_array($_GET['cn_id']) && $_GET['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_GET['cn_id'])) : ''; // 채널 ID
 
 $de = array();
 if ($w == 'u') {
@@ -28,19 +27,14 @@ if ($w == 'u') {
         FROM {$g5['g5_shop_default_table']}
         WHERE de_id = '{$de_id}' ";
     $de = sql_fetch($sql);
-
-    $cn_id = $de['cn_id'];
 } else {
     $html_title .= ' 등록';
-
-    $de['cn_id'] = $cn_id;
 }
 
 $g5['title'] = '쇼핑몰설정';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 
 $pg_anchor = '<ul class="anchor">
-<li><a href="#anc_cn_info">채널정보</a></li>
 <li><a href="#anc_scf_info">사업자정보</a></li>
 <li><a href="#anc_scf_skin">스킨설정</a></li>
 <li><a href="#anc_scf_index">쇼핑몰 초기화면</a></li>
@@ -236,28 +230,7 @@ if(!$de['de_kakaopay_cancelpwd']){
 <form name="fconfig" action="./configformupdate.php" onsubmit="return fconfig_check(this)" method="post" enctype="MULTIPART/FORM-DATA">
 <input type="hidden" name="token" value="">
 <input type="hidden" name="de_id" value="<?php echo($de_id); ?>">
-<section id="anc_cn_info">
-    <h2 class="h2_frm">채널정보</h2>
-    <?php echo $pg_anchor; ?>
-    <div class="tbl_frm01 tbl_wrap">
-        <table>
-        <caption>채널정보 입력</caption>
-        <colgroup>
-            <col class="grid_4">
-            <col>
-        </colgroup>
-        <tbody>
-        <tr>
-            <th scope="row"><label for="cn_id">채널 ID</label></th>
-            <td>
-                <input type="hidden" name="cn_id" value="<?php echo($de['cn_id']); ?>">
-                <?php echo(get_text($de['cn_id'])); ?>
-            </td>
-        </tr>
-        </tbody>
-        </table>
-    </div> 
-</sction>
+
 <section id="anc_scf_info">
     <h2 class="h2_frm">사업자정보</h2>
     <?php echo $pg_anchor; ?>
@@ -1326,7 +1299,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <?php echo help("쇼핑몰 상단로고를 직접 올릴 수 있습니다. 이미지 파일만 가능합니다."); ?>
                 <input type="file" name="logo_img" id="logo_img">
                 <?php
-                $logo_img = get_channel_data_path($cn_id)."/common/logo_img";
+                $logo_img = get_channel_data_path($config['cn_id'])."/common/logo_img";
                 if (file_exists($logo_img))
                 {
                     $size = getimagesize($logo_img);
@@ -1335,7 +1308,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <label for="logo_img_del"><span class="sound_only">상단로고이미지</span> 삭제</label>
                 <span class="scf_img_logoimg"></span>
                 <div id="logoimg" class="banner_or_img">
-                    <img src="<?php echo get_channel_data_url($cn_id, false); ?>/common/logo_img" alt="">
+                    <img src="<?php echo get_channel_data_url($config['cn_id'], false); ?>/common/logo_img" alt="">
                     <button type="button" class="sit_wimg_close">닫기</button>
                 </div>
                 <script>
@@ -1350,7 +1323,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <?php echo help("쇼핑몰 하단로고를 직접 올릴 수 있습니다. 이미지 파일만 가능합니다."); ?>
                 <input type="file" name="logo_img2" id="logo_img2">
                 <?php
-                $logo_img2 = get_channel_data_path($cn_id)."/common/logo_img2";
+                $logo_img2 = get_channel_data_path($config['cn_id'])."/common/logo_img2";
                 if (file_exists($logo_img2))
                 {
                     $size = getimagesize($logo_img2);
@@ -1359,7 +1332,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <label for="logo_img_del2"><span class="sound_only">하단로고이미지</span> 삭제</label>
                 <span class="scf_img_logoimg2"></span>
                 <div id="logoimg2" class="banner_or_img">
-                    <img src="<?php echo get_channel_data_url($cn_id, false); ?>/common/logo_img2" alt="">
+                    <img src="<?php echo get_channel_data_url($config['cn_id'], false); ?>/common/logo_img2" alt="">
                     <button type="button" class="sit_wimg_close">닫기</button>
                 </div>
                 <script>
@@ -1374,7 +1347,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <?php echo help("모바일 쇼핑몰 상단로고를 직접 올릴 수 있습니다. 이미지 파일만 가능합니다."); ?>
                 <input type="file" name="mobile_logo_img" id="mobile_logo_img">
                 <?php
-                $mobile_logo_img = get_channel_data_path($cn_id)."/common/mobile_logo_img";
+                $mobile_logo_img = get_channel_data_path($config['cn_id'])."/common/mobile_logo_img";
                 if (file_exists($mobile_logo_img))
                 {
                     $size = getimagesize($mobile_logo_img);
@@ -1383,7 +1356,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <label for="mobile_logo_img_del"><span class="sound_only">모바일 상단로고이미지</span> 삭제</label>
                 <span class="scf_img_mobilelogoimg"></span>
                 <div id="mobilelogoimg" class="banner_or_img">
-                    <img src="<?php echo get_channel_data_url($cn_id, false); ?>/common/mobile_logo_img" alt="">
+                    <img src="<?php echo get_channel_data_url($config['cn_id'], false); ?>/common/mobile_logo_img" alt="">
                     <button type="button" class="sit_wimg_close">닫기</button>
                 </div>
                 <script>
@@ -1398,7 +1371,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <?php echo help("모바일 쇼핑몰 하단로고를 직접 올릴 수 있습니다. 이미지 파일만 가능합니다."); ?>
                 <input type="file" name="mobile_logo_img2" id="mobile_logo_img2">
                 <?php
-                $mobile_logo_img2 = get_channel_data_path($cn_id)."/common/mobile_logo_img2";
+                $mobile_logo_img2 = get_channel_data_path($config['cn_id'])."/common/mobile_logo_img2";
                 if (file_exists($mobile_logo_img2))
                 {
                     $size = getimagesize($mobile_logo_img2);
@@ -1407,7 +1380,7 @@ if(!$de['de_kakaopay_cancelpwd']){
                 <label for="mobile_logo_img_del2"><span class="sound_only">모바일 하단로고이미지</span> 삭제</label>
                 <span class="scf_img_mobilelogoimg2"></span>
                 <div id="mobilelogoimg2" class="banner_or_img">
-                    <img src="<?php echo get_channel_data_url($cn_id, false); ?>/common/mobile_logo_img2" alt="">
+                    <img src="<?php echo get_channel_data_url($config['cn_id'], false); ?>/common/mobile_logo_img2" alt="">
                     <button type="button" class="sit_wimg_close">닫기</button>
                 </div>
                 <script>

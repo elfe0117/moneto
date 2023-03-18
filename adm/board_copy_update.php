@@ -8,13 +8,6 @@ auth_check_menu($auth, $sub_menu, 'w');
 
 check_admin_token();
 
-// 채널 ID
-$cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';
-$cn = get_channel($cn_id);
-if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
-    alert('채널ID가 존재하지 않습니다.');
-}
-
 $bo_table       = isset($_POST['bo_table']) ? $_POST['bo_table'] : null;
 $target_table   = isset($_POST['target_table']) ? trim($_POST['target_table']) : '';
 $target_subject = isset($_POST['target_subject']) ? trim($_POST['target_subject']) : '';
@@ -53,7 +46,7 @@ if ($copy_case == 'schema_only') {
 
 // 게시판 정보
 $sql = " insert into {$g5['board_table']}
-            set cn_id = '{$cn_id}',
+            set cn_id = '{$config['cn_id']}',
                 bo_table = '$target_table',
                 gr_id = '{$board['gr_id']}',
                 bo_subject = '$target_subject',
@@ -145,11 +138,11 @@ $sql = " insert into {$g5['board_table']}
 sql_query($sql, false);
 
 // 게시판 폴더 생성
-@mkdir(G5_DATA_PATH.'/file/'.$cn_id.'/'.$target_table, G5_DIR_PERMISSION);
-@chmod(G5_DATA_PATH.'/file/'.$cn_id.'/'.$target_table, G5_DIR_PERMISSION);
+@mkdir(G5_DATA_PATH.'/file/'.$config['cn_id'].'/'.$target_table, G5_DIR_PERMISSION);
+@chmod(G5_DATA_PATH.'/file/'.$config['cn_id'].'/'.$target_table, G5_DIR_PERMISSION);
 
 // 디렉토리에 있는 파일의 목록을 보이지 않게 한다.
-$board_path = G5_DATA_PATH . '/file/'.$cn_id.'/'.$target_table;
+$board_path = G5_DATA_PATH . '/file/'.$config['cn_id'].'/'.$target_table;
 $file = $board_path . '/index.php';
 $f = @fopen($file, 'w');
 @fwrite($f, '');
@@ -158,29 +151,29 @@ $f = @fopen($file, 'w');
 
 $copy_file = 0;
 if ($copy_case == 'schema_data_both') {
-    $d = dir(G5_DATA_PATH . '/file/'.$cn_id.'/'.$bo_table);
+    $d = dir(G5_DATA_PATH . '/file/'.$config['cn_id'].'/'.$bo_table);
     while ($entry = $d->read()) {
         if ($entry == '.' || $entry == '..') {
             continue;
         }
 
         // 김선용 201007 :
-        if (is_dir(G5_DATA_PATH . '/file/'.$cn_id.'/'.$bo_table . '/' . $entry)) {
-            $dd = dir(G5_DATA_PATH . '/file/'.$cn_id.'/'.$bo_table . '/' . $entry);
-            @mkdir(G5_DATA_PATH . '/file/'.$cn_id.'/'.$target_table . '/' . $entry, G5_DIR_PERMISSION);
-            @chmod(G5_DATA_PATH . '/file/'.$cn_id.'/'.$target_table . '/' . $entry, G5_DIR_PERMISSION);
+        if (is_dir(G5_DATA_PATH . '/file/'.$config['cn_id'].'/'.$bo_table . '/' . $entry)) {
+            $dd = dir(G5_DATA_PATH . '/file/'.$config['cn_id'].'/'.$bo_table . '/' . $entry);
+            @mkdir(G5_DATA_PATH . '/file/'.$config['cn_id'].'/'.$target_table . '/' . $entry, G5_DIR_PERMISSION);
+            @chmod(G5_DATA_PATH . '/file/'.$config['cn_id'].'/'.$target_table . '/' . $entry, G5_DIR_PERMISSION);
             while ($entry2 = $dd->read()) {
                 if ($entry2 == '.' || $entry2 == '..') {
                     continue;
                 }
-                @copy(G5_DATA_PATH . '/file/'.$cn_id.'/'.$bo_table . '/' . $entry . '/' . $entry2, G5_DATA_PATH . '/file/'.$cn_id.'/'.$target_table . '/' . $entry . '/' . $entry2);
-                @chmod(G5_DATA_PATH . '/file/'.$cn_id.'/'.$target_table . '/' . $entry . '/' . $entry2, G5_DIR_PERMISSION);
+                @copy(G5_DATA_PATH . '/file/'.$config['cn_id'].'/'.$bo_table . '/' . $entry . '/' . $entry2, G5_DATA_PATH . '/file/'.$config['cn_id'].'/'.$target_table . '/' . $entry . '/' . $entry2);
+                @chmod(G5_DATA_PATH . '/file/'.$config['cn_id'].'/'.$target_table . '/' . $entry . '/' . $entry2, G5_DIR_PERMISSION);
                 $copy_file++;
             }
             $dd->close();
         } else {
-            @copy(G5_DATA_PATH . '/file/'.$cn_id.'/'.$bo_table . '/' . $entry, G5_DATA_PATH . '/file/'.$cn_id.'/'.$target_table . '/' . $entry);
-            @chmod(G5_DATA_PATH . '/file/'.$cn_id.'/'.$target_table . '/' . $entry, G5_DIR_PERMISSION);
+            @copy(G5_DATA_PATH . '/file/'.$config['cn_id'].'/'.$bo_table . '/' . $entry, G5_DATA_PATH . '/file/'.$config['cn_id'].'/'.$target_table . '/' . $entry);
+            @chmod(G5_DATA_PATH . '/file/'.$config['cn_id'].'/'.$target_table . '/' . $entry, G5_DIR_PERMISSION);
             $copy_file++;
         }
     }
@@ -189,18 +182,18 @@ if ($copy_case == 'schema_data_both') {
     run_event('admin_board_copy_file', $bo_table, $target_table);
 
     // 글복사
-    $sql = " insert into {$g5['write_prefix']}{$cn_id}_{$target_table} select * from {$g5['write_prefix']}{$cn_id}_{$bo_table} ";
+    $sql = " insert into {$g5['write_prefix']}{$config['cn_id']}_{$target_table} select * from {$g5['write_prefix']}{$config['cn_id']}_{$bo_table} ";
     sql_query($sql, false);
 
     // 게시글수 저장
-    $sql = " select bo_count_write, bo_count_comment from {$g5['board_table']} where cn_id = '{$cn_id}' AND bo_table = '$bo_table' ";
+    $sql = " select bo_count_write, bo_count_comment from {$g5['board_table']} where cn_id = '{$config['cn_id']}' AND bo_table = '$bo_table' ";
     $row = sql_fetch($sql);
-    $sql = " update {$g5['board_table']} set bo_count_write = '{$row['bo_count_write']}', bo_count_comment = '{$row['bo_count_comment']}' where cn_id = '{$cn_id}' AND bo_table = '$target_table' ";
+    $sql = " update {$g5['board_table']} set bo_count_write = '{$row['bo_count_write']}', bo_count_comment = '{$row['bo_count_comment']}' where cn_id = '{$config['cn_id']}' AND bo_table = '$target_table' ";
     sql_query($sql, false);
 
     // 4.00.01
     // 위의 코드는 같은 테이블명을 사용하였다는 오류가 발생함. (희한하네 ㅡㅡ;)
-    $sql = " select * from {$g5['board_file_table']} where cn_id = '{$cn_id}' AND bo_table = '$bo_table' ";
+    $sql = " select * from {$g5['board_file_table']} where cn_id = '{$config['cn_id']}' AND bo_table = '$bo_table' ";
     $result = sql_query($sql, false);
     for ($i = 0; $row = sql_fetch_array($result); $i++) {
         $file_copy[$i] = $row;
@@ -212,7 +205,7 @@ if (count($file_copy)) {
         $file_copy[$i] = run_replace('admin_copy_update_file', $file_copy[$i], $file_copy[$i]['bf_file'], $bo_table, $target_table);
 
         $sql = " insert into {$g5['board_file_table']}
-                    set cn_id = '{$cn_id}',
+                    set cn_id = '{$config['cn_id']}',
                          bo_table = '$target_table',
                          wr_id = '{$file_copy[$i]['wr_id']}',
                          bf_no = '{$file_copy[$i]['bf_no']}',
@@ -238,4 +231,4 @@ delete_cache_latest($target_table);
 
 echo "<script>opener.document.location.reload();</script>";
 
-alert("복사에 성공 했습니다.", './board_copy.php?cn_id='.$cn_id.'&amp;bo_table=' . $bo_table . '&amp;' . $qstr);
+alert("복사에 성공 했습니다.", './board_copy.php?bo_table=' . $bo_table . '&amp;' . $qstr);

@@ -179,7 +179,7 @@ $colspan = 11;
     <div class="btn_fixed_top">
         <input type="submit" name="act_button" onclick="document.pressed=this.value" value="선택수정" class="btn btn_02">
         <input type="submit" name="act_button" onclick="document.pressed=this.value" value="선택삭제" class="btn btn_02">
-        <a href="./channel_check.php?url=<?php echo(urlencode('./boardgroup_form.php')); ?>" class="btn btn_01">게시판그룹 추가</a>
+        <a href="./boardgroup_form.php" class="btn btn_01">게시판그룹 추가</a>
     </div>
 </form>
 

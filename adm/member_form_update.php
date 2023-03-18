@@ -12,13 +12,6 @@ auth_check_menu($auth, $sub_menu, 'w');
 
 check_admin_token();
 
-// 채널 ID
-$cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';
-$cn = sql_fetch("SELECT * FROM {$g5['channel_table']} WHERE cn_id = '{$cn_id}' ");
-if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
-    alert('채널정보가 존재하지 않습니다.');
-}
-
 $mb_id          = isset($_POST['mb_id']) ? trim($_POST['mb_id']) : '';
 $mb_password    = isset($_POST['mb_password']) ? trim($_POST['mb_password']) : '';
 $mb_certify_case = isset($_POST['mb_certify_case']) ? preg_replace('/[^0-9a-z_]/i', '', $_POST['mb_certify_case']) : '';
@@ -95,7 +88,7 @@ foreach ($check_keys as $key) {
 
 $mb_memo = isset($_POST['mb_memo']) ? $_POST['mb_memo'] : '';
 
-$sql_common = "  cn_id = '{$cn_id}',
+$sql_common = "  cn_id = '{$config['cn_id']}',
                  mb_name = '{$posts['mb_name']}',
                  mb_nick = '{$mb_nick}',
                  mb_email = '{$mb_email}',

@@ -2,8 +2,6 @@
 $sub_menu = '200190';
 require_once './_common.php';
 
-$cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';
-/*
 if ($w == "u" || $w == "d") {
     check_demo();
 }
@@ -15,7 +13,6 @@ if ($w == 'd') {
 }
 
 check_admin_token();
-*/
 
 $lv_type = (isset($_POST['lv_type']) && $_POST['lv_type']) ? strip_tags(clean_xss_attributes($_POST['lv_type'])) : '';
 
@@ -25,7 +22,7 @@ for($i = 0; $i < 10; $i++) {
 
     $sql = "SELECT *
         FROM {$g5['level_table']}
-        WHERE cn_id = '{$cn_id}'
+        WHERE cn_id = '{$config['cn_id']}'
             AND lv_type = '{$lv_type}'
             AND lv_value = '{$post_lv_value}'
         LIMIT 0, 1 ";
@@ -40,11 +37,11 @@ for($i = 0; $i < 10; $i++) {
         $sql = "INSERT INTO {$g5['level_table']}
             SET lv_value = '{$post_lv_value}',
                 lv_name = '{$post_lv_name}',
-                cn_id = '{$cn_id}',
+                cn_id = '{$config['cn_id']}',
                 lv_type = '{$lv_type}' ";
         sql_query($sql);
     }
 }
 
-goto_url('./level_form.php?'.$qstr.'&amp;w=u&amp;cn_id='.$cn_id);
+goto_url('./level_form.php?'.$qstr.'&amp;w=u);
 ?>

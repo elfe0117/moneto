@@ -16,11 +16,6 @@ if ($w == 'd') {
 
 check_admin_token();
 
-$cn_id = (isset($_REQUEST['cn_id']) && $_REQUEST['cn_id']) ? preg_replace('/[^a-z0-9_]/i', '', (string)$_REQUEST['cn_id']) : '';
-if (!$cn_id) {
-    alert('채널 ID는 반드시 선택하세요.');
-}
-
 $nw_subject = isset($_POST['nw_subject']) ? strip_tags(clean_xss_attributes($_POST['nw_subject'])) : '';
 $posts = array();
 
@@ -64,7 +59,7 @@ $sql_common = " nw_device = '{$posts['nw_device']}',
 if ($w == "") {
     $sql = " INSERT INTO {$g5['new_win_table']}
         SET $sql_common,
-            cn_id = '{$cn_id}' ";
+            cn_id = '{$config['cn_id']}' ";
     sql_query($sql);
 
     $nw_id = sql_insert_id();

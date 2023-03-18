@@ -6,11 +6,6 @@ auth_check_menu($auth, $sub_menu, "w");
 
 check_admin_token();
 
-$cn_id = (isset($_REQUEST['cn_id']) && $_REQUEST['cn_id']) ? preg_replace('/[^a-z0-9_]/i', '', (string)$_REQUEST['cn_id']) : '';
-if (!$cn_id) {
-    alert('채널 ID는 반드시 선택하세요.');
-}
-
 $_POST = array_map('trim', $_POST);
 
 $check_sanitize_keys = array(
@@ -108,7 +103,7 @@ if($w == '') {
     do {
         $cp_id = get_coupon_id();
 
-        $sql3 = " select count(*) as cnt from {$g5['g5_shop_coupon_table']} where cn_id = '{$cn_id}' AND cp_id = '$cp_id' ";
+        $sql3 = " select count(*) as cnt from {$g5['g5_shop_coupon_table']} where cn_id = '{$config['cn_id']}' AND cp_id = '$cp_id' ";
         $row3 = sql_fetch($sql3);
 
         if(!$row3['cnt'])
@@ -124,7 +119,7 @@ if($w == '') {
 
     $sql = " INSERT INTO {$g5['g5_shop_coupon_table']}
         SET {$sql_common},
-            cn_id       = '{$cn_id}',
+            cn_id       = '{$config['cn_id']}',
             cp_id       = '{$cp_id}',
             cp_datetime = '".G5_TIME_YMDHIS."' ";
     sql_query($sql);
@@ -141,7 +136,7 @@ if($w == '') {
 
     $sql = " UPDATE {$g5['g5_shop_coupon_table']}
                 SET {$sql_common}
-                WHERE cn_id = '{$cn_id}'
+                WHERE cn_id = '{$config['cn_id']}'
                     AND cp_id = '{$cp_id}' ";
     sql_query($sql);
 }

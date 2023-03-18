@@ -12,11 +12,6 @@ else
 
 check_admin_token();
 
-$cn_id = (isset($_REQUEST['cn_id']) && $_REQUEST['cn_id']) ? preg_replace('/[^a-z0-9_]/i', '', (string)$_REQUEST['cn_id']) : '';
-if (!$cn_id) {
-    alert('채널 ID는 반드시 선택하세요.');
-}
-
 $event_path = G5_DATA_PATH.'/event';
 
 @mkdir($event_path, G5_DIR_PERMISSION);
@@ -81,7 +76,7 @@ if ($w == "")
     $sql = " INSERT INTO {$g5['g5_shop_event_table']}
                     {$sql_common}
                   , ev_id = '$ev_id'
-                  , cn_id = '{$cn_id}' ";
+                  , cn_id = '{$config['cn_id']}' ";
     sql_query($sql);
 }
 else if ($w == "u")

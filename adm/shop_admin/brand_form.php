@@ -8,9 +8,6 @@ if ($is_admin != 'super') {
     alert('최고관리자만 접근 가능합니다.');
 }
 
-// 채널 ID
-$cn_id = isset($_REQUEST['cn_id']) && !is_array($_REQUEST['cn_id']) && $_REQUEST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cn_id'])) : '';
-
 $br_no = isset($_GET['br_no']) && $_GET['br_no'] ? (int)$_GET['br_no'] : 0;
 
 $html_title = '브랜드관리';
@@ -26,16 +23,8 @@ if ($w == 'u') {
         WHERE br_no = '{$br_no}'
         LIMIT 0, 1 ";
     $br = sql_fetch($sql);
-
-    $cn_id = $br['cn_id'];
 } else {
     $html_title .= ' 입력';
-
-    if (!$cn_id) {
-        alert("잘못된 접근입니다.");
-    }
-
-    $br['cn_id'] = $cn_id;
 }
 
 $g5['title'] = $html_title;
@@ -60,13 +49,6 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
                 <col>
             </colgroup>
             <tbody>
-                <tr>
-                    <th scope="row"><label for="cn_id">채널 ID<strong class="sound_only"> 필수</strong></label></th>
-                    <td>
-                        <input type="hidden" id="cn_id" name="cn_id" value="<?php echo($br['cn_id']); ?>" required class="frm_input required">
-                        <?php echo($br['cn_id']); ?>
-                    </td>
-                </tr>
                 <tr>
                     <th scope="row"><label for="br_name">브랜드 명<strong class="sound_only"> 필수</strong></label></th>
                     <td><input type="text" id="br_name" name="br_name" value="<?php echo($br['br_name']); ?>" required class="frm_input required"></td>

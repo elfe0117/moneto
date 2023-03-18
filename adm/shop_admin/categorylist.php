@@ -53,7 +53,7 @@ $result = sql_query($sql);
 
 $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목록</a>';
 
-$colspan = 10;
+$colspan = 9;
 ?>
 
 <div class="local_ov01 local_ov">
@@ -67,7 +67,6 @@ $colspan = 10;
 
 <label for="sfl" class="sound_only">검색대상</label>
 <select name="sfl" id="sfl">
-    <option value="cn_id"<?php echo get_selected($sfl, "cn_id", true); ?>>채널ID</option>
     <option value="ca_name"<?php echo get_selected($sfl, "ca_name", true); ?>>분류명</option>
     <option value="ca_id"<?php echo get_selected($sfl, "ca_id", true); ?>>분류코드</option>
     <option value="ca_mb_id"<?php echo get_selected($sfl, "ca_mb_id", true); ?>>회원아이디</option>
@@ -91,7 +90,6 @@ $colspan = 10;
     <caption><?php echo $g5['title']; ?> 목록</caption>
     <thead>
     <tr>
-        <th scope="col" rowspan="2"><?php echo subject_sort_link("cn_id"); ?>채널</a></th>
         <th scope="col" rowspan="2"><?php echo subject_sort_link("ca_id"); ?>분류코드</a></th>
         <th scope="col" id="sct_cate"><?php echo subject_sort_link("ca_name"); ?>분류명</a></th>
         <th scope="col" id="sct_amount">상품수</th>
@@ -172,10 +170,6 @@ $colspan = 10;
         $bg = 'bg'.($i%2);
     ?>
     <tr class="<?php echo $bg; ?>">
-        <td class="td_id" rowspan="2">
-            <input type="hidden" name="cn_id[<?php echo $i; ?>]" value="<?php echo $row['cn_id']; ?>">
-            <?php echo $row['cn_id']; ?>
-        </td>
         <td class="td_code" rowspan="2">
             <input type="hidden" name="ca_id[<?php echo $i; ?>]" value="<?php echo $row['ca_id']; ?>">
             <a href="<?php echo shop_category_url($row['ca_id']); ?>"><?php echo $row['ca_id']; ?></a>

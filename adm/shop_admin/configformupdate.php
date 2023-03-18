@@ -9,11 +9,10 @@ auth_check_menu($auth, $sub_menu, "w");
 check_admin_token();
 
 $de_id = (isset($_POST['de_id']) && $_POST['de_id']) ? (int)$_POST['de_id'] : 0; // 쇼핑몰설정 ID
-$cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : ''; // 채널 ID
 $sql = "SELECT *
     FROM {$g5['g5_shop_default_table']}
     WHERE de_id = '{$de_id}'
-        AND cn_id = '{$cn_id}'
+        AND cn_id = '{$config['cn_id']}'
     LIMIT 0, 1 ";
 $de = sql_fetch($sql);
 if (!(isset($de['cn_id']) && $de['cn_id'])) {
@@ -29,7 +28,7 @@ if(! (isset($_POST['de_admin_company_tel']) && check_vaild_callback($_POST['de_a
 if (!$_POST['de_admin_company_owner']) goto_url("./configform.php");
 
 // 채널 데이터 경로
-$channel_data_path = get_channel_data_path($cn_id);
+$channel_data_path = get_channel_data_path($config['cn_id']);
  
 if (! empty($_POST['logo_img_del']))  @unlink($channel_data_path."/common/logo_img");
 if (! empty($_POST['logo_img_del2']))  @unlink($channel_data_path."/common/logo_img2");

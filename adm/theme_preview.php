@@ -3,13 +3,6 @@ $sub_menu = "100280";
 define('_THEME_PREVIEW_', true);
 include_once('./_common.php');
 
-// 채널 ID
-$cn_id = isset($_POST['cn_id']) && !is_array($_POST['cn_id']) && $_POST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_POST['cn_id'])) : '';    
-$cn = get_channel($cn_id);
-if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
-    alert_close('올바른 채널 ID를 입력하세요.');
-}
-
 $theme_dir = get_theme_dir();
 
 if(!$theme || !in_array($theme, $theme_dir))

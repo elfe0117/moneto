@@ -107,18 +107,6 @@ require_once G5_ADMIN_PATH . '/admin.head.php';
             </colgroup>
             <tbody>
                 <tr>
-                    <th scope="row"><label for="cn_id"></label></th>
-                    <td>
-                        <select id="cn_id" name="cn_id" required>
-                            <?php
-                            foreach($array_cn as $row_cn) {
-                                echo(option_selected($row_cn['cn_id'], $co['cn_id'], $row_cn['cn_id']));
-                            }
-                            ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
                     <th scope="row"><label for="co_id">ID</label></th>
                     <td>
                         <?php echo help('20자 이내의 영문자, 숫자, _ 만 가능합니다.'); ?>

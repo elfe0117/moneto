@@ -167,13 +167,6 @@ $readonly = "";
 $sound_only = "";
 $required_valid = "";
 if ($w == '') {
-    // 채널 ID
-    $cn_id = isset($_REQUEST['cn_id']) && !is_array($_REQUEST['cn_id']) && $_REQUEST['cn_id'] ? preg_replace('/[^a-z0-9_]/i', '', trim($_REQUEST['cn_id'])) : '';    
-    $cn = get_channel($cn_id);
-    if (!(isset($cn['cn_id']) && $cn['cn_id'])) {
-        alert('올바른 채널 ID를 입력하세요.');
-    }
-
     $html_title .= ' 생성';
 
     $required = 'required';
@@ -210,7 +203,6 @@ if ($w == '') {
     $board['bo_use_secret'] = 0;
     $board['bo_include_head'] = '_head.php';
     $board['bo_include_tail'] = '_tail.php';
-    $board['cn_id'] = $cn_id;
 } elseif ($w == 'u') {
     $html_title .= ' 수정';
 
@@ -268,13 +260,6 @@ $pg_anchor = '<ul class="anchor">
             <col class="grid_3">
         </colgroup>
         <tbody>
-        <tr>
-            <th scope="row"><label for="cn_id">채널<strong class="sound_only">필수</strong></label></th>
-            <td colspan="2">
-                <input type="hidden" name="cn_id" id="cn_id" value="<?php echo($board['cn_id']); ?>" required class="required frm_input">
-                <?php echo($board['cn_id']); ?>
-            </td>
-        </tr>
         <tr>
             <th scope="row"><label for="bo_table">TABLE<?php echo $sound_only ?></label></th>
             <td colspan="2">
