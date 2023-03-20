@@ -48,7 +48,7 @@ $result = sql_query($sql);
 $g5['title'] = '쿠폰관리';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 
-$colspan = 10;
+$colspan = 9;
 ?>
 <div class="local_ov">
     <span class="btn_ov01"><span class="ov_txt">전체 </span><span class="ov_num"> <?php echo number_format($total_count) ?> 개</span></span>
@@ -84,7 +84,6 @@ $colspan = 10;
             <label for="chkall" class="sound_only">쿠폰 전체</label>
             <input type="checkbox" name="chkall" value="1" id="chkall" onclick="check_all(this.form)">
         </th>
-        <th scope="col">채널</th>
         <th scope="col">쿠폰종류</th>
         <th scope="col">쿠폰코드</th>
         <th scope="col">쿠폰이름</th>
@@ -133,11 +132,9 @@ $colspan = 10;
 
     <tr class="<?php echo $bg; ?>">
         <td class="td_chk">
-            <input type="hidden" id="cn_id_<?php echo $i; ?>" name="cn_id[<?php echo $i; ?>]" value="<?php echo $row['cn_id']; ?>">
             <input type="hidden" id="cp_id_<?php echo $i; ?>" name="cp_id[<?php echo $i; ?>]" value="<?php echo $row['cp_id']; ?>">
             <input type="checkbox" id="chk_<?php echo $i; ?>" name="chk[]" value="<?php echo $i; ?>" title="내역선택">
         </td>
-        <td><?php echo($row['cn_id']); ?></td>
         <td><?php echo $cp_method; ?></td>
         <td><?php echo $row['cp_id']; ?></td>
         <td class="td_left"><?php echo $row['cp_subject']; ?></td>
@@ -146,7 +143,7 @@ $colspan = 10;
         <td class="td_datetime"><?php echo substr($row['cp_start'], 2, 8); ?> ~ <?php echo substr($row['cp_end'], 2, 8); ?></td>
         <td class="td_cntsmall"><?php echo number_format($used_count); ?></td>
         <td class="td_mng td_mng_s">
-            <a href="./couponform.php?w=u&amp;cn_id=<?php echo($row['cn_id']); ?>&amp;cp_id=<?php echo $row['cp_id']; ?>&amp;<?php echo $qstr; ?>" class="btn btn_03"><span class="sound_only"><?php echo $row['cp_id']; ?> </span>수정</a>
+            <a href="./couponform.php?w=u&amp;cp_id=<?php echo $row['cp_id']; ?>&amp;<?php echo $qstr; ?>" class="btn btn_03"><span class="sound_only"><?php echo $row['cp_id']; ?> </span>수정</a>
         </td>
     </tr>
 

@@ -39,7 +39,7 @@ $result = sql_query($sql);
 $g5['title'] = '브랜드관리';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 
-$colspan = 4;
+$colspan = 3;
 ?>
 
 <form name="fbrandlistupdate" method="post" action="./brand_list_update.php" onsubmit="return fbrandlist_submit(this);" autocomplete="off" id="fbrandlistupdate">
@@ -59,7 +59,6 @@ $colspan = 4;
                     <label for="chkall" class="sound_only">상품 전체</label>
                     <input type="checkbox" name="chkall" value="1" id="chkall" onclick="check_all(this.form)">
                 </th>
-                <th scope="col">채널</th>
                 <th scope="col">브랜드 명</th>
                 <th scope="col">관리</th>
             </tr>
@@ -77,7 +76,6 @@ $colspan = 4;
                     <label for="chk_<?php echo($i); ?>" class="sound_only"><?php echo(get_text($row['br_name'])); ?></label>
                     <input type="checkbox" name="chk[]" value="<?php echo($i); ?>" id="chk_<?php echo($i); ?>">
                 </td>
-                <td class="td_id"><?php echo($row['cn_id']); ?></td>
                 <td class="td_left"><input type="text" id="br_name[<?php echo($i); ?>]" name="br_name[<?php echo($i); ?>]" value="<?php echo(get_text($row['br_name'])); ?>" class="tbl_input"></td>
                 <td class="td_mng">
                     <a href="./brand_form.php?<?php echo($qstr); ?>&amp;w=u&amp;br_no=<?php echo($row['br_no']); ?>" class="btn btn_03">수정</a>

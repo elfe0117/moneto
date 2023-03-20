@@ -49,7 +49,7 @@ $total_count = $row['cnt'];
 $sql = "select * $sql_common order by nw_id desc ";
 $result = sql_query($sql);
 
-$colspan = 12;
+$colspan = 11;
 ?>
 
 <div class="local_ov01 local_ov"><span class="btn_ov01"><span class="ov_txt">전체 </span><span class="ov_num"> <?php echo $total_count; ?>건</span></span></div>
@@ -64,7 +64,6 @@ $colspan = 12;
         <thead>
             <tr>
                 <th scope="col">번호</th>
-                <th scope="col">채널</th>
                 <th scope="col">제목</th>
                 <th scope="col">접속기기</th>
                 <th scope="col">시작일시</th>
@@ -96,7 +95,6 @@ $colspan = 12;
             ?>
                 <tr class="<?php echo $bg; ?>">
                     <td class="td_num"><?php echo $row['nw_id']; ?></td>
-                    <td class="td_id"><?php echo($row['cn_id']); ?></td>
                     <td class="td_left"><?php echo $row['nw_subject']; ?></td>
                     <td class="td_device"><?php echo $nw_device; ?></td>
                     <td class="td_datetime"><?php echo substr($row['nw_begin_time'], 2, 14); ?></td>

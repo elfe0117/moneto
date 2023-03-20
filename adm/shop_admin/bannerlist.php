@@ -171,7 +171,7 @@ $colspan = 8;
         <td headers="th_hit" class="td_num"><?php echo $row['bn_hit']; ?></td>
         <td headers="th_mng" class="td_mng td_mns_m">
             <a href="./bannerform.php?w=u&amp;bn_id=<?php echo $row['bn_id']; ?>" class="btn btn_03">수정</a>
-            <a href="./bannerformupdate.php?w=d&amp;cn_id=<?php echo($row['cn_id']); ?>&amp;bn_id=<?php echo $row['bn_id']; ?>" onclick="return delete_confirm(this);" class="btn btn_02">삭제</a>
+            <a href="./bannerformupdate.php?w=d&amp;bn_id=<?php echo $row['bn_id']; ?>" onclick="return delete_confirm(this);" class="btn btn_02">삭제</a>
         </td>
     </tr>
     <tr class="<?php echo $bg; ?>">

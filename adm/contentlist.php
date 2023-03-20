@@ -53,7 +53,7 @@ $from_record = ($page - 1) * $rows; // 시작 열을 구함
 $sql = "select * $sql_common order by co_id limit $from_record, {$config['cf_page_rows']} ";
 $result = sql_query($sql);
 
-$colspan = 4;
+$colspan = 3;
 ?>
 
 <div class="local_ov01 local_ov">
@@ -70,7 +70,6 @@ $colspan = 4;
         <caption><?php echo $g5['title']; ?> 목록</caption>
         <thead>
             <tr>
-                <th scope="col">채널</th>
                 <th scope="col">ID</th>
                 <th scope="col">제목</th>
                 <th scope="col">관리</th>
@@ -81,13 +80,12 @@ $colspan = 4;
                 $bg = 'bg' . ($i % 2);
             ?>
                 <tr class="<?php echo $bg; ?>">
-                    <td class="td_id"><?php echo $row['cn_id']; ?></td>
                     <td class="td_id"><?php echo $row['co_id']; ?></td>
                     <td class="td_left"><?php echo htmlspecialchars2($row['co_subject']); ?></td>
                     <td class="td_mng td_mng_l">
-                        <a href="./contentform.php?w=u&amp;cn_id=<?php echo($row['cn_id']); ?>&amp;co_id=<?php echo $row['co_id']; ?>" class="btn btn_03"><span class="sound_only"><?php echo htmlspecialchars2($row['co_subject']); ?> </span>수정</a>
+                        <a href="./contentform.php?w=u&amp;co_id=<?php echo $row['co_id']; ?>" class="btn btn_03"><span class="sound_only"><?php echo htmlspecialchars2($row['co_subject']); ?> </span>수정</a>
                         <a href="<?php echo get_pretty_url($row['cn_id'], 'content', $row['co_id']); ?>" class="btn btn_02"><span class="sound_only"><?php echo htmlspecialchars2($row['co_subject']); ?> </span> 보기</a>
-                        <a href="./contentformupdate.php?w=d&amp;cn_id=<?php echo($row['cn_id']); ?>&amp;co_id=<?php echo $row['co_id']; ?>" onclick="return delete_confirm(this);" class="btn btn_02"><span class="sound_only"><?php echo htmlspecialchars2($row['co_subject']); ?> </span>삭제</a>
+                        <a href="./contentformupdate.php?w=d&amp;co_id=<?php echo $row['co_id']; ?>" onclick="return delete_confirm(this);" class="btn btn_02"><span class="sound_only"><?php echo htmlspecialchars2($row['co_subject']); ?> </span>삭제</a>
                     </td>
                 </tr>
             <?php

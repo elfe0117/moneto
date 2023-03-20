@@ -56,7 +56,7 @@ $listall = '<a href="' . $_SERVER['SCRIPT_NAME'] . '" class="ov_listall">전체�
 $g5['title'] = '게시판관리';
 require_once './admin.head.php';
 
-$colspan = 16;
+$colspan = 15;
 ?>
 
 <div class="local_ov01 local_ov">
@@ -94,7 +94,6 @@ $colspan = 16;
                         <label for="chkall" class="sound_only">게시판 전체</label>
                         <input type="checkbox" name="chkall" value="1" id="chkall" onclick="check_all(this.form)">
                     </th>
-                    <th scope="col"><?php echo subject_sort_link('a.cn_id') ?>채널</a></th>
                     <th scope="col"><?php echo subject_sort_link('a.gr_id') ?>그룹</a></th>
                     <th scope="col"><?php echo subject_sort_link('bo_table') ?>TABLE</a></th>
                     <th scope="col"><?php echo subject_sort_link('bo_skin', '', 'desc') ?>스킨</a></th>
@@ -114,8 +113,8 @@ $colspan = 16;
             <tbody>
                 <?php
                 for ($i = 0; $row = sql_fetch_array($result); $i++) {
-                    $one_update = '<a href="./board_form.php?w=u&amp;cn_id='.$row['cn_id'].'&amp;bo_table=' . $row['bo_table'] . '&amp;' . $qstr . '" class="btn btn_03">수정</a>';
-                    $one_copy = '<a href="./board_copy.php?cn_id='.$row['cn_id'].'&amp;bo_table=' . $row['bo_table'] . '" class="board_copy btn btn_02" target="win_board_copy">복사</a>';
+                    $one_update = '<a href="./board_form.php?w=u&amp;bo_table=' . $row['bo_table'] . '&amp;' . $qstr . '" class="btn btn_03">수정</a>';
+                    $one_copy = '<a href="./board_copy.php?bo_table=' . $row['bo_table'] . '" class="board_copy btn btn_02" target="win_board_copy">복사</a>';
 
                     $bg = 'bg' . ($i % 2);
                 ?>
@@ -124,10 +123,6 @@ $colspan = 16;
                         <td class="td_chk">
                             <label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo get_text($row['bo_subject']) ?></label>
                             <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i ?>">
-                        </td>
-                        <td>
-                            <input type="hidden" name="board_channel[<?php echo $i ?>]" value="<?php echo $row['cn_id'] ?>">
-                            <?php echo($row['cn_id']); ?>
                         </td>
                         <td>
                             <?php if ($is_admin == 'super') { ?>
