@@ -20,7 +20,7 @@ include_once('./qahead.php');
 $skin_file = $qa_skin_path.'/view.skin.php';
 
 if(is_file($skin_file)) {
-    $sql = " select * from {$g5['qa_content_table']} where qa_id = '$qa_id' ";
+    $sql = " select * from {$g5['qa_content_table']} where cn_id = '{$config['cn_id']}' AND qa_id = '$qa_id' ";
     if(!$is_admin) {
         $sql .= " and mb_id = '{$member['mb_id']}' ";
     }
@@ -49,7 +49,7 @@ if(is_file($skin_file)) {
     // 이전글, 다음글
     $sql = " select qa_id, qa_subject
                 from {$g5['qa_content_table']}
-                where qa_type = '0' ";
+                where cn_id = '{$config['cn_id']}' AND qa_type = '0' ";
     if(!$is_admin) {
         $sql .= " and mb_id = '{$member['mb_id']}' ";
     }
@@ -79,7 +79,8 @@ if(is_file($skin_file)) {
     $rows = 10;
     $sql = " select *
                 from {$g5['qa_content_table']}
-                where qa_id <> '$qa_id'
+                where cn_id = '{$config['cn_id']}'
+                    AND qa_id <> '$qa_id'
                   and qa_related = '{$view['qa_related']}'
                   and qa_type = '0'
                 order by qa_num, qa_type
@@ -127,7 +128,8 @@ if(is_file($skin_file)) {
     if(!$view['qa_type'] && $view['qa_status']) {
         $sql = " select *
                     from {$g5['qa_content_table']}
-                    where qa_type = '1'
+                    where cn_id = '{$config['cn_id']}'
+                        AND qa_type = '1'
                       and qa_parent = '{$view['qa_id']}' ";
         $answer = sql_fetch($sql);
 

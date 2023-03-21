@@ -34,7 +34,8 @@ $colspan = 4;
             <?php
             $sql = " select *
                         from {$g5['group_table']}
-                        where gr_use_access = 1 ";
+                        where cn_id= '{$config['cn_id']}'
+                            AND gr_use_access = 1 ";
             if ($is_admin != 'super') {
                 $sql .= " and gr_admin = '{$member['mb_id']}' ";
             }
@@ -77,7 +78,10 @@ $colspan = 4;
                 <?php
                 $sql = " select * from {$g5['group_member_table']} a, {$g5['group_table']} b
                         where a.mb_id = '{$mb['mb_id']}'
-                        and a.gr_id = b.gr_id ";
+                        and a.gr_id = b.gr_id
+                            AND a.cn_id = '{$config['cn_id']}'
+                            AND a.cn_id = b.cn_id ";
+                            
                 if ($is_admin != 'super') {
                     $sql .= " and b.gr_admin = '{$member['mb_id']}' ";
                 }

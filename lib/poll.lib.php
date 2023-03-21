@@ -36,7 +36,7 @@ function poll($skin_dir='basic', $po_id=false)
         }
     }
 
-    $po = sql_fetch(" select * from {$g5['poll_table']} where po_id = '$po_id' and po_use = 1 ");
+    $po = sql_fetch(" select * from {$g5['poll_table']} where cn_id = '{$config['cn_id']}' AND po_id = '$po_id' and po_use = 1 ");
 
     ob_start();
     include_once ($poll_skin_path.'/poll.skin.php');

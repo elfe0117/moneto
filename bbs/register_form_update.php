@@ -217,7 +217,7 @@ if ($w == '') {
     $sql = " insert into {$g5['member_table']}
                 set mb_id = '{$mb_id}',
                      mb_password = '".get_encrypt_string($mb_password)."',
-                     cn_id = '{$channel['cn_id']}',
+                     cn_id = '{$config['cn_id']}',
                      mb_name = '{$mb_name}',
                      mb_nick = '{$mb_nick}',
                      mb_nick_date = '".G5_TIME_YMD."',
@@ -260,11 +260,11 @@ if ($w == '') {
     sql_query($sql);
 
     // 회원가입 포인트 부여
-    insert_point($channel['cn_id'], $mb_id, $config['cf_register_point'], '회원가입 축하', '@member', $mb_id, '회원가입');
+    insert_point($config['cn_id'], $mb_id, $config['cf_register_point'], '회원가입 축하', '@member', $mb_id, '회원가입');
 
     // 추천인에게 포인트 부여
     if ($config['cf_use_recommend'] && $mb_recommend)
-        insert_point($channel['cn_id'], $mb_recommend, $config['cf_recommend_point'], $mb_id.'의 추천인', '@member', $mb_recommend, $mb_id.' 추천');
+        insert_point($config['cn_id'], $mb_recommend, $config['cf_recommend_point'], $mb_id.'의 추천인', '@member', $mb_recommend, $mb_id.' 추천');
 
     // 회원님께 메일 발송
     if ($config['cf_email_mb_member']) {
@@ -539,7 +539,7 @@ if($w == '' && $default['de_member_reg_coupon_use'] && $default['de_member_reg_c
     do {
         $cp_id = get_coupon_id();
 
-        $sql3 = " select count(*) as cnt from {$g5['g5_shop_coupon_table']} where cp_id = '$cp_id' ";
+        $sql3 = " select count(*) as cnt from {$g5['g5_shop_coupon_table']} where cn_id = '{$config['cn_id']}' AND cp_id = '$cp_id' ";
         $row3 = sql_fetch($sql3);
 
         if(!$row3['cnt']) {
@@ -564,9 +564,9 @@ if($w == '' && $default['de_member_reg_coupon_use'] && $default['de_member_reg_c
         $cp_maximum = 0;
 
         $sql = " INSERT INTO {$g5['g5_shop_coupon_table']}
-                    ( cp_id, cp_subject, cp_method, cp_target, mb_id, cp_start, cp_end, cp_type, cp_price, cp_trunc, cp_minimum, cp_maximum, cp_datetime )
+                    ( cn_id, cp_id, cp_subject, cp_method, cp_target, mb_id, cp_start, cp_end, cp_type, cp_price, cp_trunc, cp_minimum, cp_maximum, cp_datetime )
                 VALUES
-                    ( '$cp_id', '$cp_subject', '$cp_method', '$cp_target', '$mb_id', '$cp_start', '$cp_end', '$cp_type', '$cp_price', '$cp_trunc', '$cp_minimum', '$cp_maximum', '".G5_TIME_YMDHIS."' ) ";
+                    ( '{$config['cn_id']}', '$cp_id', '$cp_subject', '$cp_method', '$cp_target', '$mb_id', '$cp_start', '$cp_end', '$cp_type', '$cp_price', '$cp_trunc', '$cp_minimum', '$cp_maximum', '".G5_TIME_YMDHIS."' ) ";
 
         $res = sql_query($sql, false);
 

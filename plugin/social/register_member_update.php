@@ -178,7 +178,7 @@ if($result) {
         insert_member_cert_history($mb_id, $mb_name, $mb_hp, get_session('ss_cert_birth'), get_session('ss_cert_type') ); // 본인인증 후 정보 수정 시 내역 기록
     }
     // 회원가입 포인트 부여
-    insert_point($channel['cn_id'], $mb_id, $config['cf_register_point'], '회원가입 축하', '@member', $mb_id, '회원가입');
+    insert_point($config['cn_id'], $mb_id, $config['cf_register_point'], '회원가입 축하', '@member', $mb_id, '회원가입');
 
     // 최고관리자님께 메일 발송
     if ($config['cf_email_mb_super_admin']) {
@@ -254,7 +254,7 @@ if($result) {
         do {
             $cp_id = get_coupon_id();
 
-            $sql3 = " select count(*) as cnt from {$g5['g5_shop_coupon_table']} where cp_id = '$cp_id' ";
+            $sql3 = " select count(*) as cnt from {$g5['g5_shop_coupon_table']} where cn_id = '{$config['cn_id']}' AND cp_id = '$cp_id' ";
             $row3 = sql_fetch($sql3);
 
             if(!$row3['cnt']) {
@@ -279,9 +279,9 @@ if($result) {
             $cp_maximum = 0;
 
             $sql = " INSERT INTO {$g5['g5_shop_coupon_table']}
-                        ( cp_id, cp_subject, cp_method, cp_target, mb_id, cp_start, cp_end, cp_type, cp_price, cp_trunc, cp_minimum, cp_maximum, cp_datetime )
+                        ( cn_id, cp_id, cp_subject, cp_method, cp_target, mb_id, cp_start, cp_end, cp_type, cp_price, cp_trunc, cp_minimum, cp_maximum, cp_datetime )
                     VALUES
-                        ( '$cp_id', '$cp_subject', '$cp_method', '$cp_target', '$mb_id', '$cp_start', '$cp_end', '$cp_type', '$cp_price', '$cp_trunc', '$cp_minimum', '$cp_maximum', '".G5_TIME_YMDHIS."' ) ";
+                        ( '{$config['cn_id']}', '$cp_id', '$cp_subject', '$cp_method', '$cp_target', '$mb_id', '$cp_start', '$cp_end', '$cp_type', '$cp_price', '$cp_trunc', '$cp_minimum', '$cp_maximum', '".G5_TIME_YMDHIS."' ) ";
 
             $res = sql_query($sql, false);
 

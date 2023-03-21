@@ -14,7 +14,8 @@ include_once(G5_THEME_MOBILE_PATH.'/head.php');
 //  최신글
 $sql = " select bo_table
             from `{$g5['board_table']}` a left join `{$g5['group_table']}` b on (a.gr_id=b.gr_id)
-            where a.cn_id = '{$channel['cn_id']}'
+            where a.cn_id = '{$config['cn_id']}'
+                AND a.cn_id = b.cn_id
                 AND a.bo_device <> 'pc' ";
 if(!$is_admin) {
     $sql .= " and a.bo_use_cert = '' ";

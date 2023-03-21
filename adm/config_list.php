@@ -10,7 +10,7 @@ $sql_common = " FROM {$g5['config_table']} ";
 
 $sql_search = " WHERE (1) ";
 if ($master['ma_admin'] != $member['mb_id']) {
-    $sql_search .= " AND cn_id = '{$channel['cn_id']}' ";
+    $sql_search .= " AND cn_id = '{$config['cn_id']}' ";
 }
 
 if (!$sst) {

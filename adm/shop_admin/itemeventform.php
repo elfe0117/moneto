@@ -37,7 +37,7 @@ if ($w == "u")
     $html_title .= " 수정";
     $readonly = " readonly";
 
-    $sql = " select * from {$g5['g5_shop_event_table']} where ev_id = '$ev_id' ";
+    $sql = " select * from {$g5['g5_shop_event_table']} where cn_id = '{$config['cn_id']}' AND ev_id = '$ev_id' ";
     $ev = sql_fetch($sql);
     if (! (isset($ev['ev_id']) && $ev['ev_id']))
         alert("등록된 자료가 없습니다.");
@@ -45,7 +45,8 @@ if ($w == "u")
     // 등록된 이벤트 상품
     $sql = " select b.it_id, b.it_name
                 from {$g5['g5_shop_event_item_table']} a left join {$g5['g5_shop_item_table']} b on ( a.it_id = b.it_id )
-                where a.ev_id = '$ev_id' ";
+                where a.ev_id = '$ev_id'
+                    AND b.cn_id = '{$config['cn_id']}' ";
     $res_item = sql_query($sql);
 }
 else

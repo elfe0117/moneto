@@ -24,7 +24,7 @@ if (!count($array_cn)) {
     alert('채널이 한개 이상 생성되어야 합니다.', './channel_form.php');
 }
 
-$sql = " select count(*) as cnt from {$g5['group_table']} ";
+$sql = " select count(*) as cnt from {$g5['group_table']} WHERE cn_id = '{$config['cn_id']}' ";
 $row = sql_fetch($sql);
 if (!$row['cnt']) {
     alert('게시판그룹이 한개 이상 생성되어야 합니다.', './boardgroup_form.php');

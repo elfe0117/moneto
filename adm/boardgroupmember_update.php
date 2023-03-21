@@ -19,7 +19,8 @@ if ($w == '') {
 
     $sql = " select count(*) as cnt
                 from {$g5['group_member_table']}
-                where gr_id = '{$gr_id}'
+                where cn_id = '{$config['cn_id']}'
+                    AND gr_id = '{$gr_id}'
                 and mb_id = '{$mb_id}' ";
     $row = sql_fetch($sql);
     if ($row['cnt']) {
@@ -28,7 +29,8 @@ if ($w == '') {
         check_admin_token();
 
         $sql = " insert into {$g5['group_member_table']}
-                    set gr_id = '{$_POST['gr_id']}',
+                    set cn_id = '{$config['cn_id']}',
+                        gr_id = '{$_POST['gr_id']}',
                          mb_id = '{$_POST['mb_id']}',
                          gm_datetime = '" . G5_TIME_YMDHIS . "' ";
         sql_query($sql);
@@ -45,7 +47,7 @@ if ($w == '') {
 
     for ($i = 0; $i < $count; $i++) {
         $gm_id = (int) $_POST['chk'][$i];
-        $sql = " select * from {$g5['group_member_table']} where gm_id = '$gm_id' ";
+        $sql = " select * from {$g5['group_member_table']} where cn_id = '{$config['cn_id']}' AND gm_id = '$gm_id' ";
         $gm = sql_fetch($sql);
         if (!$gm['gm_id']) {
             if ($count == 1) {
@@ -55,7 +57,7 @@ if ($w == '') {
             }
         }
 
-        $sql = " delete from {$g5['group_member_table']} where gm_id = '$gm_id' ";
+        $sql = " delete from {$g5['group_member_table']} where cn_id = '{$config['cn_id']}' AND gm_id = '$gm_id' ";
         sql_query($sql);
     }
 }

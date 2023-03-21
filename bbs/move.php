@@ -34,7 +34,11 @@ else {
 
 //$sql = " select * from {$g5['board_table']} a, {$g5['group_table']} b where a.gr_id = b.gr_id and bo_table <> '$bo_table' ";
 // 원본 게시판을 선택 할 수 있도록 함.
-$sql = " select * from {$g5['board_table']} a, {$g5['group_table']} b where a.gr_id = b.gr_id AND a.cn_id = '{$channel['cn_id']}' ";
+$sql = " select *
+    from {$g5['board_table']} a, {$g5['group_table']} b
+    where a.gr_id = b.gr_id
+        AND a.cn_id = '{$config['cn_id']}'
+        AND a.cn_id = b.cn_id ";
 if ($is_admin == 'group')
     $sql .= " and b.gr_admin = '{$member['mb_id']}' ";
 else if ($is_admin == 'board')

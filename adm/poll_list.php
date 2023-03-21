@@ -6,7 +6,7 @@ auth_check_menu($auth, $sub_menu, 'r');
 
 $sql_common = " from {$g5['poll_table']} ";
 
-$sql_search = " where (1) ";
+$sql_search = " where (1) AND cn_id = '{$config['cn_id']}' ";
 if ($stx) {
     $sql_search .= " and ( ";
     switch ($sfl) {
@@ -99,7 +99,7 @@ $colspan = 8;
             <tbody>
                 <?php
                 for ($i = 0; $row = sql_fetch_array($result); $i++) {
-                    $sql2 = " select sum(po_cnt1+po_cnt2+po_cnt3+po_cnt4+po_cnt5+po_cnt6+po_cnt7+po_cnt8+po_cnt9) as sum_po_cnt from {$g5['poll_table']} where po_id = '{$row['po_id']}' ";
+                    $sql2 = " select sum(po_cnt1+po_cnt2+po_cnt3+po_cnt4+po_cnt5+po_cnt6+po_cnt7+po_cnt8+po_cnt9) as sum_po_cnt from {$g5['poll_table']} where cn_id = '{$config['cn_id']}' AND po_id = '{$row['po_id']}' ";
                     $row2 = sql_fetch($sql2);
                     $po_etc = ($row['po_etc']) ? "사용" : "미사용";
                     $po_use = ($row['po_use']) ? "사용" : "미사용";

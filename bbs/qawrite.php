@@ -29,7 +29,7 @@ if(is_file($skin_file)) {
     ==========================*/
 
     if($w == 'u' || $w == 'r') {
-        $sql = " select * from {$g5['qa_content_table']} where qa_id = '$qa_id' ";
+        $sql = " select * from {$g5['qa_content_table']} where cn_id = '{$config['cn_id']}' AND qa_id = '$qa_id' ";
         if(!$is_admin) {
             $sql .= " and mb_id = '{$member['mb_id']}' ";
         }

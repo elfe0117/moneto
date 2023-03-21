@@ -9,7 +9,7 @@ $data = array();
 
 $sql = " select *
            from {$g5['g5_shop_category_table']}
-          where cn_id = '{$channel['cn_id']}'
+          where cn_id = '{$config['cn_id']}'
             AND ca_id = '$ca_id'
             and ca_use = '1'  ";
 $ca = sql_fetch($sql);

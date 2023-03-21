@@ -9,12 +9,12 @@ if (isset($_POST['chk']) && is_array($_POST['chk'])) {
     for ($i = 0; $i < count($_POST['chk']); $i++) {
         $pp_id = (int) $_POST['chk'][$i];
 
-        sql_query(" delete from {$g5['popular_table']} where pp_id = '$pp_id' ", true);
+        sql_query(" delete from {$g5['popular_table']} where cn_id = '{$config['cn_id']}' AND pp_id = '$pp_id' ", true);
     }
 }
 
 $sql_common = " from {$g5['popular_table']} a ";
-$sql_search = " where (1) ";
+$sql_search = " where (1) AND cn_id = '$config['cn_id']' ";
 
 if ($stx) {
     $sql_search .= " and ( ";

@@ -57,7 +57,7 @@ if(isset($_POST['js']) && $_POST['js'] === "on") {
         }
 
         $sql = " select bg_flag from {$g5['board_good_table']}
-                    where cn_id = '{$channel['cn_id']}'
+                    where cn_id = '{$config['cn_id']}'
                         AND bo_table = '{$bo_table}'
                     and wr_id = '{$wr_id}'
                     and mb_id = '{$member['mb_id']}'
@@ -78,7 +78,7 @@ if(isset($_POST['js']) && $_POST['js'] === "on") {
             // 추천(찬성), 비추천(반대) 카운트 증가
             sql_query(" update {$g5['write_prefix']}{$bo_table} set wr_{$good} = wr_{$good} + 1 where wr_id = '{$wr_id}' ");
             // 내역 생성
-            sql_query(" insert {$g5['board_good_table']} set cn_id = '{$channel['cn_id']}', bo_table = '{$bo_table}', wr_id = '{$wr_id}', mb_id = '{$member['mb_id']}', bg_flag = '{$good}', bg_datetime = '".G5_TIME_YMDHIS."' ");
+            sql_query(" insert {$g5['board_good_table']} set cn_id = '{$config['cn_id']}', bo_table = '{$bo_table}', wr_id = '{$wr_id}', mb_id = '{$member['mb_id']}', bg_flag = '{$good}', bg_datetime = '".G5_TIME_YMDHIS."' ");
 
             $sql = " select wr_{$good} as count from {$g5['write_prefix']}{$bo_table} where wr_id = '$wr_id' ";
             $row = sql_fetch($sql);
@@ -123,7 +123,7 @@ if(isset($_POST['js']) && $_POST['js'] === "on") {
             alert('이 게시판은 비추천 기능을 사용하지 않습니다.');
 
         $sql = " select bg_flag from {$g5['board_good_table']}
-                    where cn_id = '{$channel['cn_id']}'
+                    where cn_id = '{$config['cn_id']}'
                         AND bo_table = '{$bo_table}'
                     and wr_id = '{$wr_id}'
                     and mb_id = '{$member['mb_id']}'
@@ -143,7 +143,7 @@ if(isset($_POST['js']) && $_POST['js'] === "on") {
             // 추천(찬성), 비추천(반대) 카운트 증가
             sql_query(" update {$g5['write_prefix']}{$bo_table} set wr_{$good} = wr_{$good} + 1 where wr_id = '{$wr_id}' ");
             // 내역 생성
-            sql_query(" insert {$g5['board_good_table']} set cn_id = '{$channel['cn_id']}', bo_table = '{$bo_table}', wr_id = '{$wr_id}', mb_id = '{$member['mb_id']}', bg_flag = '{$good}', bg_datetime = '".G5_TIME_YMDHIS."' ");
+            sql_query(" insert {$g5['board_good_table']} set cn_id = '{$config['cn_id']}', bo_table = '{$bo_table}', wr_id = '{$wr_id}', mb_id = '{$member['mb_id']}', bg_flag = '{$good}', bg_datetime = '".G5_TIME_YMDHIS."' ");
 
             if ($good == 'good')
                 $status = '추천';

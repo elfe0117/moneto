@@ -606,7 +606,7 @@ if (!$member['mb_id']) {
     alert('로그인 하십시오.', G5_BBS_URL . '/login.php?url=' . urlencode(correct_goto_url(G5_ADMIN_URL)));
 } else if ($is_admin != 'super') {
     $auth = array();
-    $sql = " select au_menu, au_auth from {$g5['auth_table']} where mb_id = '{$member['mb_id']}' ";
+    $sql = " select au_menu, au_auth from {$g5['auth_table']} where cn_id = '{$config['cn_id']}' AND mb_id = '{$member['mb_id']}' ";
     $result = sql_query($sql);
     for ($i = 0; $row = sql_fetch_array($result); $i++) {
         $auth[$row['au_menu']] = $row['au_auth'];

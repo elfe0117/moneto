@@ -16,7 +16,7 @@ if(! (isset($write['wr_id']) && $write['wr_id']))
 
 $sql = " select count(*) as cnt from {$g5['scrap_table']}
             where mb_id = '{$member['mb_id']}'
-            AND cn_id = '{$channel['cn_id']}'
+            AND cn_id = '{$config['cn_id']}'
             and bo_table = '$bo_table'
             and wr_id = '$wr_id' ";
 $row = sql_fetch($sql);
@@ -89,17 +89,17 @@ if ($wr_content && ($member['mb_level'] >= $board['bo_comment_level']))
         sql_query(" update $write_table set wr_comment = wr_comment + 1 where wr_id = '$wr_id' ");
 
         // 새글 INSERT
-        sql_query(" insert into {$g5['board_new_table']} ( cn_id, bo_table, wr_id, wr_parent, bn_datetime, mb_id ) values ( '{$channel['cn_id']}', '$bo_table', '$comment_id', '$wr_id', '".G5_TIME_YMDHIS."', '{$member['mb_id']}' ) ");
+        sql_query(" insert into {$g5['board_new_table']} ( cn_id, bo_table, wr_id, wr_parent, bn_datetime, mb_id ) values ( '{$config['cn_id']}', '$bo_table', '$comment_id', '$wr_id', '".G5_TIME_YMDHIS."', '{$member['mb_id']}' ) ");
 
         // 코멘트 1 증가
-        sql_query(" update {$g5['board_table']}  set bo_count_comment = bo_count_comment + 1 where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' ");
+        sql_query(" update {$g5['board_table']}  set bo_count_comment = bo_count_comment + 1 where cn_id = '{$config['cn_id']}' AND bo_table = '$bo_table' ");
 
         // 포인트 부여
-        insert_point($channel['cn_id'], $member['mb_id'], $board['bo_comment_point'], "{$board['bo_subject']} {$wr_id}-{$comment_id} 댓글쓰기(스크랩)", $bo_table, $comment_id, '댓글');
+        insert_point($config['cn_id'], $member['mb_id'], $board['bo_comment_point'], "{$board['bo_subject']} {$wr_id}-{$comment_id} 댓글쓰기(스크랩)", $bo_table, $comment_id, '댓글');
     }
 }
 
-$sql = " insert into {$g5['scrap_table']} ( cn_id, mb_id, bo_table, wr_id, ms_datetime ) values ( '{$channel['cn_id']}', '{$member['mb_id']}', '$bo_table', '$wr_id', '".G5_TIME_YMDHIS."' ) ";
+$sql = " insert into {$g5['scrap_table']} ( cn_id, mb_id, bo_table, wr_id, ms_datetime ) values ( '{$config['cn_id']}', '{$member['mb_id']}', '$bo_table', '$wr_id', '".G5_TIME_YMDHIS."' ) ";
 sql_query($sql);
 
 $sql = " update `{$g5['member_table']}` set mb_scrap_cnt = '".get_scrap_totals($member['mb_id'])."' where mb_id = '{$member['mb_id']}' ";

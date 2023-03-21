@@ -45,7 +45,7 @@ function outlogin($skin_dir='basic')
         }
         
         $mb_scrap_cnt = isset($member['mb_scrap_cnt']) ? (int) $member['mb_scrap_cnt'] : '';
-        $sql = " select count(*) as cnt from {$g5['auth_table']} where mb_id = '{$member['mb_id']}' ";
+        $sql = " select count(*) as cnt from {$g5['auth_table']} where cn_id = '{$config['cn_id']}' AND  mb_id = '{$member['mb_id']}' ";
         $row = sql_fetch($sql);
         if ($row['cnt'])
             $is_auth = true;

@@ -8,9 +8,9 @@ $sql_common = " from {$g5['board_new_table']} a, {$g5['board_table']} b, {$g5['g
     where a.bo_table = b.bo_table
         and b.gr_id = c.gr_id
         and b.bo_use_search = 1
-        AND a.cn_id = '{$channel['cn_id']}'
-        AND b.cn_id = '{$channel['cn_id']}'
-        AND c.cn_id = '{$channel['cn_id']}' ";
+        AND a.cn_id = '{$config['cn_id']}'
+        AND b.cn_id = '{$config['cn_id']}'
+        AND c.cn_id = '{$config['cn_id']}' ";
 
 $gr_id = isset($_GET['gr_id']) ? substr(preg_replace('#[^a-z0-9_]#i', '', $_GET['gr_id']), 0, 10) : '';
 if ($gr_id) {
@@ -44,7 +44,7 @@ if ($page < 1) $page = 1; // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
 $group_select = '<label for="gr_id" class="sound_only">그룹</label><select name="gr_id" id="gr_id"><option value="">전체그룹';
-$sql = " select gr_id, gr_subject from {$g5['group_table']} order by gr_id ";
+$sql = " select gr_id, gr_subject from {$g5['group_table']} WHERE cn_id = '{$config['cn_id']}' order by gr_id ";
 $result = sql_query($sql);
 for ($i=0; $row=sql_fetch_array($result); $i++) {
     $group_select .= "<option value=\"".$row['gr_id']."\">".$row['gr_subject'];
@@ -55,7 +55,7 @@ $list = array();
 $sql = " select a.*, b.bo_subject, b.bo_mobile_subject, c.gr_subject, c.gr_id {$sql_common} {$sql_order} limit {$from_record}, {$rows} ";
 $result = sql_query($sql);
 for ($i=0; $row=sql_fetch_array($result); $i++) {
-    $tmp_write_table = $g5['write_prefix'].$channel['cn_id'].'_'.$row['bo_table'];
+    $tmp_write_table = $g5['write_prefix'].$config['cn_id'].'_'.$row['bo_table'];
 
     if ($row['wr_id'] == $row['wr_parent']) {
 

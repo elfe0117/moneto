@@ -26,7 +26,7 @@ if ($is_admin != 'super') {     // 최고관리자가 아니면 체크
     if( $w === '' ){
         $sql = "select ca_mb_id from {$g5['g5_shop_category_table']} where cn_id = '{$config['cn_id']}' AND ca_id = '$ca_id'";
     } else {
-        $sql = "select b.ca_mb_id from {$g5['g5_shop_item_table']} a , {$g5['g5_shop_category_table']} b where (a.ca_id = b.ca_id) and a.it_id = '$it_id'";
+        $sql = "select b.ca_mb_id from {$g5['g5_shop_item_table']} a , {$g5['g5_shop_category_table']} b where (a.ca_id = b.ca_id) and a.it_id = '$it_id' AND a.cn_id = b.cn_id AND b.cn_id = '{$config['cn_id']}' ";
     }
     $checks = sql_fetch($sql);
 
@@ -577,11 +577,11 @@ if(is_checked('chk_ca_9'))                      $ca_fields .= " , it_9_subj = '$
 if(is_checked('chk_ca_10'))                     $ca_fields .= " , it_10_subj = '$it_10_subj', it_10 = '$it_10' ";
 
 if($ca_fields) {
-    sql_query(" update {$g5['g5_shop_item_table']} set it_name = it_name {$ca_fields} where ca_id = '$ca_id' ");
+    sql_query(" update {$g5['g5_shop_item_table']} set it_name = it_name {$ca_fields} where cn_id = '{$config['cn_id']}' AND ca_id = '$ca_id' ");
     if($ca_id2)
-        sql_query(" update {$g5['g5_shop_item_table']} set it_name = it_name {$ca_fields} where ca_id2 = '$ca_id2' ");
+        sql_query(" update {$g5['g5_shop_item_table']} set it_name = it_name {$ca_fields} where cn_id = '{$config['cn_id']}' AND ca_id2 = '$ca_id2' ");
     if($ca_id3)
-        sql_query(" update {$g5['g5_shop_item_table']} set it_name = it_name {$ca_fields} where ca_id3 = '$ca_id3' ");
+        sql_query(" update {$g5['g5_shop_item_table']} set it_name = it_name {$ca_fields} where cn_id = '{$config['cn_id']}' AND ca_id3 = '$ca_id3' ");
 }
 
 // 모든 상품 동일 옵션 적용

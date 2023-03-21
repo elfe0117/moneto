@@ -30,7 +30,7 @@ for ($i = 0; $i < $count; $i++) {
 
     $sql = " delete
         from {$g5['auth_table']}
-        where cn_id = '{$channel['cn_id']}'
+        where cn_id = '{$config['cn_id']}'
             AND mb_id = '" . $mb_id . "'
             and au_menu = '" . $au_menu . "' ";
     sql_query($sql);

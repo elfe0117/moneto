@@ -69,7 +69,7 @@ if ($w == "u") {
     $html_title .= " 수정";
     $readonly = " readonly";
 
-    $sql = " select * from {$g5['content_table']} where co_id = '$co_id' ";
+    $sql = " select * from {$g5['content_table']} where cn_id = '{$config['cn_id']}' AND co_id = '$co_id' ";
     $co = sql_fetch($sql);
     if (!$co['co_id']) {
         alert('등록된 자료가 없습니다.');

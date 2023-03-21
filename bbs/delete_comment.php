@@ -61,8 +61,8 @@ if ($row['cnt'] && !$is_admin)
     alert('이 코멘트와 관련된 답변코멘트가 존재하므로 삭제 할 수 없습니다.');
 
 // 코멘트 포인트 삭제
-if (!delete_point($channel['cn_id'], $write['mb_id'], $bo_table, $comment_id, '댓글'))
-    insert_point($channel['cn_id'], $write['mb_id'], $board['bo_comment_point'] * (-1), "{$board['bo_subject']} {$write['wr_parent']}-{$comment_id} 댓글삭제");
+if (!delete_point($config['cn_id'], $write['mb_id'], $bo_table, $comment_id, '댓글'))
+    insert_point($config['cn_id'], $write['mb_id'], $board['bo_comment_point'] * (-1), "{$board['bo_subject']} {$write['wr_parent']}-{$comment_id} 댓글삭제");
 
 // 코멘트 삭제
 sql_query(" delete from {$write_table} where wr_id = '{$comment_id}' ");
@@ -75,10 +75,10 @@ $row = sql_fetch($sql);
 sql_query(" update {$write_table} set wr_comment = wr_comment - 1, wr_last = '{$row['wr_last']}' where wr_id = '{$write['wr_parent']}' ");
 
 // 코멘트 숫자 감소
-sql_query(" update {$g5['board_table']} set bo_count_comment = bo_count_comment - 1 where cn_id = '{$channel['cn_id']}' AND bo_table = '{$bo_table}' ");
+sql_query(" update {$g5['board_table']} set bo_count_comment = bo_count_comment - 1 where cn_id = '{$config['cn_id']}' AND bo_table = '{$bo_table}' ");
 
 // 새글 삭제
-sql_query(" delete from {$g5['board_new_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '{$bo_table}' and wr_id = '{$comment_id}' ");
+sql_query(" delete from {$g5['board_new_table']} where cn_id = '{$config['cn_id']}' AND bo_table = '{$bo_table}' and wr_id = '{$comment_id}' ");
 
 // 사용자 코드 실행
 @include_once($board_skin_path.'/delete_comment.skin.php');

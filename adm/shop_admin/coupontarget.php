@@ -33,7 +33,7 @@ if($sch_target == 1) {
     $sql_order = " order by ca_order, ca_name ";
 } else {
     $sql_common = " from {$g5['g5_shop_item_table']} ";
-    $sql_where = " where it_use = '1' and it_nocoupon = '0' ";
+    $sql_where = " where cn_id = '{$config['cn_id']}' AND it_use = '1' and it_nocoupon = '0' ";
     if($sch_word)
         $sql_where .= " and it_name like '%".sql_real_escape_string($sch_word)."%' ";
     $sql_select = " select it_id as t_id, it_name as t_name ";

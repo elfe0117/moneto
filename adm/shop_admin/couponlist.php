@@ -6,7 +6,9 @@ auth_check_menu($auth, $sub_menu, "r");
 
 $sql_common = " from {$g5['g5_shop_coupon_table']} ";
 
-$sql_search = " where (1) ";
+$sql_search = " where (1)
+    AND cn_id = '{$config['cn_id']}' ";
+    
 if ($stx) {
     $sql_search .= " and ( ";
     switch ($sfl) {

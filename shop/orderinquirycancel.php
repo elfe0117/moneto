@@ -155,6 +155,6 @@ sql_query($sql);
 
 // 주문취소 회원의 포인트를 되돌려 줌
 if ($od['od_receipt_point'] > 0)
-    insert_point($channel['cn_id'], $member['mb_id'], $od['od_receipt_point'], "주문번호 $od_id 본인 취소");
+    insert_point($config['cn_id'], $member['mb_id'], $od['od_receipt_point'], "주문번호 $od_id 본인 취소");
 
 goto_url(G5_SHOP_URL."/orderinquiryview.php?od_id=$od_id&amp;uid=$uid");

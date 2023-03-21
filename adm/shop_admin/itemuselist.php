@@ -7,8 +7,8 @@ auth_check_menu($auth, $sub_menu, "r");
 $g5['title'] = '사용후기';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 
-$where = " where ";
-$sql_search = "";
+$where = " AND ";
+$sql_search = " WHERE b.cn_it = '{$config['cn_id']}' ";
 $save_stx = isset($_REQUEST['save_stx']) ? clean_xss_tags($_REQUEST['save_stx'], 1, 1) : '';
 
 if ($stx != "") {
@@ -70,7 +70,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 <select name="sca" id="sca">
     <option value=''>전체분류</option>
     <?php
-    $sql1 = " select ca_id, ca_name from {$g5['g5_shop_category_table']} order by ca_order, ca_id ";
+    $sql1 = " select ca_id, ca_name from {$g5['g5_shop_category_table']} WHERE cn_id = '{$config['cn_id']}' order by ca_order, ca_id ";
     $result1 = sql_query($sql1);
     for ($i=0; $row1=sql_fetch_array($result1); $i++) {
         $len = strlen($row1['ca_id']) / 2 - 1;

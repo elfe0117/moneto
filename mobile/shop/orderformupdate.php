@@ -136,7 +136,8 @@ if($is_member) {
         $it_id = isset($_POST['it_id'][$i]) ? safe_replace_regex($_POST['it_id'][$i], 'it_id') : '';
         $sql = " select cp_id, cp_method, cp_target, cp_type, cp_price, cp_trunc, cp_minimum, cp_maximum
                     from {$g5['g5_shop_coupon_table']}
-                    where cp_id = '$cid'
+                    where cn_id = '{$config['cn_id']}'
+                        AND cp_id = '$cid'
                       and mb_id IN ( '{$member['mb_id']}', '전체회원' )
                       and cp_start <= '".G5_TIME_YMD."'
                       and cp_end >= '".G5_TIME_YMD."'
@@ -154,7 +155,7 @@ if($is_member) {
             $sql2 = " select it_id, ca_id, ca_id2, ca_id3
                         from {$g5['g5_shop_item_table']}
                         where it_id = '$it_id'
-                            AND cn_id = '{$channel['cn_id']}' ";
+                            AND cn_id = '{$config['cn_id']}' ";
             $row2 = sql_fetch($sql2);
 
             if(!$row2['it_id'])
@@ -202,7 +203,8 @@ if($is_member) {
     if(isset($_POST['od_cp_id']) && $_POST['od_cp_id']) {
         $sql = " select cp_id, cp_type, cp_price, cp_trunc, cp_minimum, cp_maximum
                     from {$g5['g5_shop_coupon_table']}
-                    where cp_id = '{$_POST['od_cp_id']}'
+                    where cn_id = '{$config['cn_id']}'
+                        AND cp_id = '{$_POST['od_cp_id']}'
                       and mb_id IN ( '{$member['mb_id']}', '전체회원' )
                       and cp_start <= '".G5_TIME_YMD."'
                       and cp_end >= '".G5_TIME_YMD."'
@@ -248,7 +250,8 @@ if($is_member && $send_cost > 0) {
     if(isset($_POST['sc_cp_id']) && $_POST['sc_cp_id']) {
         $sql = " select cp_id, cp_type, cp_price, cp_trunc, cp_minimum, cp_maximum
                     from {$g5['g5_shop_coupon_table']}
-                    where cp_id = '{$_POST['sc_cp_id']}'
+                    where cn_id = '{$config['cn_id']}'
+                        AND cp_id = '{$_POST['sc_cp_id']}'
                       and mb_id IN ( '{$member['mb_id']}', '전체회원' )
                       and cp_start <= '".G5_TIME_YMD."'
                       and cp_end >= '".G5_TIME_YMD."'
@@ -751,7 +754,7 @@ if(!$result) {
 
 // 회원이면서 포인트를 사용했다면 포인트 테이블에 사용을 추가
 if ($is_member && $od_receipt_point)
-    insert_point($channel['cn_id'], $member['mb_id'], (-1) * $od_receipt_point, "주문번호 $od_id 결제");
+    insert_point($config['cn_id'], $member['mb_id'], (-1) * $od_receipt_point, "주문번호 $od_id 결제");
 
 $od_memo = nl2br(htmlspecialchars2(stripslashes($od_memo))) . "&nbsp;";
 
@@ -765,7 +768,8 @@ if($is_member) {
 
         if(trim($cid)) {
             $sql = " insert into {$g5['g5_shop_coupon_log_table']}
-                        set cp_id       = '$cid',
+                        set cn_id = '{$config['cn_id']}',
+                            cp_id       = '$cid',
                             mb_id       = '{$member['mb_id']}',
                             od_id       = '$od_id',
                             cp_price    = '$cp_prc',
@@ -786,7 +790,8 @@ if($is_member) {
 
     if(isset($_POST['od_cp_id']) && $_POST['od_cp_id']) {
         $sql = " insert into {$g5['g5_shop_coupon_log_table']}
-                    set cp_id       = '{$_POST['od_cp_id']}',
+                    set cn_id = '{$config['cn_id']}',
+                        cp_id       = '{$_POST['od_cp_id']}',
                         mb_id       = '{$member['mb_id']}',
                         od_id       = '$od_id',
                         cp_price    = '$tot_od_cp_price',
@@ -796,7 +801,8 @@ if($is_member) {
 
     if(isset($_POST['sc_cp_id']) && $_POST['sc_cp_id']) {
         $sql = " insert into {$g5['g5_shop_coupon_log_table']}
-                    set cp_id       = '{$_POST['sc_cp_id']}',
+                    set cn_id = '{$config['cn_id']}',
+                        cp_id       = '{$_POST['sc_cp_id']}',
                         mb_id       = '{$member['mb_id']}',
                         od_id       = '$od_id',
                         cp_price    = '$tot_sc_cp_price',

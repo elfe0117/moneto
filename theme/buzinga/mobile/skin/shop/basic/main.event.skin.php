@@ -2,7 +2,7 @@
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 
 // 이벤트 정보
-$hsql = run_replace('shop_event_sql_query', " select ev_id, ev_subject, ev_subject_strong from {$g5['g5_shop_event_table']} where ev_use = '1' order by ev_id desc ");
+$hsql = run_replace('shop_event_sql_query', " select ev_id, ev_subject, ev_subject_strong from {$g5['g5_shop_event_table']} where cn_id = '{$config['cn_id']}' AND ev_use = '1' order by ev_id desc ");
 $hresult = sql_query($hsql);
 
 if(sql_num_rows($hresult)) {

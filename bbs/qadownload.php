@@ -11,7 +11,7 @@ $no = isset($_REQUEST['no']) ? (int) $_REQUEST['no'] : 0;
 if (!get_session('ss_qa_view_'.$qa_id))
     alert('잘못된 접근입니다.');
 
-$sql = " select qa_subject, qa_file{$no}, qa_source{$no} from {$g5['qa_content_table']} where qa_id = '$qa_id' ";
+$sql = " select qa_subject, qa_file{$no}, qa_source{$no} from {$g5['qa_content_table']} where cn_id = '{$config['cn_id']}' AND qa_id = '$qa_id' ";
 $file = sql_fetch($sql);
 if (!$file['qa_file'.$no])
     alert_close('파일 정보가 존재하지 않습니다.');

@@ -49,7 +49,7 @@ ob_start();
                    from {$g5['g5_shop_cart_table']} a left join {$g5['g5_shop_item_table']} b on ( a.it_id = b.it_id )
                   where a.od_id = '$s_cart_id'
                     and a.ct_select = '1'
-                    AND b.cn_id = '{$channel['cn_id']}' ";
+                    AND b.cn_id = '{$config['cn_id']}' ";
         $sql .= " group by a.it_id ";
         $sql .= " order by a.ct_id ";
         $result = sql_query($sql);
@@ -123,7 +123,8 @@ ob_start();
 
                 $sql = " select cp_id
                             from {$g5['g5_shop_coupon_table']}
-                            where mb_id IN ( '{$member['mb_id']}', '전체회원' )
+                            where cn_id = '{$config['cn_id']}'
+                                AND mb_id IN ( '{$member['mb_id']}', '전체회원' )
                               and cp_start <= '".G5_TIME_YMD."'
                               and cp_end >= '".G5_TIME_YMD."'
                               and cp_minimum <= '$sell_price'
@@ -458,7 +459,8 @@ if($is_kakaopay_use) {
         // 주문쿠폰
         $sql = " select cp_id
                     from {$g5['g5_shop_coupon_table']}
-                    where mb_id IN ( '{$member['mb_id']}', '전체회원' )
+                    where cn_id = '{$config['cn_id']}'
+                        AND mb_id IN ( '{$member['mb_id']}', '전체회원' )
                       and cp_method = '2'
                       and cp_start <= '".G5_TIME_YMD."'
                       and cp_end >= '".G5_TIME_YMD."'
@@ -476,7 +478,8 @@ if($is_kakaopay_use) {
             // 배송비쿠폰
             $sql = " select cp_id
                         from {$g5['g5_shop_coupon_table']}
-                        where mb_id IN ( '{$member['mb_id']}', '전체회원' )
+                        where cn_id = '{$config['cn_id']}'
+                            AND mb_id IN ( '{$member['mb_id']}', '전체회원' )
                           and cp_method = '3'
                           and cp_start <= '".G5_TIME_YMD."'
                           and cp_end >= '".G5_TIME_YMD."'

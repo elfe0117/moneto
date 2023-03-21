@@ -185,7 +185,7 @@ require_once(G5_PATH.'/head.sub.php');
             include(G5_SHOP_PATH.'/list.php');
             break;
         case 'item':
-            $sql = " select it_id from {$g5['g5_shop_item_table']} where it_use = '1' order by it_id desc limit 1 ";
+            $sql = " select it_id from {$g5['g5_shop_item_table']} where cn_id = '{$config['cn_id']}' AND it_use = '1' order by it_id desc limit 1 ";
             $tmp = sql_fetch($sql);
             $_GET['it_id'] = $tmp['it_id'];
             include(G5_SHOP_PATH.'/item.php');

@@ -17,7 +17,7 @@ if (empty($to_date) || !preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9
 $qstr = "fr_date={$fr_date}&amp;to_date={$to_date}";
 
 $sql_common = " from {$g5['popular_table']} a ";
-$sql_search = " where trim(pp_word) <> '' and pp_date between '{$fr_date}' and '{$to_date}' ";
+$sql_search = " where cn_id = '{$config['cn_id']}' AND trim(pp_word) <> '' and pp_date between '{$fr_date}' and '{$to_date}' ";
 $sql_group = " group by pp_word ";
 $sql_order = " order by cnt desc ";
 

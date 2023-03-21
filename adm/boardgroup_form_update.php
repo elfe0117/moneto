@@ -75,7 +75,7 @@ if (isset($_POST['gr_use_access'])) {
 }
 
 if ($w == '') {
-    $sql = " select count(*) as cnt from {$g5['group_table']} where gr_id = '{$gr_id}' ";
+    $sql = " select count(*) as cnt from {$g5['group_table']} where cn_id = '{$config['cn_id']}' AND gr_id = '{$gr_id}' ";
     $row = sql_fetch($sql);
     if ($row['cnt']) {
         alert('이미 존재하는 그룹 ID 입니다.');

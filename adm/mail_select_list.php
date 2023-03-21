@@ -41,7 +41,7 @@ $sql_where .= " and mb_level between '{$mb_level_from}' and '{$mb_level_to}' ";
 if ($gr_id) {
     $group_member = "";
     $comma = "";
-    $sql2 = " select mb_id from {$g5['group_member_table']} where gr_id = '{$gr_id}' order by mb_id ";
+    $sql2 = " select mb_id from {$g5['group_member_table']} where cn_id = '{$config['cn_id']}' AND gr_id = '{$gr_id}' order by mb_id ";
     $result2 = sql_query($sql2);
     for ($k = 0; $row2 = sql_fetch_array($result2); $k++) {
         $group_member .= "{$comma}'{$row2['mb_id']}'";

@@ -26,7 +26,7 @@ include_once('./head.php');
 
         if(!empty($mainbestcategory)) {
             foreach($mainbestcategory as $val) {
-                $sql = " select ca_id, ca_name from {$g5['g5_shop_category_table']} where ca_id = '$val' ";
+                $sql = " select ca_id, ca_name from {$g5['g5_shop_category_table']} where cn_id = '{$config['cn_id']}' AND ca_id = '$val' ";
                 $row = sql_fetch($sql);
                 if(!$row['ca_id'])
                     continue;

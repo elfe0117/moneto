@@ -17,7 +17,7 @@ if (!get_session('ss_view_'.$bo_table.'_'.$wr_id))
 if($board['bo_download_point'] < 0 && $is_guest)
     alert('다운로드 권한이 없습니다.\\n회원이시라면 로그인 후 이용해 보십시오.', G5_BBS_URL.'/login.php?wr_id='.$wr_id.'&amp;'.$qstr.'&amp;url='.urlencode(get_pretty_url('', $bo_table, $wr_id)));
 
-$sql = " select * from {$g5['board_file_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '$wr_id' and bf_no = '$no' ";
+$sql = " select * from {$g5['board_file_table']} where cn_id = '{$config['cn_id']}' AND bo_table = '$bo_table' and wr_id = '$wr_id' and bf_no = '$no' ";
 $file = sql_fetch($sql);
 if (!$file['bf_file'])
     alert_close('파일 정보가 존재하지 않습니다.');
@@ -54,7 +54,7 @@ if ($member['mb_level'] < $board['bo_download_level']) {
         alert($alert_msg.'\\n회원이시라면 로그인 후 이용해 보십시오.', G5_BBS_URL.'/login.php?wr_id='.$wr_id.'&amp;'.$qstr.'&amp;url='.urlencode(get_pretty_url('', $bo_table, $wr_id)));
 }
 
-$filepath = G5_DATA_PATH.'/file/'.$channel['cn_id'].'/'.$bo_table.'/'.$file['bf_file'];
+$filepath = G5_DATA_PATH.'/file/'.$config['cn_id'].'/'.$bo_table.'/'.$file['bf_file'];
 $filepath = addslashes($filepath);
 $file_exist_check = (!is_file($filepath) || !file_exists($filepath)) ? false : true;
 
@@ -80,7 +80,7 @@ if (!get_session($ss_name))
             alert('보유하신 포인트('.number_format($member['mb_point']).')가 없거나 모자라서 다운로드('.number_format($board['bo_download_point']).')가 불가합니다.\\n\\n포인트를 적립하신 후 다시 다운로드 해 주십시오.');
 
         // 게시물당 한번만 차감하도록 수정
-        insert_point($channel['cn_id'], $member['mb_id'], $board['bo_download_point'], "{$board['bo_subject']} $wr_id 파일 다운로드", $bo_table, $wr_id, "다운로드");
+        insert_point($config['cn_id'], $member['mb_id'], $board['bo_download_point'], "{$board['bo_subject']} $wr_id 파일 다운로드", $bo_table, $wr_id, "다운로드");
     }
 
     set_session($ss_name, TRUE);
@@ -91,7 +91,7 @@ $ss_name = 'ss_down_'.$bo_table.'_'.$wr_id.'_'.$no;
 if (!get_session($ss_name))
 {
     // 다운로드 카운트 증가
-    $sql = " update {$g5['board_file_table']} set bf_download = bf_download + 1 where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '$wr_id' and bf_no = '$no' ";
+    $sql = " update {$g5['board_file_table']} set bf_download = bf_download + 1 where cn_id = '{$config['cn_id']}' AND bo_table = '$bo_table' and wr_id = '$wr_id' and bf_no = '$no' ";
     sql_query($sql);
     // 다운로드 카운트를 증가시키고 세션을 생성
     $_SESSION[$ss_name] = true;

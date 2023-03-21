@@ -4,13 +4,13 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
 include_once(G5_MODULE_PATH.'/module.lib.php');
 
-$pf = get_profile($channel['cn_id']);
+$pf = get_profile($config['cn_id']);
 
 $it_list = array();
 
 $sql = "SELECT *
     FROM {$g5['g5_shop_item_table']}
-    WHERE cn_id = '{$channel['cn_id']}'
+    WHERE cn_id = '{$config['cn_id']}'
         AND it_type3 = '1'
     ORDER BY it_order ASC ";
 $result = sql_query($sql);

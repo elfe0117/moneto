@@ -12,7 +12,7 @@ include_once(G5_MOBILE_PATH.'/_head.php');
 //  최신글
 $sql = " select bo_table, bo_subject
             from {$g5['board_table']}
-            where cn_id = '{$channel['cn_id']}'
+            where cn_id = '{$config['cn_id']}'
                 AND gr_id = '{$gr_id}'
               and bo_list_level <= '{$member['mb_level']}'
               and bo_device <> 'pc' ";

@@ -15,7 +15,9 @@ if (!isset($group['gr_device'])) {
 
 $sql_common = " from {$g5['group_table']} ";
 
-$sql_search = " where (1) ";
+$sql_search = " where (1)
+    AND cn_id = '{$config['cn_id']}' ";
+    
 if ($is_admin != 'super') {
     $sql_search .= " and (gr_admin = '{$member['mb_id']}') ";
 }
@@ -112,7 +114,7 @@ $colspan = 10;
                 <?php
                 for ($i = 0; $row = sql_fetch_array($result); $i++) {
                     // 접근회원수
-                    $sql1 = " select count(*) as cnt from {$g5['group_member_table']} where gr_id = '{$row['gr_id']}' ";
+                    $sql1 = " select count(*) as cnt from {$g5['group_member_table']} where cn_id = '{$row['cn_id']}' AND gr_id = '{$row['gr_id']}' ";
                     $row1 = sql_fetch($sql1);
 
                     // 게시판수

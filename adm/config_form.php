@@ -8,7 +8,7 @@ if ($is_admin != 'super') {
     alert('최고관리자만 접근 가능합니다.');
 }
 
-$cf = get_config($channel['cn_id'], false);
+$cf = get_config($config['cn_id'], false);
 
 if (!isset($cf['cf_add_script'])) {
     sql_query(

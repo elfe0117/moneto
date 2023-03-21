@@ -105,7 +105,8 @@ $sql = " update {$g5['qa_config_table']}
                 qa_2                    = '{$_POST['qa_2']}',
                 qa_3                    = '{$_POST['qa_3']}',
                 qa_4                    = '{$_POST['qa_4']}',
-                qa_5                    = '{$_POST['qa_5']}' ";
+                qa_5                    = '{$_POST['qa_5']}'
+            WHERE cn_id = '{$config['cn_id']}' ";
 sql_query($sql);
 
 if (function_exists('get_admin_captcha_by')) {

@@ -9,7 +9,8 @@ $sql_search = " where (1) ";
 
 if ($is_admin != "super") {
     $sql_common .= " , {$g5['group_table']} b ";
-    $sql_search .= " and (a.gr_id = b.gr_id and b.gr_admin = '{$member['mb_id']}') ";
+    $sql_search .= " AND b.cn_id = '{$config['cn_id']}'
+        and (a.gr_id = b.gr_id and b.gr_admin = '{$member['mb_id']}') ";
 }
 
 if ($stx) {

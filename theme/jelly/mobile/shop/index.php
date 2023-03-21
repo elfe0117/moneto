@@ -131,7 +131,7 @@ include_once(G5_THEME_MSHOP_PATH.'/shop.head.php');
 $sql = " select a.is_id, a.is_subject, a.is_content, a.it_id, b.it_name
             from `{$g5['g5_shop_item_use_table']}` a join `{$g5['g5_shop_item_table']}` b on (a.it_id=b.it_id)
             where a.is_confirm = '1'
-                AND b.cn_id = '{$channel['cn_id']}'
+                AND b.cn_id = '{$config['cn_id']}'
             order by a.is_id desc
             limit 0,5 ";
 $result = sql_query($sql);

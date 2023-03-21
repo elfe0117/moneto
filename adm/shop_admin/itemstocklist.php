@@ -14,7 +14,7 @@ $search = isset($_GET['search']) ? get_search_string($_GET['search']) : '';
 $g5['title'] = '상품재고관리';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 
-$sql_search = " where 1 ";
+$sql_search = " where cn_id = '{$config['cn_id']}' ";
 if ($search != "") {
 	if ($sel_field != "") {
     	$sql_search .= " and $sel_field like '%$search%' ";
@@ -76,7 +76,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 <select name="sel_ca_id" id="sel_ca_id">
     <option value=''>전체분류</option>
     <?php
-    $sql1 = " select ca_id, ca_name from {$g5['g5_shop_category_table']} order by ca_order, ca_id ";
+    $sql1 = " select ca_id, ca_name from {$g5['g5_shop_category_table']} WHERE cn_id = '{$config['cn_id']}' order by ca_order, ca_id ";
     $result1 = sql_query($sql1);
     for ($i=0; $row1=sql_fetch_array($result1); $i++) {
         $len = strlen($row1['ca_id']) / 2 - 1;

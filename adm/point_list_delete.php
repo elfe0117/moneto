@@ -20,7 +20,7 @@ for ($i = 0; $i < $count; $i++) {
     $str_mb_id = sql_real_escape_string($_POST['mb_id'][$k]);
 
     // 포인트 내역정보
-    $sql = " select * from {$g5['point_table']} where po_id = '{$po_id}' ";
+    $sql = " select * from {$g5['point_table']} where cn_id = '{$config['cn_id']}' AND po_id = '{$po_id}' ";
     $row = sql_fetch($sql);
 
     if (!$row['po_id']) {
@@ -43,13 +43,14 @@ for ($i = 0; $i < $count; $i++) {
     }
 
     // 포인트 내역삭제
-    $sql = " delete from {$g5['point_table']} where po_id = '{$po_id}' ";
+    $sql = " delete from {$g5['point_table']} where cn_id = '{$config['cn_id']}' AND po_id = '{$po_id}' ";
     sql_query($sql);
 
     // po_mb_point에 반영
     $sql = " update {$g5['point_table']}
                 set po_mb_point = po_mb_point - '{$row['po_point']}'
-                where mb_id = '{$str_mb_id}'
+                where cn_id = '{$config['cn_id']}'
+                    AND mb_id = '{$str_mb_id}'
                   and po_id > '{$po_id}' ";
     sql_query($sql);
 

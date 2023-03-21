@@ -124,7 +124,7 @@ if($w == '') {
             cp_datetime = '".G5_TIME_YMDHIS."' ";
     sql_query($sql);
 } else if($w == 'u') {
-    $sql = " select * from {$g5['g5_shop_coupon_table']} where cp_id = '$cp_id' ";
+    $sql = " select * from {$g5['g5_shop_coupon_table']} where cn_id = '{$config['cn_id']}' AND cp_id = '$cp_id' ";
     $cp = sql_fetch($sql);
 
     if(!$cp['cp_id'])

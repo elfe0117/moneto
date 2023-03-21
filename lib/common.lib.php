@@ -330,7 +330,7 @@ function get_file($bo_table, $wr_id)
     global $g5, $qstr, $board, $channel;
 
     $file['count'] = 0;
-    $sql = " select * from {$g5['board_file_table']} where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' and wr_id = '$wr_id' order by bf_no ";
+    $sql = " select * from {$g5['board_file_table']} where cn_id = '{$config['cn_id']}' AND bo_table = '$bo_table' and wr_id = '$wr_id' order by bf_no ";
     $result = sql_query($sql);
     $nonce = download_file_nonce_key($bo_table, $wr_id);
     while ($row = sql_fetch_array($result))
@@ -775,7 +775,7 @@ function get_next_num($table)
 // 그룹 설정 테이블에서 하나의 행을 읽음
 function get_group($gr_id, $is_cache=false)
 {
-    global $g5;
+    global $g5, $config;
     
     if( is_array($gr_id) ){
         return array();
@@ -791,7 +791,7 @@ function get_group($gr_id, $is_cache=false)
         return $cache[$key];
     }
 
-    $sql = " select * from {$g5['group_table']} where gr_id = '$gr_id' ";
+    $sql = " select * from {$g5['group_table']} where cn_id = '{$config['cn_id']}' AND gr_id = '$gr_id' ";
 
     $group = run_replace('get_group', sql_fetch($sql), $gr_id, $is_cache);
     $cache[$key] = array_merge(array('gr_device'=>'', 'gr_subject'=>''), (array) $group);
@@ -948,12 +948,14 @@ function get_category_option($bo_table='', $ca_name='')
 // 게시판 그룹을 SELECT 형식으로 얻음
 function get_group_select($name, $selected='', $event='')
 {
-    global $g5, $is_admin, $member;
+    global $g5, $is_admin, $member, $config;
 
     $sql = " select gr_id, gr_subject from {$g5['group_table']} a ";
     if ($is_admin == "group") {
         $sql .= " left join {$g5['member_table']} b on (b.mb_id = a.gr_admin)
-                  where b.mb_id = '{$member['mb_id']}' ";
+                  where a.cn_id = '{$config['cn_id']}' AND b.mb_id = '{$member['mb_id']}' ";
+    } else {
+        $sql .= " WHERE a.cn_id = '{$config['cn_id']}' ";
     }
     $sql .= " order by a.gr_id ";
 
@@ -1085,7 +1087,8 @@ function insert_use_point($mb_id, $point, $po_id='')
     $point1 = abs($point);
     $sql = " select po_id, po_point, po_use_point
                 from {$g5['point_table']}
-                where mb_id = '$mb_id'
+                where cn_id = '{$config['cn_id']}'
+                    AND mb_id = '$mb_id'
                   and po_id <> '$po_id'
                   and po_expired = '0'
                   and po_point > po_use_point
@@ -1098,7 +1101,7 @@ function insert_use_point($mb_id, $point, $po_id='')
         if(($point2 - $point3) > $point1) {
             $sql = " update {$g5['point_table']}
                         set po_use_point = po_use_point + '$point1'
-                        where po_id = '{$row['po_id']}' ";
+                        where cn_id = '{$config['cn_id']}' AND po_id = '{$row['po_id']}' ";
             sql_query($sql);
             break;
         } else {
@@ -1106,7 +1109,7 @@ function insert_use_point($mb_id, $point, $po_id='')
             $sql = " update {$g5['point_table']}
                         set po_use_point = po_use_point + '$point4',
                             po_expired = '100'
-                        where po_id = '{$row['po_id']}' ";
+                        where cn_id = '{$config['cn_id']}' AND po_id = '{$row['po_id']}' ";
             sql_query($sql);
             $point1 -= $point4;
         }
@@ -1126,7 +1129,8 @@ function delete_use_point($mb_id, $point)
     $point1 = abs($point);
     $sql = " select po_id, po_use_point, po_expired, po_expire_date
                 from {$g5['point_table']}
-                where mb_id = '$mb_id'
+                where cn_id = '{$config['cn_id']}'
+                    AND mb_id = '$mb_id'
                   and po_expired <> '1'
                   and po_use_point > 0
                 $sql_order ";
@@ -1142,14 +1146,14 @@ function delete_use_point($mb_id, $point)
             $sql = " update {$g5['point_table']}
                         set po_use_point = po_use_point - '$point1',
                             po_expired = '$po_expired'
-                        where po_id = '{$row['po_id']}' ";
+                        where cn_id = '{$config['cn_id']}' AND po_id = '{$row['po_id']}' ";
             sql_query($sql);
             break;
         } else {
             $sql = " update {$g5['point_table']}
                         set po_use_point = '0',
                             po_expired = '$po_expired'
-                        where po_id = '{$row['po_id']}' ";
+                        where cn_id = '{$config['cn_id']}' AND po_id = '{$row['po_id']}' ";
             sql_query($sql);
 
             $point1 -= $point2;
@@ -1165,7 +1169,8 @@ function delete_expire_point($mb_id, $point)
     $point1 = abs($point);
     $sql = " select po_id, po_use_point, po_expired, po_expire_date
                 from {$g5['point_table']}
-                where mb_id = '$mb_id'
+                where cn_id = '{$config['cn_id']}'
+                    AND mb_id = '$mb_id'
                   and po_expired = '1'
                   and po_point >= 0
                   and po_use_point > 0
@@ -1183,7 +1188,8 @@ function delete_expire_point($mb_id, $point)
                         set po_use_point = po_use_point - '$point1',
                             po_expired = '$po_expired',
                             po_expire_date = '$po_expire_date'
-                        where po_id = '{$row['po_id']}' ";
+                        where cn_id = '{$config['cn_id']}'
+                            AND po_id = '{$row['po_id']}' ";
             sql_query($sql);
             break;
         } else {
@@ -1191,7 +1197,8 @@ function delete_expire_point($mb_id, $point)
                         set po_use_point = '0',
                             po_expired = '$po_expired',
                             po_expire_date = '$po_expire_date'
-                        where po_id = '{$row['po_id']}' ";
+                        where cn_id = '{$config['cn_id']}'
+                            AND po_id = '{$row['po_id']}' ";
             sql_query($sql);
 
             $point1 -= $point2;
@@ -1270,7 +1277,8 @@ function get_expire_point($mb_id)
 
     $sql = " select sum(po_point - po_use_point) as sum_point
                 from {$g5['point_table']}
-                where mb_id = '$mb_id'
+                where cn_id = '{$config['cn_id']}'
+                    AND mb_id = '$mb_id'
                   and po_expired = '0'
                   and po_expire_date <> '9999-12-31'
                   and po_expire_date < '".G5_TIME_YMD."' ";
@@ -2463,7 +2471,7 @@ function delete_board_thumbnail($bo_table, $file)
         return;
 
     $fn = preg_replace("/\.[^\.]+$/i", "", basename($file));
-    $files = glob(G5_DATA_PATH.'/file/'.$channel['cn_id'].'/'.$bo_table.'/thumb-'.$fn.'*');
+    $files = glob(G5_DATA_PATH.'/file/'.$config['cn_id'].'/'.$bo_table.'/thumb-'.$fn.'*');
     if (is_array($files)) {
         foreach ($files as $filename)
             unlink($filename);
@@ -3016,11 +3024,11 @@ function certify_count_check($mb_id, $type)
 // 1:1문의 설정로드
 function get_qa_config($cnid='', $fld='*', $is_cache=false)
 {
-    global $g5, $channel;
+    global $g5, $config;
     static $cache = array();
 
     if (!$cnid) {
-        $cnid = $channel['cn_id'];
+        $cnid = $config['cn_id'];
     }
 
     if( $is_cache && !empty($cache) ){
@@ -3455,7 +3463,7 @@ function insert_popular($field, $str)
     global $g5;
 
     if(!in_array('mb_id', $field)) {
-        $sql = " insert into {$g5['popular_table']} set pp_word = '{$str}', pp_date = '".G5_TIME_YMD."', pp_ip = '{$_SERVER['REMOTE_ADDR']}' ";
+        $sql = " insert into {$g5['popular_table']} set cn_id = '{$config['cn_id']}', pp_word = '{$str}', pp_date = '".G5_TIME_YMD."', pp_ip = '{$_SERVER['REMOTE_ADDR']}' ";
         sql_query($sql, FALSE);
     }
 }

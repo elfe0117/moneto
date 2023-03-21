@@ -15,7 +15,7 @@ if (G5_IS_MOBILE) {
 }
 
 // 채널에 해당 분류 정보 가져오기
-$sql = " select * from {$g5['g5_shop_category_table']} where cn_id = '{$channel['cn_id']}' AND ca_id = '$ca_id' and ca_use = '1'  ";
+$sql = " select * from {$g5['g5_shop_category_table']} where cn_id = '{$config['cn_id']}' AND ca_id = '$ca_id' and ca_use = '1'  ";
 $ca = sql_fetch($sql);
 if (! (isset($ca['ca_id']) && $ca['ca_id']))
     alert('등록된 분류가 없습니다.');

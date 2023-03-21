@@ -209,7 +209,7 @@ function shop_exist_check_seo_title($seo_title, $type, $shop_item_table, $it_id)
 }
 
 function shop_seo_title_update($it_id, $is_edit=false){
-    global $g5, $channel;
+    global $g5, $config;
 
 	$shop_item_cache = $is_edit ? false : true;
     $item = get_shop_item($it_id, $shop_item_cache);
@@ -218,7 +218,7 @@ function shop_seo_title_update($it_id, $is_edit=false){
         $it_seo_title = exist_seo_title_recursive('shop', generate_seo_title($item['it_name']), $g5['g5_shop_item_table'], $item['it_id']);
 
         if( isset($item['it_seo_title']) && $it_seo_title !== $item['it_seo_title'] ){
-            $sql = " update `{$g5['g5_shop_item_table']}` set it_seo_title = '{$it_seo_title}' where cn_id = '{$channel['cn_id']}' AND it_id = '{$item['it_id']}' ";
+            $sql = " update `{$g5['g5_shop_item_table']}` set it_seo_title = '{$it_seo_title}' where cn_id = '{$config['cn_id']}' AND it_id = '{$item['it_id']}' ";
             sql_query($sql);
         }
     }

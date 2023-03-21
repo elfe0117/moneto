@@ -8,7 +8,7 @@ if ($w == '')
     $pc_name = isset($_POST['pc_name']) ? clean_xss_tags($_POST['pc_name'], 1, 1) : '';
     $pc_idea = isset($_POST['pc_idea']) ? clean_xss_tags($_POST['pc_idea'], 1, 1) : '';
 
-    $po = sql_fetch(" select * from {$g5['poll_table']} where po_id = '{$po_id}' ");
+    $po = sql_fetch(" select * from {$g5['poll_table']} where cn_id = '{$config['cn_id']}' AND po_id = '{$po_id}' ");
     if (!$po['po_id'])
         alert('po_id 값이 제대로 넘어오지 않았습니다.');
 

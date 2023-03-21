@@ -19,7 +19,8 @@ include_once(G5_PATH.'/head.sub.php');
 
 $sql = " select cp_id, cp_subject, cp_method, cp_target, cp_start, cp_end, cp_type, cp_price
             from {$g5['g5_shop_coupon_table']}
-            where mb_id IN ( '{$member['mb_id']}', '전체회원' )
+            where cn_id = '{$config['cn_id']}'
+                AND mb_id IN ( '{$member['mb_id']}', '전체회원' )
               and cp_start <= '".G5_TIME_YMD."'
               and cp_end >= '".G5_TIME_YMD."'
             order by cp_no ";
@@ -37,7 +38,7 @@ $result = sql_query($sql);
             continue;
 
         if($row['cp_method'] == 1) {
-            $sql = " select ca_name from {$g5['g5_shop_category_table']} where cn_id = '{$channel['cn_id']}' AND ca_id = '{$row['cp_target']}' ";
+            $sql = " select ca_name from {$g5['g5_shop_category_table']} where cn_id = '{$row['cn_id']}' AND ca_id = '{$row['cp_target']}' ";
             $ca = sql_fetch($sql);
             $cp_target = $ca['ca_name'].'의 상품할인';
         } else if($row['cp_method'] == 2) {

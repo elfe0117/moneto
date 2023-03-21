@@ -27,7 +27,7 @@ if (!chk_captcha()) {
 }
 
 $sql = " insert into {$g5['auth_table']}
-            set cn_id = '{$channel['cn_id']}',
+            set cn_id = '{$config['cn_id']}',
                 mb_id   = '$mb_id',
                 au_menu = '$au_menu',
                 au_auth = '{$post_r},{$post_w},{$post_d}' ";
@@ -35,7 +35,7 @@ $result = sql_query($sql, false);
 if (!$result) {
     $sql = " update {$g5['auth_table']}
                 set au_auth = '{$post_r},{$post_w},{$post_d}'
-              where cn_id = '{$channel['cn_id']}'
+              where cn_id = '{$config['cn_id']}'
                 AND mb_id   = '$mb_id'
                 and au_menu = '$au_menu' ";
     sql_query($sql);

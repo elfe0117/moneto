@@ -12,7 +12,7 @@ add_stylesheet('<link rel="stylesheet" href="'.G5_SHOP_SKIN_URL.'/style.css">', 
     <?php
     $hsql = " select bo_table, bo_subject
         from {$g5['board_table']}
-        WHERE cn_id = '{$channel['cn_id']}'
+        WHERE cn_id = '{$config['cn_id']}'
         order by gr_id, bo_table ";
     $hresult = sql_query($hsql);
     for ($i=0; $row=sql_fetch_array($hresult); $i++)

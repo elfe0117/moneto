@@ -9,7 +9,7 @@ if ($is_admin != 'super') {
 $sql_common = " from {$g5['auth_table']} a left join {$g5['member_table']} b on (a.mb_id=b.mb_id) ";
 
 $sql_search = " where (1)
-    AND cn_id = '{$channel['cn_id']}' ";
+    AND cn_id = '{$config['cn_id']}' ";
 
 if ($stx) {
     $sql_search .= " and ( ";
@@ -100,13 +100,13 @@ $colspan = 5;
                     $is_continue = false;
                     // 회원아이디가 없는 메뉴는 삭제함
                     if ($row['mb_id'] == '' && $row['mb_nick'] == '') {
-                        sql_query(" delete from {$g5['auth_table']} where au_menu = '{$row['au_menu']}' ");
+                        sql_query(" delete from {$g5['auth_table']} where cn_id = '{$config['cn_id']}' AND au_menu = '{$row['au_menu']}' ");
                         $is_continue = true;
                     }
 
                     // 메뉴번호가 바뀌는 경우에 현재 없는 저장된 메뉴는 삭제함
                     if (!isset($auth_menu[$row['au_menu']])) {
-                        sql_query(" delete from {$g5['auth_table']} where au_menu = '{$row['au_menu']}' ");
+                        sql_query(" delete from {$g5['auth_table']} where cn_id = '{$config['cn_id']}' AND au_menu = '{$row['au_menu']}' ");
                         $is_continue = true;
                     }
 

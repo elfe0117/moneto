@@ -40,7 +40,8 @@ foreach($fields as $fld) {
 }
 
 $sql = " insert {$g5['g5_shop_item_table']}
-			set it_id = '$new_it_id'
+			set it_id = '$new_it_id',
+                cn_id = '{$config['cn_id']}'
                 $sql_common ";
 sql_query($sql);
 

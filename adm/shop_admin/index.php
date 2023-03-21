@@ -264,7 +264,8 @@ function get_max_value($arr)
             $item_noti = 0;
             $sql = " select count(*) as cnt
                         from {$g5['g5_shop_item_table']}
-                        where it_use = '1'
+                        where cn_id = '{$config['cn_id']}'
+                            AND it_use = '1'
                           and it_option_subject = ''
                           and it_stock_qty <= it_noti_qty ";
             $row = sql_fetch($sql);
@@ -377,7 +378,8 @@ function get_max_value($arr)
             <ul>
                 <?php
                 $sql = " select * from {$g5['qa_content_table']}
-                          where qa_status = '0'
+                          where cn_id = '{$config['cn_id']}'
+                            AND qa_status = '0'
                             and qa_type = '0'
                           order by qa_num
                           limit $max_limit ";

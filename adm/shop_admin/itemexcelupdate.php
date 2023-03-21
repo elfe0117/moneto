@@ -117,6 +117,7 @@ if($is_upload_file) {
 
         $sql = " INSERT INTO {$g5['g5_shop_item_table']}
                      SET it_id = '$it_id',
+                        cn_id = '{$config['cn_id']}',
                          ca_id = '$ca_id',
                          ca_id2 = '$ca_id2',
                          ca_id3 = '$ca_id3',

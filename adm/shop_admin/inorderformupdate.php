@@ -57,7 +57,8 @@ if($od['mb_id']) {
         $it_id = $data['it_id'][$i];
         $sql = " select cp_id, cp_method, cp_target, cp_type, cp_price, cp_trunc, cp_minimum, cp_maximum
                     from {$g5['g5_shop_coupon_table']}
-                    where cp_id = '$cid'
+                    where cn_id = '{$config['cn_id']}'
+                        AND cp_id = '$cid'
                       and mb_id IN ( '{$od['mb_id']}', '전체회원' )
                       and cp_method IN ( 0, 1 ) ";
         $cp = sql_fetch($sql);
@@ -116,7 +117,8 @@ if($od['mb_id']) {
     if(isset($data['od_cp_id']) && $data['od_cp_id']) {
         $sql = " select cp_id, cp_type, cp_price, cp_trunc, cp_minimum, cp_maximum
                     from {$g5['g5_shop_coupon_table']}
-                    where cp_id = '{$data['od_cp_id']}'
+                    where cn_id = '{$config['cn_id']}'
+                        AND cp_id = '{$data['od_cp_id']}'
                       and mb_id IN ( '{$od['mb_id']}', '전체회원' )
                       and cp_method = '2' ";
         $cp = sql_fetch($sql);
@@ -152,7 +154,8 @@ if($od['mb_id'] && $od_send_cost > 0) {
     if($data['sc_cp_id']) {
         $sql = " select cp_id, cp_type, cp_price, cp_trunc, cp_minimum, cp_maximum
                     from {$g5['g5_shop_coupon_table']}
-                    where cp_id = '{$data['sc_cp_id']}'
+                    where cn_id = '{$config['cn_id']}'
+                        AND cp_id = '{$data['sc_cp_id']}'
                       and mb_id IN ( '{$od['mb_id']}', '전체회원' )
                       and cp_method = '3' ";
         $cp = sql_fetch($sql);

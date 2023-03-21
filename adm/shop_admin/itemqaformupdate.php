@@ -23,7 +23,8 @@ if ($w == "u")
     if(trim($iq_answer)) {
         $sql = " select a.iq_email, a.iq_hp, b.it_name
                     from {$g5['g5_shop_item_qa_table']} a left join {$g5['g5_shop_item_table']} b on ( a.it_id = b.it_id )
-                    where a.iq_id = '$iq_id' ";
+                    where a.iq_id = '$iq_id'
+                        AND b.cn_id = '{$config['cn_id']}' ";
         $row = sql_fetch($sql);
 
         // SMS 알림

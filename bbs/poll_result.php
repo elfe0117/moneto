@@ -4,7 +4,7 @@ include_once(G5_CAPTCHA_PATH.'/captcha.lib.php');
 
 $po_id   = isset($_REQUEST['po_id']) ? (int) $_REQUEST['po_id'] : '';
 
-$po = sql_fetch(" select * from {$g5['poll_table']} where po_id = '{$po_id}' ");
+$po = sql_fetch(" select * from {$g5['poll_table']} where cn_id = '{$config['cn_id']}' AND po_id = '{$po_id}' ");
 if (!$po['po_id'])
     alert('설문조사 정보가 없습니다.');
 
@@ -83,7 +83,7 @@ if ($po['po_etc']) {
 $list3 = array();
 
 // 다른투표
-$sql = " select po_id, po_subject, po_date from {$g5['poll_table']} order by po_id desc ";
+$sql = " select po_id, po_subject, po_date from {$g5['poll_table']} WHERE cn_id = '{$config['cn_id']}' order by po_id desc ";
 $result = sql_query($sql);
 for ($i=0; $row2=sql_fetch_array($result); $i++) {
     $list3[$i]['po_id'] = $row2['po_id'];

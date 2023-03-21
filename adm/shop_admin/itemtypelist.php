@@ -25,8 +25,8 @@ if ($sel_ca_id != "") {
 if ($sel_field == "")  $sel_field = "it_name";
 */
 
-$where = " where ";
-$sql_search = "";
+$where = " AND ";
+$sql_search = " WHERE cn_id = '{$config['cn_id']}' ";
 if ($stx != "") {
     if ($sfl != "") {
         $sql_search .= " $where $sfl like '%$stx%' ";
@@ -92,7 +92,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 <select name="sca" id="sca">
     <option value="">전체분류</option>
     <?php
-    $sql1 = " select ca_id, ca_name from {$g5['g5_shop_category_table']} order by ca_order, ca_id ";
+    $sql1 = " select ca_id, ca_name from {$g5['g5_shop_category_table']} WHERE cn_id = '{$config['cn_id']}' order by ca_order, ca_id ";
     $result1 = sql_query($sql1);
     for ($i=0; $row1=sql_fetch_array($result1); $i++) {
         $len = strlen($row1['ca_id']) / 2 - 1;

@@ -8,7 +8,7 @@ if( isset($sort) && ! in_array($sort, array('it_name', 'it_sum_qty', 'it_price',
 
 $sql = " select *
            from {$g5['g5_shop_category_table']}
-          where cn_id = '{$channel['cn_id']}'
+          where cn_id = '{$config['cn_id']}'
             AND ca_id = '$ca_id'
             and ca_use = '1'  ";
 $ca = sql_fetch($sql);
@@ -92,7 +92,7 @@ var g5_shop_url = "<?php echo G5_SHOP_URL; ?>";
                 where ( ca_id like '$ca_id%' or ca_id2 like '$ca_id%' or ca_id3 like '$ca_id%' )
                   and it_use = '1'
                   and it_type4 = '1'
-                  AND cn_id = '{$channel['cn_id']}'
+                  AND cn_id = '{$config['cn_id']}'
                 order by it_order, it_id desc
                 limit 0, $limit ";
 

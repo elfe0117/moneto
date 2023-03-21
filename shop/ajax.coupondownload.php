@@ -52,15 +52,15 @@ $cp_end = date('Y-m-d', strtotime("+{$period} days", G5_SERVER_TIME));
 $result = false;
 
 $sql = " INSERT INTO {$g5['g5_shop_coupon_table']}
-            ( cp_id, cp_subject, cp_method, cp_target, mb_id, cz_id, cp_start, cp_end, cp_type, cp_price, cp_trunc, cp_minimum, cp_maximum, cp_datetime )
+            ( cn_id, cp_id, cp_subject, cp_method, cp_target, mb_id, cz_id, cp_start, cp_end, cp_type, cp_price, cp_trunc, cp_minimum, cp_maximum, cp_datetime )
         VALUES
-            ( '$cp_id', '{$cp['cz_subject']}', '{$cp['cp_method']}', '{$cp['cp_target']}', '{$member['mb_id']}', '$cz_id', '$cp_start', '$cp_end', '{$cp['cp_type']}', '{$cp['cp_price']}', '{$cp['cp_trunc']}', '{$cp['cp_minimum']}', '{$cp['cp_maximum']}', '".G5_TIME_YMDHIS."' ) ";
+            ( '{$config['cn_id']}', '$cp_id', '{$cp['cz_subject']}', '{$cp['cp_method']}', '{$cp['cp_target']}', '{$member['mb_id']}', '$cz_id', '$cp_start', '$cp_end', '{$cp['cp_type']}', '{$cp['cp_price']}', '{$cp['cp_trunc']}', '{$cp['cp_minimum']}', '{$cp['cp_maximum']}', '".G5_TIME_YMDHIS."' ) ";
 
 $result = sql_query($sql);
 
 // 포인트 쿠폰이면 포인트 차감
 if($result && $cp['cz_type'])
-    insert_point($channel['cn_id'], $member['mb_id'], (-1) * $cp['cz_point'], "쿠폰 $cp_id 발급");
+    insert_point($config['cn_id'], $member['mb_id'], (-1) * $cp['cz_point'], "쿠폰 $cp_id 발급");
 
 // 다운로드 증가
 sql_query(" update {$g5['g5_shop_coupon_zone_table']} set cz_download = cz_download + 1 where cz_id = '$cz_id' ");

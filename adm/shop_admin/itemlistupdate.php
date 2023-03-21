@@ -41,7 +41,7 @@ if ($post_act_button == "선택수정") {
         $p_it_id = isset($_POST['it_id'][$k]) ? preg_replace('/[^a-z0-9_\-]/i', '', $_POST['it_id'][$k]) : '';
 
         if ($is_admin != 'super') {     // 최고관리자가 아니면 체크
-            $sql = "select a.it_id, b.ca_mb_id from {$g5['g5_shop_item_table']} a , {$g5['g5_shop_category_table']} b where (a.ca_id = b.ca_id) and a.it_id = '$p_it_id'";
+            $sql = "select a.it_id, b.ca_mb_id from {$g5['g5_shop_item_table']} a , {$g5['g5_shop_category_table']} b where (a.ca_id = b.ca_id) and a.it_id = '$p_it_id' AND a.cn_id = b.cn_id AND b.cn_id = '{$config['cn_id']}' ";
             $checks = sql_fetch($sql);
 
             if( ! $checks['ca_mb_id'] || $checks['ca_mb_id'] !== $member['mb_id'] ){

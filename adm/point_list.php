@@ -6,7 +6,7 @@ auth_check_menu($auth, $sub_menu, 'r');
 
 $sql_common = " from {$g5['point_table']} po";
 
-$sql_search = " where (1) ";
+$sql_search = " where (1) AND po.cn_id = '{$config['cn_id']}' ";
 
 if ($stx) {
     $sql_search .= " and ( ";
@@ -80,7 +80,7 @@ if (strstr($sfl, "mb_id")) {
     if (isset($mb['mb_id']) && $mb['mb_id']) {
         echo '&nbsp;<span class="btn_ov01"><span class="ov_txt">' . $mb['mb_id'] . ' 님 포인트 합계 </span><span class="ov_num"> ' . number_format($mb['mb_point']) . '점</span></span>';
     } else {
-        $row2 = sql_fetch(" select sum(po_point) as sum_point from {$g5['point_table']} ");
+        $row2 = sql_fetch(" select sum(po_point) as sum_point from {$g5['point_table']} WHERE cn_id = '{$config['cn_id']}' ");
         echo '&nbsp;<span class="btn_ov01"><span class="ov_txt">전체 합계</span><span class="ov_num">' . number_format($row2['sum_point']) . '점 </span></span>';
     }
     ?>

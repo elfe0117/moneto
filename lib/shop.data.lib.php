@@ -3,14 +3,14 @@ if (!defined('_GNUBOARD_')) exit;
 
 function get_shop_item($it_id, $is_cache=false, $add_query=''){
     
-    global $g5, $g5_object, $channel;
+    global $g5, $g5_object, $config;
 
     $add_query_key = $add_query ? 'shop_'.md5($add_query) : '';
 
     $item = $is_cache ? $g5_object->get('shop', $it_id, $add_query_key) : null;
 
     if( !$item ){
-        $sql = " select * from {$g5['g5_shop_item_table']} where cn_id = '{$channel['cn_id']}' AND it_id = '{$it_id}' $add_query ";
+        $sql = " select * from {$g5['g5_shop_item_table']} where cn_id = '{$config['cn_id']}' AND it_id = '{$it_id}' $add_query ";
         $item = sql_fetch($sql);
 
         $g5_object->set('shop', $it_id, $item, $add_query_key);
@@ -29,12 +29,12 @@ function get_shop_item($it_id, $is_cache=false, $add_query=''){
 
 function get_shop_item_with_category($it_id, $seo_title='', $add_query=''){
     
-    global $g5, $default, $channel;
+    global $g5, $default, $config;
 
     if( $seo_title ){
-        $sql = " select a.*, b.ca_name, b.ca_use from {$g5['g5_shop_item_table']} a, {$g5['g5_shop_category_table']} b where a.it_seo_title = '".sql_real_escape_string(generate_seo_title($seo_title))."' and a.ca_id = b.ca_id AND b.cn_id = '{$channel['cn_id']}' $add_query";
+        $sql = " select a.*, b.ca_name, b.ca_use from {$g5['g5_shop_item_table']} a, {$g5['g5_shop_category_table']} b where a.it_seo_title = '".sql_real_escape_string(generate_seo_title($seo_title))."' and a.ca_id = b.ca_id AND a.cn_id = b.cn_id AND b.cn_id = '{$config['cn_id']}' $add_query";
     } else {
-        $sql = " select a.*, b.ca_name, b.ca_use from {$g5['g5_shop_item_table']} a, {$g5['g5_shop_category_table']} b where a.it_id = '$it_id' and a.ca_id = b.ca_id AND b.cn_id = '{$channel['cn_id']}' $add_query";
+        $sql = " select a.*, b.ca_name, b.ca_use from {$g5['g5_shop_item_table']} a, {$g5['g5_shop_category_table']} b where a.it_id = '$it_id' and a.ca_id = b.ca_id AND a.cn_id = b.cn_id AND b.cn_id = '{$config['cn_id']}' $add_query";
     }
     
     $item = sql_fetch($sql);
@@ -141,11 +141,11 @@ function get_shop_category_array($is_cache=false){
 }
 
 function get_shop_category_sql($ca_id, $len){
-    global $g5, $channel;
+    global $g5, $config;
 
     $sql = " select *
         from {$g5['g5_shop_category_table']}
-        where cn_id = '{$channel['cn_id']}'
+        where cn_id = '{$config['cn_id']}'
             AND ca_use = '1' ";
     if($ca_id)
         $sql .= " and ca_id like '$ca_id%' ";
@@ -173,7 +173,8 @@ function get_shop_member_coupon_count($mb_id='', $is_cache=false){
     $cp_count = 0;
     $sql = " select cp_id
                 from {$g5['g5_shop_coupon_table']}
-                where mb_id IN ( '{$mb_id}', '전체회원' )
+                where cn_id = '{$config['cn_id']}'
+                    AND mb_id IN ( '{$mb_id}', '전체회원' )
                   and cp_start <= '".G5_TIME_YMD."'
                   and cp_end >= '".G5_TIME_YMD."' ";
     $res = sql_query($sql);

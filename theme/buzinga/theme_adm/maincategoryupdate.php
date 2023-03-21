@@ -22,7 +22,7 @@ if(!empty($maincategory))
 for($i=0; $i<$count; $i++) {
     $ca_id = substr(trim($_POST['ca_id'][$i]), 0, 2);
 
-    $sql = " select count(*) as cnt from {$g5['g5_shop_category_table']} where ca_id = '$ca_id' and length(ca_id) = '2' ";
+    $sql = " select count(*) as cnt from {$g5['g5_shop_category_table']} where cn_id = '{$config['cn_id']}' AND ca_id = '$ca_id' and length(ca_id) = '2' ";
     $row = sql_fetch($sql);
 
     if(!$row['cnt'])

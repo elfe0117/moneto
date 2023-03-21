@@ -187,7 +187,7 @@ if (!$_POST['cf_cert_use']) {
 }
 
 $sql = " update {$g5['config_table']}
-            set cn_id = '{$channel['cn_id']}',
+            set cn_id = '{$config['cn_id']}',
                 cf_title = '{$cf_title}',
                 cf_admin = '{$cf_admin}',
                 cf_admin_email = '{$_POST['cf_admin_email']}',

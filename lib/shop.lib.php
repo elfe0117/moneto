@@ -253,7 +253,7 @@ class item_list
     // class 에 설정된 값으로 최종 실행합니다.
     function run() {
 
-        global $g5, $config, $member, $default, $channel;
+        global $g5, $config, $member, $default;
         
         $list = array();
 
@@ -295,13 +295,14 @@ class item_list
             if ($this->event) {
                 $sql_select = " select {$this->fields} ";
                 $sql_common = " from `{$g5['g5_shop_event_item_table']}` a left join `{$g5['g5_shop_item_table']}` b on (a.it_id = b.it_id) ";
-                $where[] = " b.cn_id = '{$channel['cn_id']}' ";
+                $where[] = " a.cn_id = b.cn_id ";
+                $where[] = " b.cn_id = '{$config['cn_id']}' ";
                 $where[] = " a.ev_id = '{$this->event}' ";
                 
             } else {
                 $sql_select = " select {$this->fields} ";
                 $sql_common = " from `{$g5['g5_shop_item_table']}` ";
-                $where[] = " cn_id = '{$channel['cn_id']}' ";
+                $where[] = " cn_id = '{$config['cn_id']}' ";
             }
             $sql_where = " where " . implode(" and ", $where);
             $sql_limit = " limit " . $this->from_record . " , " . ($this->list_mod * $this->list_row);
@@ -537,9 +538,9 @@ function get_it_imageurl($it_id)
 // 상품의 재고 (창고재고수량 - 주문대기수량)
 function get_it_stock_qty($it_id)
 {
-    global $g5, $channel;
+    global $g5, $config;
 
-    $sql = " select it_stock_qty from {$g5['g5_shop_item_table']} where cn_id = '{$channel['cn_id']}' AND it_id = '$it_id' ";
+    $sql = " select it_stock_qty from {$g5['g5_shop_item_table']} where cn_id = '{$config['cn_id']}' AND it_id = '$it_id' ";
     $row = sql_fetch($sql);
     $jaego = (int)$row['it_stock_qty'];
 
@@ -754,7 +755,7 @@ function is_null_time($datetime)
 //function display_type($type, $skin_file, $list_mod, $list_row, $img_width, $img_height, $ca_id="")
 function display_type($type, $list_skin='', $list_mod='', $list_row='', $img_width='', $img_height='', $ca_id='')
 {
-    global $member, $g5, $config, $default, $channel;
+    global $member, $g5, $config, $default;
 
     if (!$default["de_type{$type}_list_use"]) return "";
 
@@ -769,7 +770,7 @@ function display_type($type, $list_skin='', $list_mod='', $list_row='', $img_wid
 
     // 1.02.00
     // it_order 추가
-    $sql = " select * from {$g5['g5_shop_item_table']} where cn_id = '{$channel['cn_id']}' AND it_use = '1' and it_type{$type} = '1' ";
+    $sql = " select * from {$g5['g5_shop_item_table']} where cn_id = '{$config['cn_id']}' AND it_use = '1' and it_type{$type} = '1' ";
     if ($ca_id) $sql .= " and ca_id like '$ca_id%' ";
     $sql .= " order by it_order, it_id desc limit $items ";
     $result = sql_query($sql);
@@ -797,14 +798,14 @@ function display_type($type, $list_skin='', $list_mod='', $list_row='', $img_wid
 // 모바일 유형별 상품 출력
 function mobile_display_type($type, $skin_file, $list_row, $img_width, $img_height, $ca_id="")
 {
-    global $member, $g5, $config, $channel;
+    global $member, $g5, $config;
 
     // 상품수
     $items = $list_row;
 
     // 1.02.00
     // it_order 추가
-    $sql = " select * from {$g5['g5_shop_item_table']} where cn_id = '{$channel['cn_id']}' AND it_use = '1' and it_type{$type} = '1' ";
+    $sql = " select * from {$g5['g5_shop_item_table']} where cn_id = '{$config['cn_id']}' AND it_use = '1' and it_type{$type} = '1' ";
     if ($ca_id) $sql .= " and ca_id like '$ca_id%' ";
     $sql .= " order by it_order, it_id desc limit $items ";
     $result = sql_query($sql);
@@ -828,12 +829,12 @@ function mobile_display_type($type, $skin_file, $list_row, $img_width, $img_heig
 // 스킨파일번호, 1라인이미지수, 총라인수, 이미지폭, 이미지높이 , 분류번호
 function display_category($no, $list_mod, $list_row, $img_width, $img_height, $ca_id="")
 {
-    global $member, $g5, $channel;
+    global $member, $g5, $config;
 
     // 상품수
     $items = $list_mod * $list_row;
 
-    $sql = " select * from {$g5['g5_shop_item_table']} where cn_id = '{$channel['cn_id']}' AND it_use = '1'";
+    $sql = " select * from {$g5['g5_shop_item_table']} where cn_id = '{$config['cn_id']}' AND it_use = '1'";
     if ($ca_id)
         $sql .= " and ca_id LIKE '{$ca_id}%' ";
     $sql .= " order by it_order, it_id desc limit $items ";
@@ -1188,7 +1189,7 @@ function date_conv($date, $case=1)
 // 배너출력
 function display_banner($position, $skin='')
 {
-    global $g5;
+    global $g5, $config;
 
     if (!$position) $position = '왼쪽';
     if (!$skin) $skin = 'boxbanner.skin.php';
@@ -1204,7 +1205,7 @@ function display_banner($position, $skin='')
             $sql_device = " and ( bn_device = 'both' or bn_device = 'mobile' ) ";
 
         // 배너 출력
-        $sql = " select * from {$g5['g5_shop_banner_table']} where '".G5_TIME_YMDHIS."' between bn_begin_time and bn_end_time $sql_device and bn_position = '$position' order by bn_order, bn_id desc ";
+        $sql = " select * from {$g5['g5_shop_banner_table']} where cn_id = '{$config['cn_id']}' AND '".G5_TIME_YMDHIS."' between bn_begin_time and bn_end_time $sql_device and bn_position = '$position' order by bn_order, bn_id desc ";
         $result = sql_query($sql);
 
         include $skin_path;
@@ -1257,10 +1258,10 @@ function get_yn($val, $case='')
 // 상품명과 건수를 반환
 function get_goods($cart_id)
 {
-    global $g5, $channel;
+    global $g5, $config;
 
     // 상품명만들기
-    $row = sql_fetch(" select a.it_id, b.it_name from {$g5['g5_shop_cart_table']} a, {$g5['g5_shop_item_table']} b where a.it_id = b.it_id and a.od_id = '$cart_id' AND b.cn_id = '{$channel['cn_id']}' order by ct_id limit 1 ");
+    $row = sql_fetch(" select a.it_id, b.it_name from {$g5['g5_shop_cart_table']} a, {$g5['g5_shop_item_table']} b where a.it_id = b.it_id and a.od_id = '$cart_id' AND b.cn_id = '{$config['cn_id']}' order by ct_id limit 1 ");
     // 상품명에 "(쌍따옴표)가 들어가면 오류 발생함
     $goods['it_id'] = $row['it_id'];
     $goods['full_name']= $goods['name'] = addslashes($row['it_name']);
@@ -1432,14 +1433,14 @@ function set_cart_id($direct)
 // 상품 목록 : 관련 상품 출력
 function relation_item($it_id, $width, $height, $rows=3)
 {
-    global $g5, $channel;
+    global $g5, $config;
 
     $str = '';
 
     if(!$it_id)
         return $str;
 
-    $sql = " select b.it_id, b.it_name, b.it_price, b.it_tel_inq from {$g5['g5_shop_item_relation_table']} a left join {$g5['g5_shop_item_table']} b on ( a.it_id2 = b.it_id ) where a.it_id = '$it_id' AND b.cn_id = '{$channel['cn_id']}' order by ir_no asc limit 0, $rows ";
+    $sql = " select b.it_id, b.it_name, b.it_price, b.it_tel_inq from {$g5['g5_shop_item_relation_table']} a left join {$g5['g5_shop_item_table']} b on ( a.it_id2 = b.it_id ) where a.it_id = '$it_id' AND b.cn_id = '{$config['cn_id']}' order by ir_no asc limit 0, $rows ";
     $result = sql_query($sql);
 
     for($i=0; $row=sql_fetch_array($result); $i++) {
@@ -1491,7 +1492,8 @@ function item_icon($it)
     // 쿠폰상품
     $sql = " select count(*) as cnt
                 from {$g5['g5_shop_coupon_table']}
-                where cp_start <= '".G5_TIME_YMD."'
+                where cn_id = '{$config['cn_id']}'
+                    AND cp_start <= '".G5_TIME_YMD."'
                   and cp_end >= '".G5_TIME_YMD."'
                   and (
                         ( cp_method = '0' and cp_target = '{$it['it_id']}' )
@@ -1579,7 +1581,7 @@ function get_coupon_id()
 // 주문의 금액, 배송비 과세금액 등의 정보를 가져옴
 function get_order_info($od_id)
 {
-    global $g5;
+    global $g5, $config;
 
     // 주문정보
     $sql = " select * from {$g5['g5_shop_order_table']} where od_id = '$od_id' ";
@@ -1614,7 +1616,9 @@ function get_order_info($od_id)
                     from {$g5['g5_shop_coupon_table']} a right join {$g5['g5_shop_coupon_log_table']} b on ( a.cp_id = b.cp_id )
                     where b.od_id = '$od_id'
                       and b.mb_id = '{$od['mb_id']}'
-                      and a.cp_method = '2' ";
+                      and a.cp_method = '2'
+                      AND a.cn_id = '{$config['cn_id']}'
+                      AND a.cn_id = b.cn_id ";
         $cp = sql_fetch($sql);
 
         $tot_od_price = $cart_price - $cart_coupon;
@@ -1645,7 +1649,9 @@ function get_order_info($od_id)
                     from {$g5['g5_shop_coupon_table']} a right join {$g5['g5_shop_coupon_log_table']} b on ( a.cp_id = b.cp_id )
                     where b.od_id = '$od_id'
                       and b.mb_id = '{$od['mb_id']}'
-                      and a.cp_method = '3' ";
+                      and a.cp_method = '3'
+                      AND a.cn_id = '{$config['cn_id']}'
+                      AND a.cn_id = b.cn_id ";
         $cp = sql_fetch($sql);
 
         if(isset($cp['cp_id']) && $cp['cp_id']) {
@@ -1855,11 +1861,11 @@ function get_item_sendcost($it_id, $price, $qty, $cart_id)
 // 가격비교 사이트 상품 배송비
 function get_item_sendcost2($it_id, $price, $qty)
 {
-    global $g5, $default, $channel;
+    global $g5, $default, $config;
 
     $sql = " select it_id, it_sc_type, it_sc_method, it_sc_price, it_sc_minimum, it_sc_qty
                 from {$g5['g5_shop_item_table']}
-                where cn_id = '{$channel['cn_id']}' AND it_id = '$it_id' ";
+                where cn_id = '{$config['cn_id']}' AND it_id = '$it_id' ";
     $it = sql_fetch($sql);
     if(!$it['it_id'])
         return 0;
@@ -1916,11 +1922,11 @@ function get_item_sendcost2($it_id, $price, $qty)
 // 쿠폰 사용체크
 function is_used_coupon($mb_id, $cp_id)
 {
-    global $g5;
+    global $g5, $config;
 
     $used = false;
 
-    $sql = " select count(*) as cnt from {$g5['g5_shop_coupon_log_table']} where mb_id = '$mb_id' and cp_id = '$cp_id' ";
+    $sql = " select count(*) as cnt from {$g5['g5_shop_coupon_log_table']} where cn_id = '{$config['cn_id']}' AND mb_id = '$mb_id' and cp_id = '$cp_id' ";
     $row = sql_fetch($sql);
 
     if($row['cnt'])
@@ -2016,7 +2022,7 @@ function check_itemuse_write($it_id, $mb_id, $close=true)
 // 구매 본인인증 체크
 function shop_member_cert_check($id, $type)
 {
-    global $g5, $member, $channel;
+    global $g5, $member, $config;
 
     $msg = '';
 
@@ -2032,7 +2038,7 @@ function shop_member_cert_check($id, $type)
                 if(!$ca_id)
                     continue;
 
-                $sql = " select ca_cert_use, ca_adult_use from {$g5['g5_shop_category_table']} where cn_id = '{$channel['cn_id']}' AND ca_id = '$ca_id' ";
+                $sql = " select ca_cert_use, ca_adult_use from {$g5['g5_shop_category_table']} where cn_id = '{$config['cn_id']}' AND ca_id = '$ca_id' ";
                 $row = sql_fetch($sql);
 
                 if (($row['ca_cert_use'] || $row['ca_adult_use']) && strlen($member['mb_dupinfo']) == 64 && $member['mb_certify']) { // 본인 인증 된 계정 중에서 di로 저장 되었을 경우에만
@@ -2066,7 +2072,7 @@ function shop_member_cert_check($id, $type)
 
             break;
         case 'list':
-            $sql = " select * from {$g5['g5_shop_category_table']} where cn_id = '{$channel['cn_id']}' AND ca_id = '$id' ";
+            $sql = " select * from {$g5['g5_shop_category_table']} where cn_id = '{$config['cn_id']}' AND ca_id = '$id' ";
             $ca = sql_fetch($sql);
 
             if (($ca['ca_cert_use'] || $ca['ca_adult_use']) && strlen($member['mb_dupinfo']) == 64 && $member['mb_certify']) { // 본인 인증 된 계정 중에서 di로 저장 되었을 경우에만
@@ -2131,19 +2137,19 @@ function get_delivery_inquiry($company, $invoice, $class='')
 // 사용후기의 확인된 건수를 상품테이블에 저장합니다.
 function update_use_cnt($it_id)
 {
-    global $g5, $channel;
+    global $g5, $config;
     $row = sql_fetch(" select count(*) as cnt from {$g5['g5_shop_item_use_table']} where it_id = '{$it_id}' and is_confirm = 1 ");
-    return sql_query(" update {$g5['g5_shop_item_table']} set it_use_cnt = '{$row['cnt']}' where cn_id = '{$channel['cn_id']}' AND it_id = '{$it_id}' ");
+    return sql_query(" update {$g5['g5_shop_item_table']} set it_use_cnt = '{$row['cnt']}' where cn_id = '{$config['cn_id']}' AND it_id = '{$it_id}' ");
 }
 
 
 // 사용후기의 선호도(별) 평균을 상품테이블에 저장합니다.
 function update_use_avg($it_id)
 {
-    global $g5, $channel;
+    global $g5, $config;
     $row = sql_fetch(" select count(*) as cnt, sum(is_score) as total from {$g5['g5_shop_item_use_table']} where it_id = '{$it_id}' and is_confirm = 1 ");
     $average = ($row['total'] && $row['cnt']) ? $row['total'] / $row['cnt'] : 0;
-    return sql_query(" update {$g5['g5_shop_item_table']} set it_use_avg = '$average' where cn_id = '{$channel['cn_id']}' AND it_id = '{$it_id}' ");
+    return sql_query(" update {$g5['g5_shop_item_table']} set it_use_avg = '$average' where cn_id = '{$config['cn_id']}' AND it_id = '{$it_id}' ");
 }
 
 //오늘본상품 데이터
@@ -2228,7 +2234,7 @@ function get_boxcart_datas_count()
 //위시리스트 데이터 가져오기
 function get_wishlist_datas($mb_id, $is_cache=false)
 {
-    global $g5, $member, $channel;
+    global $g5, $member, $config;
 
     if( !$mb_id ){
         $mb_id = $member['mb_id'];
@@ -2244,7 +2250,7 @@ function get_wishlist_datas($mb_id, $is_cache=false)
 
     $cache[$mb_id] = array();
     $sql  = " select a.it_id, b.it_name from {$g5['g5_shop_wish_table']} a, {$g5['g5_shop_item_table']} b ";
-    $sql .= " where a.mb_id = '".$mb_id."' and a.it_id  = b.it_id AND b.cn_id = '{$channel['cn_id']}' order by a.wi_id desc ";
+    $sql .= " where a.mb_id = '".$mb_id."' and a.it_id  = b.it_id AND b.cn_id = '{$config['cn_id']}' order by a.wi_id desc ";
     $result = sql_query($sql);
     for ($i=0; $row=sql_fetch_array($result); $i++)
     {
@@ -2274,11 +2280,11 @@ function get_wishlist_datas_count($mb_id='')
 //각 상품에 대한 위시리스트 담은 갯수 출력
 function get_wishlist_count_by_item($it_id='')
 {
-    global $g5, $channel;
+    global $g5, $config;
 
     if( !$it_id ) return 0;
 
-    $sql = "select count(a.it_id) as num from {$g5['g5_shop_wish_table']} a, {$g5['g5_shop_item_table']} b where a.it_id  = b.it_id and b.it_id = '$it_id' AND b.cn_id = '{$channel['cn_id']}' ";
+    $sql = "select count(a.it_id) as num from {$g5['g5_shop_wish_table']} a, {$g5['g5_shop_item_table']} b where a.it_id  = b.it_id and b.it_id = '$it_id' AND b.cn_id = '{$config['cn_id']}' ";
 
     $row = sql_fetch($sql);
 
@@ -2784,12 +2790,12 @@ function check_pay_name_replace($payname, $od=array(), $is_client=0){
 // 다운로드한 쿠폰인지
 function is_coupon_downloaded($mb_id, $cz_id)
 {
-    global $g5;
+    global $g5, $config;
 
     if(!$mb_id)
         return false;
 
-    $sql = " select count(*) as cnt from {$g5['g5_shop_coupon_table']} where mb_id = '$mb_id' and cz_id = '$cz_id' ";
+    $sql = " select count(*) as cnt from {$g5['g5_shop_coupon_table']} where cn_id = '{$config['cn_id']}' AND mb_id = '$mb_id' and cz_id = '$cz_id' ";
     $row = sql_fetch($sql);
 
     return ($row['cnt'] > 0);

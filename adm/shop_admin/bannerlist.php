@@ -10,7 +10,7 @@ $bn_time = (isset($_GET['bn_time']) && in_array($_GET['bn_time'], array('ing', '
 
 $sql_common = " FROM {$g5['g5_shop_banner_table']} ";
 
-$sql_search = " WHERE (1) ";
+$sql_search = " WHERE (1) AND cn_id = '{$config['cn_id']}' ";
 
 if (isset($bn_position) && $bn_position) {
     $sql_search .= " AND bn_position = {$bn_position} ";

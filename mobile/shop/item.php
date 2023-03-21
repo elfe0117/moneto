@@ -24,7 +24,7 @@ if (!($it['ca_use'] && $it['it_use'])) {
 // 분류 테이블에서 분류 상단, 하단 코드를 얻음
 $sql = " select ca_mobile_skin_dir, ca_include_head, ca_include_tail, ca_cert_use, ca_adult_use
            from {$g5['g5_shop_category_table']}
-          where cn_id = '{$channel['cn_id']}'
+          where cn_id = '{$config['cn_id']}'
             AND ca_id = '{$it['ca_id']}' ";
 $ca = sql_fetch($sql);
 
@@ -57,13 +57,13 @@ if (!$saved) {
 
 // 조회수 증가
 if (get_cookie('ck_it_id') != $it_id) {
-    sql_query(" update {$g5['g5_shop_item_table']} set it_hit = it_hit + 1 where cn_id = '{$channel['cn_id']}' AND it_id = '$it_id' "); // 1증가
+    sql_query(" update {$g5['g5_shop_item_table']} set it_hit = it_hit + 1 where cn_id = '{$config['cn_id']}' AND it_id = '$it_id' "); // 1증가
     set_cookie("ck_it_id", $it_id, 3600); // 1시간동안 저장
 }
 
 // 이전 상품보기
 $sql = " select it_id, it_name from {$g5['g5_shop_item_table']}
-          where cn_id = '{$channel['cn_id']}'
+          where cn_id = '{$config['cn_id']}'
             AND it_id > '$it_id'
             and SUBSTRING(ca_id,1,4) = '".substr($it['ca_id'],0,4)."'
             and it_use = '1'
@@ -82,7 +82,7 @@ if (isset($row['it_id']) && $row['it_id']) {
 
 // 다음 상품보기
 $sql = " select it_id, it_name from {$g5['g5_shop_item_table']}
-          where cn_id = '{$channel['cn_id']}'
+          where cn_id = '{$config['cn_id']}'
             AND it_id < '$it_id'
             and SUBSTRING(ca_id,1,4) = '".substr($it['ca_id'],0,4)."'
             and it_use = '1'
@@ -115,7 +115,7 @@ if ($default['de_mobile_rel_list_use']) {
                from {$g5['g5_shop_item_relation_table']} a
                left join {$g5['g5_shop_item_table']} b on (a.it_id2=b.it_id)
               where a.it_id = '{$it['it_id']}' and b.it_use='1'
-                AND b.cn_id = '{$channel['cn_id']}' ";
+                AND b.cn_id = '{$config['cn_id']}' ";
     $row = sql_fetch($sql);
     $item_relation_count = $row['cnt'];
 }

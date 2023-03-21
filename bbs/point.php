@@ -9,7 +9,7 @@ include_once(G5_PATH.'/head.sub.php');
 
 $list = array();
 
-$sql_common = " from {$g5['point_table']} where mb_id = '".escape_trim($member['mb_id'])."' ";
+$sql_common = " from {$g5['point_table']} where cn_id = '{$config['cn_id']}' AND mb_id = '".escape_trim($member['mb_id'])."' ";
 $sql_order = " order by po_id desc ";
 
 $sql = " select count(*) as cnt {$sql_common} ";

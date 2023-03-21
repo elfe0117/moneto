@@ -17,7 +17,7 @@ if ($w == '') {
     $html_title .= ' 생성';
 } elseif ($w == 'u') {
     $html_title .= ' 수정';
-    $sql = " select * from {$g5['poll_table']} where po_id = '{$po_id}' ";
+    $sql = " select * from {$g5['poll_table']} where cn_id = '{$config['cn_id']}' AND po_id = '{$po_id}' ";
     $po = sql_fetch($sql);
 } else {
     alert('w 값이 제대로 넘어오지 않았습니다.');

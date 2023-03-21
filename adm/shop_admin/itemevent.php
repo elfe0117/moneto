@@ -7,7 +7,7 @@ auth_check_menu($auth, $sub_menu, "r");
 $g5['title'] = '이벤트관리';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 
-$sql_common = " from {$g5['g5_shop_event_table']} ";
+$sql_common = " from {$g5['g5_shop_event_table']} WHERE cn_id = '{$config['cn_id']}' ";
 
 // 테이블의 전체 레코드수만 얻음
 $sql = " select count(*) as cnt " . $sql_common;

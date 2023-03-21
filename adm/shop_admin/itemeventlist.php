@@ -14,7 +14,7 @@ $sel_ca_id = isset($_GET['sel_ca_id']) ? get_search_string($_GET['sel_ca_id']) :
 $search = isset($_GET['search']) ? get_search_string($_GET['search']) : '';
 $ev_title = isset($ev_title) ? clean_xss_tags($ev_title, 1, 1) : '';
 
-$where = " where ";
+$where = " where a.cn_id = '{$config['cn_id']}' ";
 $sql_search = "";
 if ($search != "") {
     if ($sel_field != "") {
@@ -85,7 +85,7 @@ $colspan = 4;
     <?php
     // 이벤트 옵션처리
     $event_option = "<option value=''>이벤트를 선택하세요</option>";
-    $sql1 = " select ev_id, ev_subject from {$g5['g5_shop_event_table']} order by ev_id desc ";
+    $sql1 = " select ev_id, ev_subject from {$g5['g5_shop_event_table']} WHERE cn_id = '{$config['cn_id']}' order by ev_id desc ";
     $result1 = sql_query($sql1);
     while ($row1=sql_fetch_array($result1))
         $event_option .= '<option value="'.$row1['ev_id'].'" '.get_selected($ev_id, $row1['ev_id']).' >'.conv_subject($row1['ev_subject'], 20,"…").'</option>';

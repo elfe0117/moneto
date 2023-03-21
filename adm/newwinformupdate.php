@@ -66,10 +66,11 @@ if ($w == "") {
 } elseif ($w == "u") {
     $sql = " UPDATE {$g5['new_win_table']}
         SET $sql_common
-        WHERE nw_id = '{$nw_id}' ";
+        WHERE cn_id = '{$config['cn_id']}'
+            AND nw_id = '{$nw_id}' ";
     sql_query($sql);
 } elseif ($w == "d") {
-    $sql = " DELETE FROM {$g5['new_win_table']} WHERE nw_id = '{$nw_id}' ";
+    $sql = " DELETE FROM {$g5['new_win_table']} WHERE cn_id = '{$config['cn_id']}' AND  nw_id = '{$nw_id}' ";
     sql_query($sql);
 }
 

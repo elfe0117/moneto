@@ -76,7 +76,7 @@ $colspan = 12;
                 <?php
                 for ($i = 0; $row = sql_fetch_array($result); $i++) {
                     // 접근가능한 그룹수
-                    $sql2 = " select count(*) as cnt from {$g5['group_member_table']} where mb_id = '{$row['mb_id']}' ";
+                    $sql2 = " select count(*) as cnt from {$g5['group_member_table']} where cn_id = '{$row['cn_id']}' AND mb_id = '{$row['mb_id']}' ";
                     $row2 = sql_fetch($sql2);
                     $group = "";
                     if ($row2['cnt']) {
@@ -130,7 +130,10 @@ $colspan = 12;
 </section>
 
 <?php
-$sql_common = " from {$g5['board_new_table']} a, {$g5['board_table']} b, {$g5['group_table']} c where a.bo_table = b.bo_table and b.gr_id = c.gr_id ";
+$sql_common = " from {$g5['board_new_table']} a, {$g5['board_table']} b, {$g5['group_table']} c
+    where a.bo_table = b.bo_table
+        and b.gr_id = c.gr_id
+        AND c.cn_id = '{$config['cn_id']}' ";
 
 if ($gr_id) {
     $sql_common .= " and b.gr_id = '$gr_id' ";
@@ -234,7 +237,7 @@ $colspan = 5;
 
 <?php
 $sql_common = " from {$g5['point_table']} ";
-$sql_search = " where (1) ";
+$sql_search = " where (1) AND cn_id = '{$config['cn_id']}' ";
 $sql_order = " order by po_id desc ";
 
 $sql = " select count(*) as cnt {$sql_common} {$sql_search} {$sql_order} ";

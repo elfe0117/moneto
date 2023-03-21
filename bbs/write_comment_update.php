@@ -199,13 +199,13 @@ if ($w == 'c') // 댓글 입력
     sql_query(" update $write_table set wr_comment = wr_comment + 1, wr_last = '".G5_TIME_YMDHIS."' where wr_id = '$wr_id' ");
 
     // 새글 INSERT
-    sql_query(" insert into {$g5['board_new_table']} ( cn_id, bo_table, wr_id, wr_parent, bn_datetime, mb_id ) values ( '{$channel['cn_id']}', '$bo_table', '$comment_id', '$wr_id', '".G5_TIME_YMDHIS."', '{$member['mb_id']}' ) ");
+    sql_query(" insert into {$g5['board_new_table']} ( cn_id, bo_table, wr_id, wr_parent, bn_datetime, mb_id ) values ( '{$config['cn_id']}', '$bo_table', '$comment_id', '$wr_id', '".G5_TIME_YMDHIS."', '{$member['mb_id']}' ) ");
 
     // 댓글 1 증가
-    sql_query(" update {$g5['board_table']} set bo_count_comment = bo_count_comment + 1 where cn_id = '{$channel['cn_id']}' AND bo_table = '$bo_table' ");
+    sql_query(" update {$g5['board_table']} set bo_count_comment = bo_count_comment + 1 where cn_id = '{$config['cn_id']}' AND bo_table = '$bo_table' ");
 
     // 포인트 부여
-    insert_point($channel['cn_id'], $member['mb_id'], $board['bo_comment_point'], "{$board['bo_subject']} {$wr_id}-{$comment_id} 댓글쓰기", $bo_table, $comment_id, '댓글');
+    insert_point($config['cn_id'], $member['mb_id'], $board['bo_comment_point'], "{$board['bo_subject']} {$wr_id}-{$comment_id} 댓글쓰기", $bo_table, $comment_id, '댓글');
 
     // 메일발송 사용
     if ($config['cf_email_use'] && $board['bo_use_email'])

@@ -15,7 +15,7 @@ add_stylesheet('<link rel="stylesheet" href="'.G5_MSHOP_SKIN_URL.'/style.css">',
          <h2>이벤트</h2>
         <?php
         $k = 0;
-        $hsql = " select ev_id, ev_subject, ev_subject_strong from {$g5['g5_shop_event_table']} where ev_use = '1' order by ev_id desc  limit 5";
+        $hsql = " select ev_id, ev_subject, ev_subject_strong from {$g5['g5_shop_event_table']} where cn_id = '{$config['cn_id']}' AND ev_use = '1' order by ev_id desc  limit 5";
         $hresult = sql_query($hsql);
         for ($i=0; $row=sql_fetch_array($hresult); $i++)
         {
@@ -34,7 +34,7 @@ add_stylesheet('<link rel="stylesheet" href="'.G5_MSHOP_SKIN_URL.'/style.css">',
     </div>
     <ul class="sev_ev">
     <?php
-    $hsql = " select ev_id, ev_subject, ev_subject_strong from {$g5['g5_shop_event_table']} where ev_use = '1' order by ev_id desc  limit 5";
+    $hsql = " select ev_id, ev_subject, ev_subject_strong from {$g5['g5_shop_event_table']} where cn_id = '{$config['cn_id']}' AND ev_use = '1' order by ev_id desc  limit 5";
     $hresult = sql_query($hsql);
     for ($i=0; $row=sql_fetch_array($hresult); $i++)
     {
@@ -54,7 +54,7 @@ add_stylesheet('<link rel="stylesheet" href="'.G5_MSHOP_SKIN_URL.'/style.css">',
             $sql2 = " select b.*
                                 from `{$g5['g5_shop_event_item_table']}` a left join `{$g5['g5_shop_item_table']}` b on (a.it_id = b.it_id)
                                 where a.ev_id = '{$row['ev_id']}'
-                                    AND b.cn_id = '{$channel['cn_id']}'
+                                    AND b.cn_id = '{$config['cn_id']}'
                                 order by it_id desc
                                 limit 0, 2 ";
             $result2 = sql_query($sql2);

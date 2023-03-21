@@ -504,11 +504,11 @@ $master = get_master(true);
 ////////////////////////////////////////////////////////////////////////////////
 // (채널) 디렉토리 관련 상수 정의
 ////////////////////////////////////////////////////////////////////////////////
-//if ($channel['cn_id'] == G5_DEFAULT_CHANNEL) {
+//if ($config['cn_id'] == G5_DEFAULT_CHANNEL) {
 //} else {
 //}
-@define('G5_DATA_URL', G5_URL.'/channel/'.$channel['cn_id'].'/data');
-@define('G5_DATA_PATH', G5_PATH.'/channel/'.$channel['cn_id'].'/data');
+@define('G5_DATA_URL', G5_URL.'/channel/'.$config['cn_id'].'/data');
+@define('G5_DATA_PATH', G5_PATH.'/channel/'.$config['cn_id'].'/data');
 
 ////////////////////////////////////////////////////////////////////////////////
 // 모듈 설정
@@ -667,7 +667,7 @@ if (isset($_SESSION['ss_mb_id']) && $_SESSION['ss_mb_id']) { // 로그인중이�
         // 오늘 처음 로그인 이라면
         if (substr($member['mb_today_login'], 0, 10) != G5_TIME_YMD) {
             // 첫 로그인 포인트 지급
-            insert_point($channel['cn_id'], $member['mb_id'], $config['cf_login_point'], G5_TIME_YMD.' 첫로그인', '@login', $member['mb_id'], G5_TIME_YMD);
+            insert_point($config['cn_id'], $member['mb_id'], $config['cf_login_point'], G5_TIME_YMD.' 첫로그인', '@login', $member['mb_id'], G5_TIME_YMD);
 
             // 오늘의 로그인이 될 수도 있으며 마지막 로그인일 수도 있음
             // 해당 회원의 접근일시와 IP 를 저장
@@ -714,11 +714,11 @@ if (isset($_SESSION['ss_mb_id']) && $_SESSION['ss_mb_id']) { // 로그인중이�
 $write = array();
 $write_table = '';
 if ($bo_table) {
-    $board = get_board_db($channel['cn_id'], $bo_table, true);
+    $board = get_board_db($config['cn_id'], $bo_table, true);
     if (isset($board['bo_table']) && $board['bo_table']) {
         set_cookie("ck_bo_table", $board['bo_table'], 86400 * 1);
         $gr_id = $board['gr_id'];
-        $write_table = $g5['write_prefix'].$channel['cn_id'].'_'. $bo_table; // 게시판 테이블 전체이름
+        $write_table = $g5['write_prefix'].$config['cn_id'].'_'. $bo_table; // 게시판 테이블 전체이름
 
         if (isset($wr_id) && $wr_id) {
             $write = get_write($write_table, $wr_id);

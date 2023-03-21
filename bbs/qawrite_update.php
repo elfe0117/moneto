@@ -99,7 +99,7 @@ if($w == 'u' || $w == 'a' || $w == 'r') {
     if($w == 'a' && !$is_admin)
         alert('답변은 관리자만 등록할 수 있습니다.');
 
-    $sql = " select * from {$g5['qa_content_table']} where qa_id = '$qa_id' ";
+    $sql = " select * from {$g5['qa_content_table']} where cn_id = '{$config['cn_id']}' AND qa_id = '$qa_id' ";
     if(!$is_admin) {
         $sql .= " and mb_id = '{$member['mb_id']}' ";
     }
@@ -237,7 +237,7 @@ for ($i=1; $i<=$upload_count; $i++) {
 
 if($w == '' || $w == 'a' || $w == 'r') {
     if($w == '' || $w == 'r') {
-        $row = sql_fetch(" select MIN(qa_num) as min_qa_num from {$g5['qa_content_table']} ");
+        $row = sql_fetch(" select MIN(qa_num) as min_qa_num from {$g5['qa_content_table']} WHERE cn_id = '{$config['cn_id']}' ");
         $qa_num = $row['min_qa_num'] - 1;
     }
 
@@ -256,7 +256,8 @@ if($w == '' || $w == 'a' || $w == 'r') {
     $insert_qa_source2 = isset($upload[2]['source']) ? $upload[2]['source'] : '';
 
     $sql = " insert into {$g5['qa_content_table']}
-                set qa_num          = '$qa_num',
+                set cn_id = '{$config['cn_id']}',
+                    qa_num          = '$qa_num',
                     mb_id           = '{$member['mb_id']}',
                     qa_name         = '".addslashes($member['mb_nick'])."',
                     qa_email        = '$qa_email',
@@ -296,14 +297,16 @@ if($w == '' || $w == 'a' || $w == 'r') {
         $sql = " update {$g5['qa_content_table']}
                     set qa_parent   = '$qa_id',
                         qa_related  = '$qa_related'
-                    where qa_id = '$qa_id' ";
+                    where cn_id = '{$config['cn_id']}'
+                        AND qa_id = '$qa_id' ";
         sql_query($sql);
     }
 
     if($w == 'a') {
         $sql = " update {$g5['qa_content_table']}
                     set qa_status = '1'
-                    where qa_id = '{$write['qa_parent']}' ";
+                    where cn_id = '{$config['cn_id']}'
+                        AND qa_id = '{$write['qa_parent']}' ";
         sql_query($sql);
     }
 } else if($w == 'u') {
@@ -335,7 +338,8 @@ if($w == '' || $w == 'a' || $w == 'r') {
                     qa_5        = '$qa_5' ";
     if($qa_sms_recv)
         $sql .= ", qa_sms_recv = '$qa_sms_recv' ";
-    $sql .= " where qa_id = '$qa_id' ";
+    $sql .= " where cn_id = '{$config['cn_id']}'
+        AND qa_id = '$qa_id' ";
     sql_query($sql);
 }
 

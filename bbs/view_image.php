@@ -24,7 +24,7 @@ if(strpos($filename, G5_DATA_DIR.'/editor')) {
     $filepath = G5_DATA_PATH.'/'.$editor_file;
 } else {
     $editor_file = '';
-    $filepath = G5_DATA_PATH.'/file/'.$channel['cn_id'].'/'.$bo_table.'/'.$filename;
+    $filepath = G5_DATA_PATH.'/file/'.$config['cn_id'].'/'.$bo_table.'/'.$filename;
 }
 
 $file_exists = (is_file($filepath) && file_exists($filepath)) ? 1 : 0;

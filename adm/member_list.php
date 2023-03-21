@@ -150,7 +150,7 @@ $colspan = 16;
                 <?php
                 for ($i = 0; $row = sql_fetch_array($result); $i++) {
                     // 접근가능한 그룹수
-                    $sql2 = " select count(*) as cnt from {$g5['group_member_table']} where mb_id = '{$row['mb_id']}' ";
+                    $sql2 = " select count(*) as cnt from {$g5['group_member_table']} where cn_id = '{$config['cn_id']}' AND mb_id = '{$row['mb_id']}' ";
                     $row2 = sql_fetch($sql2);
                     $group = '';
                     if ($row2['cnt']) {

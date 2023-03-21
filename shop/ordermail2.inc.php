@@ -40,7 +40,7 @@ $sql = " select b.it_sell_email,
           where a.od_id = '$od_id'
             and a.ct_select = '1'
             and b.it_sell_email <> ''
-            AND b.cn_id = '{$channel['cn_id']}'
+            AND b.cn_id = '{$config['cn_id']}'
           group by a.it_id ";
 $result = sql_query($sql);
 for ($i=0; $row=sql_fetch_array($result); $i++)

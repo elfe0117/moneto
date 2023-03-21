@@ -117,7 +117,8 @@ include_once(G5_LIB_PATH.'/popular.lib.php');
                 <?php
                 $sql = " select *
                             from {$g5['menu_table']}
-                            where me_use = '1'
+                            where cn_id = '{$config['cn_id']}'
+                                AND me_use = '1'
                               and length(me_code) = '2'
                             order by me_order, me_id ";
                 $result = sql_query($sql, false);
@@ -129,7 +130,8 @@ include_once(G5_LIB_PATH.'/popular.lib.php');
 
                     $sql2 = " select *
                                 from {$g5['menu_table']}
-                                where me_use = '1'
+                                where cn_id = '{$config['cn_id']}'
+                                    AND me_use = '1'
                                   and length(me_code) = '4'
                                   and substring(me_code, 1, 2) = '{$row['me_code']}'
                                 order by me_order, me_id ";

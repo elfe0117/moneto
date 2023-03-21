@@ -15,13 +15,13 @@ if(!empty($maincategory)) {
 $gnb_zindex = 999; // gnb_1dli z-index 값 설정용
 foreach($maincategory as $key=>$val)
 {
-    $sql = " select ca_id, ca_name from {$g5['g5_shop_category_table']} where ca_id = '$key' and ca_use = '1' ";
+    $sql = " select ca_id, ca_name from {$g5['g5_shop_category_table']} where cn_id = '{$config['cn_id']}' AND ca_id = '$key' and ca_use = '1' ";
     $row = sql_fetch($sql);
     if(!$row['ca_id'])
         continue;
 
     // 2단계 분류 판매 가능한 것만
-    $sql2 = " select ca_id, ca_name from {$g5['g5_shop_category_table']} where LENGTH(ca_id) = '4' and SUBSTRING(ca_id,1,2) = '{$row['ca_id']}' and ca_use = '1' order by ca_order, ca_id ";
+    $sql2 = " select ca_id, ca_name from {$g5['g5_shop_category_table']} where cn_id = '{$config['cn_id']}' AND LENGTH(ca_id) = '4' and SUBSTRING(ca_id,1,2) = '{$row['ca_id']}' and ca_use = '1' order by ca_order, ca_id ";
     $result2 = sql_query($sql2);
     $count = sql_num_rows($result2);
 ?>

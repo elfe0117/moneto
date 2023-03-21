@@ -12,7 +12,7 @@ if(!$ca_id && !$it_name)
 
 $sql = " select it_id, it_name
            from {$g5['g5_shop_item_table']}
-          where (1) ";
+          where (1) AND cn_id = '{$config['cn_id']}' ";
 if($ca_id)
     $sql .= " and ( ca_id like '$ca_id%' or ca_id2 like '$ca_id%' or ca_id3 like '$ca_id%' ) ";
 

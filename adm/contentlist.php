@@ -27,16 +27,17 @@ if (!sql_query(" DESCRIBE {$g5['content_table']} ", false)) {
         );
 
         // 내용관리 생성
-        sql_query(" insert into `{$g5['content_table']}` set co_id = 'company', co_html = '1', co_subject = '회사소개', co_content= '<p align=center><b>회사소개에 대한 내용을 입력하십시오.</b></p>' ", false);
-        sql_query(" insert into `{$g5['content_table']}` set co_id = 'privacy', co_html = '1', co_subject = '개인정보 처리방침', co_content= '<p align=center><b>개인정보 처리방침에 대한 내용을 입력하십시오.</b></p>' ", false);
-        sql_query(" insert into `{$g5['content_table']}` set co_id = 'provision', co_html = '1', co_subject = '서비스 이용약관', co_content= '<p align=center><b>서비스 이용약관에 대한 내용을 입력하십시오.</b></p>' ", false);
+        sql_query(" insert into `{$g5['content_table']}` set cn_id = '{$config['cn_id']}', co_id = 'company', co_html = '1', co_subject = '회사소개', co_content= '<p align=center><b>회사소개에 대한 내용을 입력하십시오.</b></p>' ", false);
+        sql_query(" insert into `{$g5['content_table']}` set cn_id = '{$config['cn_id']}', co_id = 'privacy', co_html = '1', co_subject = '개인정보 처리방침', co_content= '<p align=center><b>개인정보 처리방침에 대한 내용을 입력하십시오.</b></p>' ", false);
+        sql_query(" insert into `{$g5['content_table']}` set cn_id = '{$config['cn_id']}', co_id = 'provision', co_html = '1', co_subject = '서비스 이용약관', co_content= '<p align=center><b>서비스 이용약관에 대한 내용을 입력하십시오.</b></p>' ", false);
     }
 }
 
 $g5['title'] = '내용관리';
 require_once G5_ADMIN_PATH . '/admin.head.php';
 
-$sql_common = " from {$g5['content_table']} ";
+$sql_common = " from {$g5['content_table']}
+    WHERE cn_id = '{$config['cn_id']}' ";
 
 // 테이블의 전체 레코드수만 얻음
 $sql = " select count(*) as cnt " . $sql_common;

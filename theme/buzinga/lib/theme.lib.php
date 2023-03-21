@@ -112,7 +112,8 @@ function item_icon2($it)
     // 쿠폰상품
     $sql = " select count(*) as cnt
                 from {$g5['g5_shop_coupon_table']}
-                where cp_start <= '".G5_TIME_YMD."'
+                where cn_id = '{$config['cn_id']}'
+                    AND cp_start <= '".G5_TIME_YMD."'
                   and cp_end >= '".G5_TIME_YMD."'
                   and (
                         ( cp_method = '0' and cp_target = '{$it['it_id']}' )

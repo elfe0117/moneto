@@ -1521,7 +1521,7 @@ $(function(){
             <h3>등록된 전체이벤트 목록</h3>
             <div id="event_list" class="srel_list srel_noneimg">
                 <?php
-                $sql = " select ev_id, ev_subject from {$g5['g5_shop_event_table']} order by ev_id desc ";
+                $sql = " select ev_id, ev_subject from {$g5['g5_shop_event_table']} WHERE cn_id = '{$config['cn_id']}' order by ev_id desc ";
                 $result = sql_query($sql);
                 for ($g=0; $row=sql_fetch_array($result); $g++) {
                     if($g == 0)
@@ -1596,6 +1596,7 @@ $(function(){
                            from {$g5['g5_shop_event_item_table']} a
                            left join {$g5['g5_shop_event_table']} b on (a.ev_id=b.ev_id)
                           where a.it_id = '$it_id'
+                            AND b.cn_id = '{$config['cn_id']}'
                           order by b.ev_id desc ";
                 $result = sql_query($sql);
                 for ($g=0; $row=sql_fetch_array($result); $g++) {

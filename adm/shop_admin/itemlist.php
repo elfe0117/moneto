@@ -9,9 +9,11 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
 
 // 분류
 $ca_list  = '<option value="">선택</option>'.PHP_EOL;
-$sql = " select * from {$g5['g5_shop_category_table']} ";
+$sql = " select *
+    from {$g5['g5_shop_category_table']}
+    WHERE (1) AND cn_id = '{$config['cn_id']}' ";
 if ($is_admin != 'super')
-    $sql .= " where ca_mb_id = '{$member['mb_id']}' ";
+    $sql .= " AND ca_mb_id = '{$member['mb_id']}' ";
 $sql .= " order by ca_order, ca_id ";
 $result = sql_query($sql);
 for ($i=0; $row=sql_fetch_array($result); $i++)
@@ -43,7 +45,9 @@ if ($sfl == "")  $sfl = "it_name";
 
 $sql_common = " from {$g5['g5_shop_item_table']} a ,
                      {$g5['g5_shop_category_table']} b
-               where (a.cn_id = b.cn_id AND a.ca_id = b.ca_id";
+               where (a.cn_id = b.cn_id
+                AND a.ca_id = b.ca_id
+                AND b.cn_id = '{$config['cn_id']}' ";
 if ($is_admin != 'super')
     $sql_common .= " and b.ca_mb_id = '{$member['mb_id']}'";
 $sql_common .= ") ";
@@ -93,7 +97,7 @@ $colspan = 12;
 <select name="sca" id="sca">
     <option value="">전체분류</option>
     <?php
-    $sql1 = " select ca_id, ca_name from {$g5['g5_shop_category_table']} order by ca_order, ca_id ";
+    $sql1 = " select ca_id, ca_name from {$g5['g5_shop_category_table']} WHERE cn_id = '{$config['cn_id']}' order by ca_order, ca_id ";
     $result1 = sql_query($sql1);
     for ($i=0; $row1=sql_fetch_array($result1); $i++) {
         $len = strlen($row1['ca_id']) / 2 - 1;

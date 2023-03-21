@@ -116,7 +116,10 @@ require_once './admin.head.php';
                         <select name="gr_id" id="gr_id">
                             <option value=''>전체</option>
                             <?php
-                            $sql = " select gr_id, gr_subject from {$g5['group_table']} order by gr_subject ";
+                            $sql = " select gr_id, gr_subject
+                                from {$g5['group_table']}
+                                WHERE cn_id = '{$config['cn_id']}'
+                                order by gr_subject ";
                             $result = sql_query($sql);
                             for ($i = 0; $row = sql_fetch_array($result); $i++) {
                                 echo '<option value="' . $row['gr_id'] . '">' . $row['gr_subject'] . '</option>';

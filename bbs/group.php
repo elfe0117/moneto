@@ -30,7 +30,7 @@ include_once(G5_LIB_PATH.'/latest.lib.php');
 //  최신글
 $sql = " select bo_table, bo_subject
             from {$g5['board_table']}
-            where cn_id = '{$channel['cn_id']}'
+            where cn_id = '{$config['cn_id']}'
                 AND gr_id = '{$gr_id}'
               and bo_list_level <= '{$member['mb_level']}'
               and bo_device <> 'mobile' ";

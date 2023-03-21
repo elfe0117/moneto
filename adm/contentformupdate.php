@@ -21,7 +21,7 @@ if ($w == "" || $w == "u") {
         alert("ID 는 영문자, 숫자, _ 만 가능합니다.");
     }
 
-    $sql = " select * from {$g5['content_table']} where co_id = '$co_id' ";
+    $sql = " select * from {$g5['content_table']} where cn_id = '{$config['cn_id']}' AND co_id = '$co_id' ";
     $co_row = sql_fetch($sql);
 }
 

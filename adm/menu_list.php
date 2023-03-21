@@ -28,7 +28,7 @@ if (!sql_query(" DESCRIBE {$g5['menu_table']} ", false)) {
     );
 }
 
-$sql = " select * from {$g5['menu_table']} order by me_id ";
+$sql = " select * from {$g5['menu_table']} WHEHE cn_id = '{$config['cn_id']}' order by me_id ";
 $result = sql_query($sql);
 
 $g5['title'] = "메뉴설정";

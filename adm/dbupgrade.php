@@ -118,7 +118,8 @@ while ($row = sql_fetch_array($result)) {
         
         $sql = " update {$g5['content_table']}
                     set co_seo_title = '$co_seo_title'
-                  where co_id = '{$row['co_id']}' ";
+                  where cn_id = '{$row['cn_id']}'
+                    AND co_id = '{$row['co_id']}' ";
         sql_query($sql);
 
     }

@@ -42,7 +42,8 @@ if ($act_button === "선택수정") {
             $sql = " select count(*) as cnt from {$g5['board_table']} a, {$g5['group_table']} b
                       where a.gr_id = '" . sql_real_escape_string($post_gr_id) . "'
                         and a.gr_id = b.gr_id
-                        and b.gr_admin = '{$member['mb_id']}' ";
+                        and b.gr_admin = '{$member['mb_id']}'
+                        AND b.cn_id = '{$config['cn_id']}' ";
             $row = sql_fetch($sql);
             if (!$row['cnt']) {
                 alert('최고관리자가 아닌 경우 다른 관리자의 게시판(' . $board_table[$k] . ')은 수정이 불가합니다.');

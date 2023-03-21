@@ -11,7 +11,7 @@ if ($is_admin != 'super') {
 check_admin_token();
 
 // 이전 메뉴정보 삭제
-$sql = " delete from {$g5['menu_table']} ";
+$sql = " delete from {$g5['menu_table']} WHERE cn_id = '{$config['cn_id']}' ";
 sql_query($sql);
 
 $group_code = null;
