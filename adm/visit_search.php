@@ -48,11 +48,13 @@ if(isset($sfl) && $sfl && !in_array($sfl, array('vi_ip','vi_date','vi_time','vi_
     <tbody>
     <?php
     $sql_common = " from {$g5['visit_table']} ";
+    $sql_search = " WHERE cn_id = '{$config['cn_id']}' ";
+
     if ($sfl) {
         if($sfl=='vi_ip' || $sfl=='vi_date'){
-            $sql_search = " where $sfl like '$stx%' ";
+            $sql_search .= " AND $sfl like '$stx%' ";
         }else{
-            $sql_search = " where $sfl like '%$stx%' ";
+            $sql_search .= " AND $sfl like '%$stx%' ";
         }
     }
     $sql = " select count(*) as cnt

@@ -12,7 +12,7 @@ if(isset($config['cf_optimize_date']) && $config['cf_optimize_date'] >= G5_TIME_
 // 설정일이 지난 접속자로그 삭제
 if($config['cf_visit_del'] > 0) {
     $tmp_before_date = date("Y-m-d", G5_SERVER_TIME - ($config['cf_visit_del'] * 86400));
-    $sql = " delete from {$g5['visit_table']} where vi_date < '$tmp_before_date' ";
+    $sql = " delete from {$g5['visit_table']} where cn_id = '{$config['cn_id']}' AND vi_date < '$tmp_before_date' ";
     sql_query($sql);
     sql_query(" OPTIMIZE TABLE `{$g5['visit_table']}`, `{$g5['visit_sum_table']}` ");
 }

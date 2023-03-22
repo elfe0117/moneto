@@ -23,7 +23,8 @@ if(defined('G5_THEME_MSHOP_PATH')) {
         $sql = " select *,
                     (od_cart_coupon + od_coupon + od_send_coupon) as couponprice
                    from {$g5['g5_shop_order_table']}
-                  where mb_id = '{$member['mb_id']}'
+                  where cn_id = '{$config['cn_id']}'
+                    AND mb_id = '{$member['mb_id']}'
                   order by od_id desc
                   $limit ";
         $result = sql_query($sql);

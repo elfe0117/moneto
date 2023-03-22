@@ -6,7 +6,7 @@ auth_check_menu($auth, $sub_menu, "r");
 
 $sql_common = " from {$g5['g5_shop_order_data_table']} ";
 
-$sql_search = " where cart_id <> '0' ";
+$sql_search = " where cn_id = '{$config['cn_id']}' AND cart_id <> '0' ";
 if ($stx) {
     $sql_search .= " and ( ";
     switch ($sfl) {

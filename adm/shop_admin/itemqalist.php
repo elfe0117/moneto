@@ -8,7 +8,7 @@ $g5['title'] = '상품문의';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 
 $where = " and ";
-$sql_search = " WHERE b.cn_id = '{$config['cn_id']}' ";
+$sql_search = " WHERE a.cn_id = b.cn_id  AND b.cn_id = '{$config['cn_id']}' ";
 if ($stx != "") {
     if ($sfl != "") {
         $sql_search .= " $where $sfl like '%$stx%' ";

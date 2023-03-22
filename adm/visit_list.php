@@ -13,7 +13,9 @@ include_once('./visit.sub.php');
 $colspan = 6;
 
 $sql_common = " from {$g5['visit_table']} ";
-$sql_search = " where vi_date between '{$fr_date}' and '{$to_date}' ";
+$sql_search = " where cn_id = '{$config['cn_id']}'
+    AND vi_date between '{$fr_date}' and '{$to_date}' ";
+    
 if (isset($domain))
     $sql_search .= " and vi_referer like '%{$domain}%' ";
 

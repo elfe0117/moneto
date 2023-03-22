@@ -30,7 +30,7 @@ if (get_cart_count($tmp_cart_id) == 0) {    // 장바구니에 담기
     alert('장바구니가 비어 있습니다.\\n\\n이미 주문하셨거나 장바구니에 담긴 상품이 없는 경우입니다.', G5_SHOP_URL.'/cart.php');
 }
 
-$sql = "select * from {$g5['g5_shop_order_table']} limit 1";
+$sql = "select * from {$g5['g5_shop_order_table']} WHERE cn_id = '{$config['cn_id']}' limit 1";
 $check_tmp = sql_fetch($sql);
 
 if(!isset($check_tmp['od_other_pay_type'])){
@@ -553,6 +553,7 @@ $od_tax_flag      = $default['de_tax_flag_use'];
 // 주문서에 입력
 $sql = " insert {$g5['g5_shop_order_table']}
             set od_id             = '$od_id',
+                cn_id = '{$config['cn_id']}',
                 mb_id             = '{$member['mb_id']}',
                 od_pwd            = '$od_pwd',
                 od_name           = '$od_name',

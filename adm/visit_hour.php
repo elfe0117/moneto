@@ -18,7 +18,8 @@ $arr = array();
 
 $sql = " select SUBSTRING(vi_time,1,2) as vi_hour, count(vi_id) as cnt
             from {$g5['visit_table']}
-            where vi_date between '{$fr_date}' and '{$to_date}'
+            where cn_id = '{$config['cn_id']}'
+                AND vi_date between '{$fr_date}' and '{$to_date}'
             group by vi_hour
             order by vi_hour ";
 $result = sql_query($sql);

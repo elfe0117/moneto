@@ -19,7 +19,7 @@ function get_use_count($it_id)
 
     $sql = " select count(*) as cnt
                 from {$g5['g5_shop_item_use_table']}
-                where it_id = '$it_id' ";
+                where cn_id = '{$config['cn_id']}' AND it_id = '$it_id' ";
     $row = sql_fetch($sql);
 
     return $row['cnt'];

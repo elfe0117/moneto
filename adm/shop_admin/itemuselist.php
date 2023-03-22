@@ -8,7 +8,7 @@ $g5['title'] = '사용후기';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 
 $where = " AND ";
-$sql_search = " WHERE b.cn_it = '{$config['cn_id']}' ";
+$sql_search = " WHERE a.cn_id = b.cn_id AND b.cn_id = '{$config['cn_id']}' ";
 $save_stx = isset($_REQUEST['save_stx']) ? clean_xss_tags($_REQUEST['save_stx'], 1, 1) : '';
 
 if ($stx != "") {

@@ -30,6 +30,7 @@ $od_escrow = isset($_GET['od_escrow']) ? clean_xss_tags($_GET['od_escrow'], 1, 1
 
 $tot_itemcount = $tot_orderprice = $tot_receiptprice = $tot_ordercancel = $tot_misu = $tot_couponprice = 0;
 $sql_search = "";
+$where[] = " cn_id = '{$config['cn_id']}' ";
 if ($search != "") {
     if ($sel_field != "") {
         $where[] = " $sel_field like '%$search%' ";
@@ -321,7 +322,7 @@ if( function_exists('pg_setting_check') ){
         $od_cnt = 0;
         if ($row['mb_id'])
         {
-            $sql2 = " select count(*) as cnt from {$g5['g5_shop_order_table']} where mb_id = '{$row['mb_id']}' ";
+            $sql2 = " select count(*) as cnt from {$g5['g5_shop_order_table']} where cn_id = '{$config['cn_id']}' AND mb_id = '{$row['mb_id']}' ";
             $row2 = sql_fetch($sql2);
             $od_cnt = $row2['cnt'];
         }

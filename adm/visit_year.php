@@ -18,7 +18,8 @@ $arr = array();
 
 $sql = " select SUBSTRING(vs_date,1,4) as vs_year, SUM(vs_count) as cnt
             from {$g5['visit_sum_table']}
-            where vs_date between '{$fr_date}' and '{$to_date}'
+            where cn_id = '{$config['cn_id']}'
+                AND vs_date between '{$fr_date}' and '{$to_date}'
             group by vs_year
             order by vs_year desc ";
 $result = sql_query($sql);

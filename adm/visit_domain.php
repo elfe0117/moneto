@@ -17,7 +17,8 @@ $sum_count = 0;
 $arr = array();
 
 $sql = " select * from {$g5['visit_table']}
-            where vi_date between '{$fr_date}' and '{$to_date}' ";
+            where cn_id = '{$config['cn_id']}'
+                AND vi_date between '{$fr_date}' and '{$to_date}' ";
 $result = sql_query($sql);
 while ($row=sql_fetch_array($result)) {
     $str = $row['vi_referer'];

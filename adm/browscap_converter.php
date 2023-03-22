@@ -31,7 +31,10 @@ if (!$rows) {
     $rows = 100;
 }
 
-$sql_common = " from {$g5['visit_table']} where vi_agent <> '' and ( vi_browser = '' or vi_os = '' or vi_device = '' ) ";
+$sql_common = " from {$g5['visit_table']}
+    where cn_id = '{$config['cn_id']}'
+        AND vi_agent <> ''
+        and ( vi_browser = '' or vi_os = '' or vi_device = '' ) ";
 $sql_order  = " order by vi_id desc ";
 $sql_limit  = " limit 0, " . strval($rows) . " ";
 

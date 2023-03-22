@@ -34,7 +34,8 @@ if(defined('G5_THEME_SHOP_PATH')) {
     <?php
     $sql = " select *
                from {$g5['g5_shop_order_table']}
-              where mb_id = '{$member['mb_id']}'
+              where cn_id = '{$config['cn_id']}'
+                AND mb_id = '{$member['mb_id']}'
               order by od_id desc
               $limit ";
     $result = sql_query($sql);

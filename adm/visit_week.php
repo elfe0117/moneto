@@ -18,7 +18,8 @@ $arr = array();
 
 $sql = " select WEEKDAY(vs_date) as weekday_date, SUM(vs_count) as cnt
             from {$g5['visit_sum_table']}
-            where vs_date between '{$fr_date}' and '{$to_date}'
+            where cn_id = '{$config['cn_id']}'
+                AND vs_date between '{$fr_date}' and '{$to_date}'
             group by weekday_date
             order by weekday_date ";
 $result = sql_query($sql);

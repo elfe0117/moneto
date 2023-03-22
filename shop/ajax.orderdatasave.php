@@ -60,6 +60,7 @@ if( $od_settle_case == '삼성페이' ){    //현재 삼성페이인 경우에�
 
 $sql = " insert into {$g5['g5_shop_order_data_table']}
             set od_id   = '$od_id',
+                cn_id = '{$config['cn_id']}',
                 cart_id = '$cart_id',
                 mb_id   = '{$member['mb_id']}',
                 dt_pg   = '$default_pg',

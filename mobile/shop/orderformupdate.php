@@ -599,7 +599,8 @@ $od_tax_flag      = $default['de_tax_flag_use'];
 
 // 주문서에 입력
 $sql = " insert {$g5['g5_shop_order_table']}
-            set od_id             = '$od_id',
+            set cn_id = '{$config['cn_id']}',
+                od_id             = '$od_id',
                 mb_id             = '{$member['mb_id']}',
                 od_pwd            = '$od_pwd',
                 od_name           = '$od_name',

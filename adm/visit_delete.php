@@ -8,7 +8,7 @@ $g5['title'] = '접속자로그삭제';
 include_once('./admin.head.php');
 
 // 최소년도 구함
-$sql = " select min(vi_date) as min_date from {$g5['visit_table']} ";
+$sql = " select min(vi_date) as min_date from {$g5['visit_table']} WHERE cn_id = '{$config['cn_id']}' ";
 $row = sql_fetch($sql);
 
 $min_year = (int)substr($row['min_date'], 0, 4);

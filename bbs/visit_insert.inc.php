@@ -23,17 +23,17 @@ if (get_cookie('ck_visit_ip') != $_SERVER['REMOTE_ADDR'])
     if(version_compare(phpversion(), '5.3.0', '>=') && defined('G5_BROWSCAP_USE') && G5_BROWSCAP_USE) {
         include_once(G5_BBS_PATH.'/visit_browscap.inc.php');
     }
-    $sql = " insert {$g5['visit_table']} ( vi_id, vi_ip, vi_date, vi_time, vi_referer, vi_agent, vi_browser, vi_os, vi_device ) values ( '{$vi_id}', '{$remote_addr}', '".G5_TIME_YMD."', '".G5_TIME_HIS."', '{$referer}', '{$user_agent}', '{$vi_browser}', '{$vi_os}', '{$vi_device}' ) ";
+    $sql = " insert {$g5['visit_table']} ( vi_id, cn_id, vi_ip, vi_date, vi_time, vi_referer, vi_agent, vi_browser, vi_os, vi_device ) values ( '{$vi_id}', '{$config['cn_id']}', '{$remote_addr}', '".G5_TIME_YMD."', '".G5_TIME_HIS."', '{$referer}', '{$user_agent}', '{$vi_browser}', '{$vi_os}', '{$vi_device}' ) ";
 
     $result = sql_query($sql, FALSE);
     // 정상으로 INSERT 되었다면 방문자 합계에 반영
     if ($result) {
-        $sql = " insert {$g5['visit_sum_table']} ( vs_count, vs_date) values ( 1, '".G5_TIME_YMD."' ) ";
+        $sql = " insert {$g5['visit_sum_table']} ( cn_id, vs_count, vs_date) values ( '{$config['cn_id']}', 1, '".G5_TIME_YMD."' ) ";
         $result = sql_query($sql, FALSE);
 
         // DUPLICATE 오류가 발생한다면 이미 날짜별 행이 생성되었으므로 UPDATE 실행
         if (!$result) {
-            $sql = " update {$g5['visit_sum_table']} set vs_count = vs_count + 1 where vs_date = '".G5_TIME_YMD."' ";
+            $sql = " update {$g5['visit_sum_table']} set vs_count = vs_count + 1 where cn_id = '{$config['cn_id']}' AND vs_date = '".G5_TIME_YMD."' ";
             $result = sql_query($sql);
         }
 
@@ -41,22 +41,22 @@ if (get_cookie('ck_visit_ip') != $_SERVER['REMOTE_ADDR'])
         // 방문객 접속시마다 따로 쿼리를 하지 않기 위함 (엄청난 쿼리를 줄임 ^^)
 
         // 오늘
-        $sql = " select vs_count as cnt from {$g5['visit_sum_table']} where vs_date = '".G5_TIME_YMD."' ";
+        $sql = " select vs_count as cnt from {$g5['visit_sum_table']} where cn_id = '{$config['cn_id']}' AND vs_date = '".G5_TIME_YMD."' ";
         $row = sql_fetch($sql);
         $vi_today = isset($row['cnt']) ? $row['cnt'] : 0;
 
         // 어제
-        $sql = " select vs_count as cnt from {$g5['visit_sum_table']} where vs_date = DATE_SUB('".G5_TIME_YMD."', INTERVAL 1 DAY) ";
+        $sql = " select vs_count as cnt from {$g5['visit_sum_table']} where cn_id = '{$config['cn_id']}' AND vs_date = DATE_SUB('".G5_TIME_YMD."', INTERVAL 1 DAY) ";
         $row = sql_fetch($sql);
         $vi_yesterday = isset($row['cnt']) ? $row['cnt'] : 0;
 
         // 최대
-        $sql = " select max(vs_count) as cnt from {$g5['visit_sum_table']} ";
+        $sql = " select max(vs_count) as cnt from {$g5['visit_sum_table']} WHERE cn_id = '{$config['cn_id']}' ";
         $row = sql_fetch($sql);
         $vi_max = isset($row['cnt']) ? $row['cnt'] : 0;
 
         // 전체
-        $sql = " select sum(vs_count) as total from {$g5['visit_sum_table']} ";
+        $sql = " select sum(vs_count) as total from {$g5['visit_sum_table']} WHERE cn_id = '{$config['cn_id']}' ";
         $row = sql_fetch($sql);
         $vi_sum = isset($row['total']) ? $row['total'] : 0;
 
@@ -65,6 +65,6 @@ if (get_cookie('ck_visit_ip') != $_SERVER['REMOTE_ADDR'])
         // 기본설정 테이블에 방문자수를 기록한 후
         // 방문자수 테이블을 읽지 않고 출력한다.
         // 쿼리의 수를 상당부분 줄임
-        sql_query(" update {$g5['config_table']} set cf_visit = '{$visit}' ");
+        sql_query(" update {$g5['config_table']} set cf_visit = '{$visit}' WHERE cn_id = '{$config['cn_id']}' ");
     }
 }

@@ -95,7 +95,7 @@ if(!sql_query(" select od_pg from {$g5['g5_shop_order_table']} limit 1 ", false)
                     ADD `od_casseqno` varchar(255) NOT NULL DEFAULT '' AFTER `od_escrow` ", true);
 
     // 주문 결제 PG kcp로 설정
-    sql_query(" update {$g5['g5_shop_order_table']} set od_pg = 'kcp' ");
+    sql_query(" update {$g5['g5_shop_order_table']} set od_pg = 'kcp' WHERE cn_id = '{$config['cn_id']}' ");
 }
 
 // LG 현금영수증 JS

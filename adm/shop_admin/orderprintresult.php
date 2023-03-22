@@ -51,7 +51,8 @@ if ($csv == 'csv')
 
     $sql = " SELECT a.od_id, od_b_zip1, od_b_zip2, od_b_addr1, od_b_addr2, od_b_addr3, od_b_addr_jibeon, od_b_name, od_b_tel, od_b_hp, b.it_name, ct_qty, b.it_id, a.od_id, od_memo, od_invoice, b.ct_option, b.ct_send_cost, b.it_sc_type
                FROM {$g5['g5_shop_order_table']} a, {$g5['g5_shop_cart_table']} b
-              where a.od_id = b.od_id ";
+              where a.od_id = b.od_id
+                AND a.cn_id = '{$config['cn_id']}'  ";
     if ($case == 1) // 출력기간
         $sql .= " and a.od_time between '$fr_date 00:00:00' and '$to_date 23:59:59' ";
     else // 주문번호구간
@@ -155,7 +156,8 @@ if ($csv == 'xls')
 
     $sql = " SELECT a.od_id, od_b_zip1, od_b_zip2, od_b_addr1, od_b_addr2, od_b_addr3, od_b_addr_jibeon, od_b_name, od_b_tel, od_b_hp, b.it_name, ct_qty, b.it_id, a.od_id, od_memo, od_invoice, b.ct_option, b.ct_send_cost, b.it_sc_type
                FROM {$g5['g5_shop_order_table']} a, {$g5['g5_shop_cart_table']} b
-              where a.od_id = b.od_id ";
+              where a.od_id = b.od_id
+                AND a.cn_id = '{$config['cn_id']}' ";
     if ($case == 1) // 출력기간
         $sql .= " and a.od_time between '$fr_date 00:00:00' and '$to_date 23:59:59' ";
     else // 주문번호구간
@@ -265,12 +267,14 @@ if ($case == 1)
     $to_date = date_conv($to_date);
     $sql = " SELECT DISTINCT a.od_id FROM {$g5['g5_shop_order_table']} a, {$g5['g5_shop_cart_table']} b
               where a.od_id = b.od_id
+                AND a.cn_id = '{$config['cn_id']}'
                 and a.od_time between '$fr_date 00:00:00' and '$to_date 23:59:59' ";
 }
 else
 {
     $sql = " SELECT DISTINCT a.od_id FROM {$g5['g5_shop_order_table']} a, {$g5['g5_shop_cart_table']} b
               where a.od_id = b.od_id
+                AND a.cn_id = '{$config['cn_id']}'
                 and a.od_id between '$fr_od_id' and '$to_od_id' ";
 }
 if ($ct_status)
