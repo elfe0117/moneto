@@ -351,52 +351,16 @@ if(XenoPostToForm::check()) {
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// 채널 설정
-////////////////////////////////////////////////////////////////////////////////
-include_once(G5_LIB_PATH.'/channel.lib.php'); // 채널 관려 함수 모음
-
-// 채널 정보 가져오기
-$channel = get_channel();
-
-if (!(isset($channel['cn_id']) && $channel['cn_id'])) {
-    ?>
-    <!doctype html>
-    <html lang="ko">
-    <head>
-    <meta charset="utf-8">
-    <title>오류! 채널정보를 불러올 수 없습니다.</title>
-    <link rel="stylesheet" href="install/install.css">
-    </head>
-    <body>
-    
-    <div id="ins_bar">
-        <span id="bar_img">GNUBOARD5</span>
-        <span id="bar_txt">Message</span>
-    </div>
-    <h1>채널를 먼저 설치해주십시오.</h1>
-    
-    <div id="ins_ft">
-        <strong>GNUBOARD5</strong>
-        <p>GPL! OPEN SOURCE GNUBOARD</p>
-    </div>
-    
-    </body>
-    </html>
-    <?php
-    exit;
-}
-
 //==============================================================================
 // 공용 변수
 //------------------------------------------------------------------------------
 
-// 기본환경설정
+// (대표)기본환경설정
 // 기본적으로 사용하는 필드만 얻은 후 상황에 따라 필드를 추가로 얻음
-$config = get_config($channel['cn_id'], true);
+//$config = get_config('*', true);
 
 // 본인인증 또는 쇼핑몰 사용시에만 secure; SameSite=None 로 설정합니다.
-if( $config['cf_cert_use'] || (defined('G5_YOUNGCART_VER') && G5_YOUNGCART_VER) ) {
+//if( $config_temp['cf_cert_use'] || (defined('G5_YOUNGCART_VER') && G5_YOUNGCART_VER) ) {
     // Chrome 80 버전부터 아래 이슈 대응
     // https://developers-kr.googleblog.com/2020/01/developers-get-ready-for-new.html?fbclid=IwAR0wnJFGd6Fg9_WIbQPK3_FxSSpFLqDCr9bjicXdzy--CCLJhJgC9pJe5ss
     if(!function_exists('session_start_samesite')) {
@@ -433,10 +397,51 @@ if( $config['cf_cert_use'] || (defined('G5_YOUNGCART_VER') && G5_YOUNGCART_VER) 
     }
 
     session_start_samesite();
-} else {
-    @session_start();
-}
+//} else {
+//    @session_start();
+//}
 //==============================================================================
+
+////////////////////////////////////////////////////////////////////////////////
+// 채널 설정
+////////////////////////////////////////////////////////////////////////////////
+include_once(G5_LIB_PATH.'/channel.lib.php'); // 채널 관려 함수 모음
+
+// 채널 정보 가져오기
+$channel = get_channel();
+if (!(isset($channel['cn_id']) && $channel['cn_id'])) {
+    ?>
+    <!doctype html>
+    <html lang="ko">
+    <head>
+    <meta charset="utf-8">
+    <title>오류! 채널정보를 불러올 수 없습니다.</title>
+    <link rel="stylesheet" href="install/install.css">
+    </head>
+    <body>
+    
+    <div id="ins_bar">
+        <span id="bar_img">GNUBOARD5</span>
+        <span id="bar_txt">Message</span>
+    </div>
+    <h1>채널를 먼저 설치해주십시오.</h1>
+    
+    <div id="ins_ft">
+        <strong>GNUBOARD5</strong>
+        <p>GPL! OPEN SOURCE GNUBOARD</p>
+    </div>
+    
+    </body>
+    </html>
+    <?php
+    exit;
+}
+
+set_session('ss_cid', $channel['cn_id']);
+
+if (isset($channel['cg_id']) && $channel['cg_id']) {
+    $cg_id = $channel['cg_id'];
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // 언어 설정
@@ -477,9 +482,19 @@ if (!is_array($lang_json)) {
 set_session('ss_lang', $lang);
 
 ////////////////////////////////////////////////////////////////////////////////
+// 기본환경설정 값 구하기
+////////////////////////////////////////////////////////////////////////////////
+$config = get_config($channel['cn_id'], true);
+
+////////////////////////////////////////////////////////////////////////////////
 // 채널 (추가) 설정
 ////////////////////////////////////////////////////////////////////////////////
+/*
 if (!get_channel_id_parameter() && $channel['cn_id'] != $_SESSION['ss_cid']) {
+    echo $channel['cn_id'];
+    echo '<br>';
+    echo $_SESSION['ss_cid'];
+    exit;
     $channel = get_channel();
     $config = get_config($channel['cn_id'], true);
 }
@@ -489,6 +504,7 @@ if (isset($channel['cg_id']) && $channel['cg_id']) {
     $cg_id = $channel['cg_id'];
 }
 
+*/
 ////////////////////////////////////////////////////////////////////////////////
 // 채널 그룹
 ////////////////////////////////////////////////////////////////////////////////
