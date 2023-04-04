@@ -11,4 +11,5 @@ $menu['menu200'] = array(
 );
 
 $menu['menu200'][] = array('200110', '회원계보관리', G5_ADMIN_URL . '/member_chart.php', 'mb_chart');
+$menu['menu200'][] = array('200150', '프로필관리', G5_ADMIN_URL . '/profile_form.php', 'pf_form');
 $menu['menu200'][] = array('200190', '회원등급관리', G5_ADMIN_URL . '/level_form.php', 'mb_level');

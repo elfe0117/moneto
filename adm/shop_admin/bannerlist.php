@@ -97,7 +97,7 @@ $colspan = 8;
 </div>
 
 <div class="btn_fixed_top">
-    <a href="../channel_check.php?url=<?php echo(urlencode('./shop_admin/bannerform.php')); ?>" class="btn_01 btn">배너추가</a>
+    <a href="./bannerform.php" class="btn_01 btn">배너추가</a>
 </div>
 
 <div class="tbl_head01 tbl_wrap">
