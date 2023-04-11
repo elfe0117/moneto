@@ -7,8 +7,8 @@ auth_check_menu($auth, $sub_menu, "r");
 $g5['title'] = '분류관리';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 
-$where = " where ";
-$sql_search = "";
+$where = " AND ";
+$sql_search = " WHERE cn_id = '{$config['cn_id']}' ";
 
 $sfl = in_array($sfl, array('ca_name', 'ca_id', 'ca_mb_id')) ? $sfl : '';
 
@@ -259,7 +259,7 @@ $colspan = 9;
     <input type="submit" value="일괄수정" class="btn_02 btn">
 
     <?php if ($is_admin == 'super') {?>
-    <a href="../channel_check.php?url=<?php echo(urlencode('./shop_admin/categoryform.php')); ?>" id="cate_add" class="btn btn_01">분류 추가</a>
+    <a href="./categoryform.php" id="cate_add" class="btn btn_01">분류 추가</a>
     <?php } ?>
 </div>
 

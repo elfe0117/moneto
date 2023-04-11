@@ -99,7 +99,7 @@ $colspan = 3;
     <input type="submit" name="act_button" value="선택수정" onclick="document.pressed=this.value" class="btn btn_02">
     <input type="submit" name="act_button" value="선택삭제" onclick="document.pressed=this.value" class="btn btn_02">
     <?php if ($is_admin == 'super') { ?>
-    <a href="../channel_check.php?url=<?php echo(urlencode('./shop_admin/brand_form.php')); ?>" id="brand_add" class="btn btn_01">브랜드추가</a>
+    <a href="./brand_form.php" id="brand_add" class="btn btn_01">브랜드추가</a>
     <?php } ?>
 </div>
 

@@ -80,14 +80,28 @@ if ($w == "")
     $it['ca_id'] = get_cookie("ck_ca_id");
     $it['ca_id2'] = get_cookie("ck_ca_id2");
     $it['ca_id3'] = get_cookie("ck_ca_id3");
-    if (!$it['ca_id'])
-    {
-        $sql = " select ca_id from {$g5['g5_shop_category_table']} WHERE cn_id = '{$config['cn_id']}' order by ca_order, ca_id limit 1 ";
+
+    $sql = "SELECT ca_id
+        FROM {$g5['g5_shop_category_table']}
+        WHERE cn_id = '{$config['cn_id']}'
+            AND ca_id = '{$it['ca_id']}'
+            LIMIT 0, 1 ";
+    $row = sql_fetch($sql);
+    if (!(isset($row['ca_id']) && $row['ca_id'])) {
+        $sql = "SELECT ca_id
+            FROM {$g5['g5_shop_category_table']}
+            WHERE cn_id = '{$config['cn_id']}'
+            ORDER BY ca_order, ca_id
+            LIMIT 0, 1 ";
         $row = sql_fetch($sql);
-        if (! (isset($row['ca_id']) && $row['ca_id']))
-            alert("등록된 분류가 없습니다. 우선 분류를 등록하여 주십시오.", './categorylist.php');
-        $it['ca_id'] = $row['ca_id'];
     }
+
+    if (!(isset($row['ca_id']) && $row['ca_id'])) {
+        alert("등록된 분류가 없습니다. 우선 분류를 등록하여 주십시오.", './categorylist.php');
+    }
+
+    $it['ca_id'] = $row['ca_id'];
+    
     //$it[it_maker]  = stripslashes($_COOKIE[ck_maker]);
     //$it[it_origin] = stripslashes($_COOKIE[ck_origin]);
     $it['it_maker']  = stripslashes(get_cookie("ck_maker"));
@@ -275,7 +289,6 @@ if(!sql_query(" select it_skin from {$g5['g5_shop_item_table']} limit 1", false)
     </div>
 </section>
 
-
 <section id="anc_sitfrm_skin">
     <h2 class="h2_frm">스킨설정</h2>
     <?php echo $pg_anchor; ?>
@@ -316,7 +329,6 @@ if(!sql_query(" select it_skin from {$g5['g5_shop_item_table']} limit 1", false)
         </table>
     </div>
 </section>
-
 
 <section id="anc_sitfrm_ini">
     <h2 class="h2_frm">기본정보</h2>

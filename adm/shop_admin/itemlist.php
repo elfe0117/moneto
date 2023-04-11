@@ -255,7 +255,7 @@ $colspan = 12;
 
 <div class="btn_fixed_top">
 
-    <a href="../channel_check.php?url=<?php echo(urlencode('./shop_admin/itemform.php')); ?>" class="btn btn_01">상품등록</a>
+    <a href="./itemform.php" class="btn btn_01">상품등록</a>
     <a href="./itemexcel.php" onclick="return excelform(this.href);" target="_blank" class="btn btn_02">상품일괄등록</a>
     <input type="submit" name="act_button" value="선택수정" onclick="document.pressed=this.value" class="btn btn_02">
     <?php if ($is_admin == 'super') { ?>
