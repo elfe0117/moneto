@@ -178,7 +178,7 @@ if($result) {
         insert_member_cert_history($mb_id, $mb_name, $mb_hp, get_session('ss_cert_birth'), get_session('ss_cert_type') ); // 본인인증 후 정보 수정 시 내역 기록
     }
     // 회원가입 포인트 부여
-    insert_point($config['cn_id'], $mb_id, $config['cf_register_point'], '회원가입 축하', '@member', $mb_id, '회원가입');
+    insert_point($config['cn_id'], 'basic', $mb_id, $config['cf_register_point'], '회원가입 축하', '@member', $mb_id, '회원가입');
 
     // 최고관리자님께 메일 발송
     if ($config['cf_email_mb_super_admin']) {

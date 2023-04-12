@@ -205,6 +205,7 @@ $pg_anchor ='<ul class="anchor">
 <li><a href="#anc_sitfrm_relation">관련상품</a></li>
 <li><a href="#anc_sitfrm_event">관련이벤트</a></li>
 <li><a href="#anc_sitfrm_optional">상세설명설정</a></li>
+<li><a href="#anc_sitfrm_recommend_point">추천수당</a></li>
 <li><a href="#anc_sitfrm_extra">여분필드</a></li>
 </ul>
 ';
@@ -1697,6 +1698,107 @@ $(function(){
     </div>
 </section>
 
+<section id="anc_sitfrm_recommend_point">
+    <h2>추천수당 설정</h2>
+    <?php echo $pg_anchor ?>
+
+    <div class="tbl_head01 tbl_wrap" id="recommend_point_frm">
+        <table>
+            <thead>
+                <tr>
+                    <th>단계</th>
+                    <th>수당유형</th>
+                    <th>정액(원)</th>
+                    <th>정률(%)</th>
+                    <th>관리</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $rp_list = json_decode($it['it_recommmed_point']);
+                $rp_list_count = count($rp_list);
+
+                $i = 0;
+                do {
+                    $rp_type = isset($rp_list[$i]->type) && $rp_list[$i]->type ? $rp_list[$i]->type : '';
+                    $rp_price = isset($rp_list[$i]->price) && $rp_list[$i]->price ? $rp_list[$i]->price : '';
+                    $rp_rate = isset($rp_list[$i]->rate) && $rp_list[$i]->rate ? $rp_list[$i]->rate : '';
+                ?>
+                <tr>
+                    <td><?php echo($i + 1); ?>단계</td>
+                    <td>
+                        <select name="rp_type[]">
+                            <option value="price" <?php echo(get_selected('price', $rp_type)); ?>>정액</option>
+                            <option value="rate" <?php echo(get_selected('rate', $rp_type)); ?>>정률</option>
+                        </select>
+                    </td>
+                    <td><input type="text" name="rp_price[]" value="<?php echo($rp_price); ?>" class="frm_input"></td>
+                    <td><input type="text" name="rp_rate[]" value="<?php echo($rp_rate); ?>" class="frm_input"></td>
+                    <td><button type="button" id="add_recommend_point_row" class="btn_frmline">추가</button></td>
+                </tr>
+                <?php
+                    $i = $i + 1;
+                } while($i < $rp_list_count);
+                ?>
+            </tbody>
+        </table>
+    </div>
+
+    <script type="text/javascript" language="javascript">
+        $(function() {
+            // 추천인 포인트 설정 정렬
+            var recommend_point_sequence = function() {
+                var $element_tr = $("#recommend_point_frm tr");
+                var seq_no;
+
+                $element_tr.each(function(index) {
+                    if (index) {
+                        var element_tr = $(this);
+                        var element_td = element_tr.children();
+                        element_td.eq(0).html(index + "단계");
+                    }
+
+                    seq_no = index + 1;
+                });
+            }
+
+            // 추천인 포인트 설정 추가
+            $(document).on("click", "#add_recommend_point_row", function() {
+                var $element_tr = $("#recommend_point_frm tr:last");
+                var tr_length = $("#recommend_point_frm tr").length;
+                var l_html = "";
+
+                if (tr_length > 10) {
+                    alert("더이상 추가할 수 없습니다.");
+                    return;
+                }
+
+                l_html += "<tr>";
+                l_html += "    <td>1단계</td>";
+                l_html += "    <td>";
+                l_html += "        <select name=\"rp_type[]\">";
+                l_html += "            <option value=\"price\">정액</option>";
+                l_html += "            <option value=\"rate\">정률</option>";
+                l_html += "        </select>";
+                l_html += "    </td>";
+                l_html += "    <td><input type=\"text\" name=\"rp_price[]\" class=\"frm_input\"></td>";
+                l_html += "    <td><input type=\"text\" name=\"rp_rate[]\" class=\"frm_input\"></td>";
+                l_html += "    <td><button type=\"button\" id=\"remove_recommend_point_row\" class=\"btn_frmline\">삭제</button></td>";
+                l_html += "</tr>";
+
+                $element_tr.after(l_html);
+
+                recommend_point_sequence();
+            });
+
+            // 추천인 포인트 설정 삭제
+            $(document).on("click", "#remove_recommend_point_row", function() {
+                $(this).closest("tr").remove();
+                recommend_point_sequence();
+            });
+        });
+    </script>
+</section>
 
 <section id="anc_sitfrm_extra">
     <h2>여분필드 설정</h2>

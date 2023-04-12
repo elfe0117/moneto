@@ -865,7 +865,8 @@ function subject_sort_link($col, $query_string='', $flag='asc')
     $arr_query[] = 'page='.$page;
     $qstr = implode("&amp;", $arr_query);
 
-    $url = G5_HTTP_BBS_URL . "/board.php?{$qstr}";
+    //$url = G5_HTTP_BBS_URL . "/board.php?{$qstr}";
+    $url = './'.basename($_SERVER['PHP_SELF']).'?'.$qstr;
     return '<a href="'.short_url_clean($url).'">';
 }
 
@@ -997,7 +998,7 @@ function get_yn_select($name, $selected='1', $event='')
 
 
 // 포인트 부여
-function insert_point($cn_id='', $mb_id, $point, $content='', $rel_table='', $rel_id='', $rel_action='', $expire=0)
+function insert_point($cn_id='', $po_type, $mb_id, $point, $content='', $rel_table='', $rel_id='', $rel_action='', $expire=0)
 {
     global $config;
     global $g5;
@@ -1015,13 +1016,14 @@ function insert_point($cn_id='', $mb_id, $point, $content='', $rel_table='', $re
     if (!$mb['mb_id']) { return 0; }
 
     // 회원포인트
-    $mb_point = get_point_sum($cn_id, $mb_id);
+    $mb_point = get_point_sum($cn_id, $po_type, $mb_id);
 
     // 이미 등록된 내역이라면 건너뜀
     if ($rel_table || $rel_id || $rel_action)
     {
         $sql = " select count(*) as cnt from {$g5['point_table']}
                   where cn_id = '{$cn_id}'
+                    AND po_type = '{$po_type}'
                     AND mb_id = '$mb_id'
                     and po_rel_table = '$rel_table'
                     and po_rel_id = '$rel_id'
@@ -1049,6 +1051,7 @@ function insert_point($cn_id='', $mb_id, $point, $content='', $rel_table='', $re
 
     $sql = " insert into {$g5['point_table']}
                 set cn_id = '{$cn_id}',
+                    po_type = '{$po_type}',
                     mb_id = '$mb_id',
                     po_datetime = '".G5_TIME_YMDHIS."',
                     po_content = '".addslashes($content)."',
@@ -1064,18 +1067,23 @@ function insert_point($cn_id='', $mb_id, $point, $content='', $rel_table='', $re
 
     // 포인트를 사용한 경우 포인트 내역에 사용금액 기록
     if($point < 0) {
-        insert_use_point($mb_id, $point);
+        insert_use_point($po_type, $mb_id, $point);
     }
 
     // 포인트 UPDATE
-    $sql = " update {$g5['member_table']} set mb_point = '$po_mb_point' where mb_id = '$mb_id' ";
+    if ($po_type == 'basic') {
+        $sql = " update {$g5['member_table']} set mb_point = '$po_mb_point' where mb_id = '$mb_id' ";
+    } else {
+        $sql = " update {$g5['member_table']} set mb_{$po_type}_point = '$po_mb_point' where mb_id = '$mb_id' ";
+    }
+    
     sql_query($sql);
 
     return 1;
 }
 
 // 사용포인트 입력
-function insert_use_point($mb_id, $point, $po_id='')
+function insert_use_point($po_type, $mb_id, $point, $po_id='')
 {
     global $g5, $config;
 
@@ -1088,6 +1096,7 @@ function insert_use_point($mb_id, $point, $po_id='')
     $sql = " select po_id, po_point, po_use_point
                 from {$g5['point_table']}
                 where cn_id = '{$config['cn_id']}'
+                    AND po_type = '{$po_type}'
                     AND mb_id = '$mb_id'
                   and po_id <> '$po_id'
                   and po_expired = '0'
@@ -1101,7 +1110,8 @@ function insert_use_point($mb_id, $point, $po_id='')
         if(($point2 - $point3) > $point1) {
             $sql = " update {$g5['point_table']}
                         set po_use_point = po_use_point + '$point1'
-                        where cn_id = '{$config['cn_id']}' AND po_id = '{$row['po_id']}' ";
+                        where cn_id = '{$config['cn_id']}'
+                            AND po_id = '{$row['po_id']}' ";
             sql_query($sql);
             break;
         } else {
@@ -1109,7 +1119,8 @@ function insert_use_point($mb_id, $point, $po_id='')
             $sql = " update {$g5['point_table']}
                         set po_use_point = po_use_point + '$point4',
                             po_expired = '100'
-                        where cn_id = '{$config['cn_id']}' AND po_id = '{$row['po_id']}' ";
+                        where cn_id = '{$config['cn_id']}'
+                            AND po_id = '{$row['po_id']}' ";
             sql_query($sql);
             $point1 -= $point4;
         }
@@ -1117,7 +1128,7 @@ function insert_use_point($mb_id, $point, $po_id='')
 }
 
 // 사용포인트 삭제
-function delete_use_point($mb_id, $point)
+function delete_use_point($po_type, $mb_id, $point)
 {
     global $g5, $config;
 
@@ -1130,6 +1141,7 @@ function delete_use_point($mb_id, $point)
     $sql = " select po_id, po_use_point, po_expired, po_expire_date
                 from {$g5['point_table']}
                 where cn_id = '{$config['cn_id']}'
+                    AND po_type = '{$po_type}'
                     AND mb_id = '$mb_id'
                   and po_expired <> '1'
                   and po_use_point > 0
@@ -1146,14 +1158,16 @@ function delete_use_point($mb_id, $point)
             $sql = " update {$g5['point_table']}
                         set po_use_point = po_use_point - '$point1',
                             po_expired = '$po_expired'
-                        where cn_id = '{$config['cn_id']}' AND po_id = '{$row['po_id']}' ";
+                        where cn_id = '{$config['cn_id']}'
+                            AND po_id = '{$row['po_id']}' ";
             sql_query($sql);
             break;
         } else {
             $sql = " update {$g5['point_table']}
                         set po_use_point = '0',
                             po_expired = '$po_expired'
-                        where cn_id = '{$config['cn_id']}' AND po_id = '{$row['po_id']}' ";
+                        where cn_id = '{$config['cn_id']}'
+                            AND po_id = '{$row['po_id']}' ";
             sql_query($sql);
 
             $point1 -= $point2;
@@ -1207,13 +1221,13 @@ function delete_expire_point($mb_id, $point)
 }
 
 // 포인트 내역 합계
-function get_point_sum($cn_id='', $mb_id)
+function get_point_sum($cn_id='', $po_type, $mb_id)
 {
     global $g5, $config;
 
     if($config['cf_point_term'] > 0) {
         // 소멸포인트가 있으면 내역 추가
-        $expire_point = get_expire_point($mb_id);
+        $expire_point = get_expire_point($po_type, $mb_id);
         if($expire_point > 0) {
             $mb = get_member($mb_id, 'mb_point');
             $content = '포인트 소멸';
@@ -1227,6 +1241,7 @@ function get_point_sum($cn_id='', $mb_id)
 
             $sql = " insert into {$g5['point_table']}
                         set cn_id = '{$cn_id}',
+                            po_type = '{$po_type}',
                             mb_id = '$mb_id',
                             po_datetime = '".G5_TIME_YMDHIS."',
                             po_content = '".addslashes($content)."',
@@ -1242,7 +1257,7 @@ function get_point_sum($cn_id='', $mb_id)
 
             // 포인트를 사용한 경우 포인트 내역에 사용금액 기록
             if($point < 0) {
-                insert_use_point($mb_id, $point);
+                insert_use_point($po_type, $mb_id, $point);
             }
         }
 
@@ -1250,6 +1265,7 @@ function get_point_sum($cn_id='', $mb_id)
         $sql = " update {$g5['point_table']}
                     set po_expired = '1'
                     where cn_id = '{$cn_id}'
+                        AND po_type = '{$po_type}'
                         AND mb_id = '$mb_id'
                       and po_expired <> '1'
                       and po_expire_date <> '9999-12-31'
@@ -1261,6 +1277,7 @@ function get_point_sum($cn_id='', $mb_id)
     $sql = " select sum(po_point) as sum_po_point
                 from {$g5['point_table']}
                 where cn_id = '{$cn_id}'
+                    AND po_type = '{$po_type}'
                     AND mb_id = '$mb_id' ";
     $row = sql_fetch($sql);
 
@@ -1268,7 +1285,7 @@ function get_point_sum($cn_id='', $mb_id)
 }
 
 // 소멸 포인트
-function get_expire_point($mb_id)
+function get_expire_point($po_type, $mb_id)
 {
     global $g5, $config;
 
@@ -1278,6 +1295,7 @@ function get_expire_point($mb_id)
     $sql = " select sum(po_point - po_use_point) as sum_point
                 from {$g5['point_table']}
                 where cn_id = '{$config['cn_id']}'
+                    AND po_type = '{$po_type}'
                     AND mb_id = '$mb_id'
                   and po_expired = '0'
                   and po_expire_date <> '9999-12-31'
@@ -1288,7 +1306,7 @@ function get_expire_point($mb_id)
 }
 
 // 포인트 삭제
-function delete_point($cn_id='', $mb_id, $rel_table, $rel_id, $rel_action)
+function delete_point($cn_id='', $po_type, $mb_id, $rel_table, $rel_id, $rel_action)
 {
     global $g5;
 
@@ -1297,26 +1315,28 @@ function delete_point($cn_id='', $mb_id, $rel_table, $rel_id, $rel_action)
     {
         // 포인트 내역정보
         $sql = " select * from {$g5['point_table']}
-                    where cn_id = '{$cn_id}',
+                    where cn_id = '{$cn_id}'
+                        AND po_type = '{$po_type}'
                         AND mb_id = '$mb_id'
-                      and po_rel_table = '$rel_table'
-                      and po_rel_id = '$rel_id'
-                      and po_rel_action = '$rel_action' ";
+                        and po_rel_table = '$rel_table'
+                        and po_rel_id = '$rel_id'
+                        and po_rel_action = '$rel_action' ";
         $row = sql_fetch($sql);
 
         if(isset($row['po_point']) && $row['po_point'] < 0) {
             $mb_id = $row['mb_id'];
             $po_point = abs($row['po_point']);
 
-            delete_use_point($mb_id, $po_point);
+            delete_use_point($po_type, $mb_id, $po_point);
         } else {
             if(isset($row['po_use_point']) && $row['po_use_point'] > 0) {
-                insert_use_point($row['mb_id'], $row['po_use_point'], $row['po_id']);
+                insert_use_point($po_type, $row['mb_id'], $row['po_use_point'], $row['po_id']);
             }
         }
 
         $result = sql_query(" delete from {$g5['point_table']}
                      where cn_id = '{$cn_id}'
+                        AND po_type = '{$po_type}'
                         AND mb_id = '$mb_id'
                        and po_rel_table = '$rel_table'
                        and po_rel_id = '$rel_id'
@@ -1327,16 +1347,22 @@ function delete_point($cn_id='', $mb_id, $rel_table, $rel_id, $rel_action)
             $sql = " update {$g5['point_table']}
                         set po_mb_point = po_mb_point - '{$row['po_point']}'
                         where cn_id = '{$cn_id}'
+                            AND po_type = '{$po_type}'
                             AND mb_id = '$mb_id'
                           and po_id > '{$row['po_id']}' ";
             sql_query($sql);
         }
 
         // 포인트 내역의 합을 구하고
-        $sum_point = get_point_sum($cn_id, $mb_id);
+        $sum_point = get_point_sum($cn_id, $po_type, $mb_id);
 
         // 포인트 UPDATE
-        $sql = " update {$g5['member_table']} set mb_point = '$sum_point' where mb_id = '$mb_id' ";
+        if ($po_type == 'basic') {
+            $sql = " update {$g5['member_table']} set mb_point = '$sum_point' where mb_id = '$mb_id' ";
+        } else {
+            $sql = " update {$g5['member_table']} set mb_{$po_type}_point = '$sum_point' where mb_id = '$mb_id' ";
+        }
+        
         $result = sql_query($sql);
     }
 

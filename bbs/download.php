@@ -80,7 +80,7 @@ if (!get_session($ss_name))
             alert('보유하신 포인트('.number_format($member['mb_point']).')가 없거나 모자라서 다운로드('.number_format($board['bo_download_point']).')가 불가합니다.\\n\\n포인트를 적립하신 후 다시 다운로드 해 주십시오.');
 
         // 게시물당 한번만 차감하도록 수정
-        insert_point($config['cn_id'], $member['mb_id'], $board['bo_download_point'], "{$board['bo_subject']} $wr_id 파일 다운로드", $bo_table, $wr_id, "다운로드");
+        insert_point($config['cn_id'], 'basic', $member['mb_id'], $board['bo_download_point'], "{$board['bo_subject']} $wr_id 파일 다운로드", $bo_table, $wr_id, "다운로드");
     }
 
     set_session($ss_name, TRUE);

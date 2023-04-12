@@ -57,7 +57,7 @@ if (!($search_ip || $search_mb_id)) {
 }
 
 if (!$search_mb_id)
-    insert_point($config['cn_id'], $member['mb_id'], $po['po_point'], $po['po_id'] . '. ' . cut_str($po['po_subject'],20) . ' 투표 참여 ', '@poll', $po['po_id'], '투표');
+    insert_point($config['cn_id'], 'basic', $member['mb_id'], $po['po_point'], $po['po_id'] . '. ' . cut_str($po['po_subject'],20) . ' 투표 참여 ', '@poll', $po['po_id'], '투표');
 
 //goto_url($g5['bbs_url'].'/poll_result.php?po_id='.$po_id.'&amp;skin_dir='.$skin_dir);
 goto_url($result_url);

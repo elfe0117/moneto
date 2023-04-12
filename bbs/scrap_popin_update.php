@@ -95,7 +95,7 @@ if ($wr_content && ($member['mb_level'] >= $board['bo_comment_level']))
         sql_query(" update {$g5['board_table']}  set bo_count_comment = bo_count_comment + 1 where cn_id = '{$config['cn_id']}' AND bo_table = '$bo_table' ");
 
         // 포인트 부여
-        insert_point($config['cn_id'], $member['mb_id'], $board['bo_comment_point'], "{$board['bo_subject']} {$wr_id}-{$comment_id} 댓글쓰기(스크랩)", $bo_table, $comment_id, '댓글');
+        insert_point($config['cn_id'], 'basic', $member['mb_id'], $board['bo_comment_point'], "{$board['bo_subject']} {$wr_id}-{$comment_id} 댓글쓰기(스크랩)", $bo_table, $comment_id, '댓글');
     }
 }
 

@@ -319,7 +319,7 @@ $result = sql_query($sql, true);
 
 // 회원이면서 포인트를 사용했다면 테이블에 사용을 추가
 if ($od['mb_id'] && $od_receipt_point)
-    insert_point($od['cn_id'], $od['mb_id'], (-1) * $od_receipt_point, "주문번호 $od_id 결제");
+    insert_point($od['cn_id'], 'basic', $od['mb_id'], (-1) * $od_receipt_point, "주문번호 $od_id 결제");
 
 // 쿠폰사용내역기록
 if($od['mb_id']) {

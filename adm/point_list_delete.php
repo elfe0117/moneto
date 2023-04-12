@@ -32,13 +32,13 @@ for ($i = 0; $i < $count; $i++) {
         $po_point = abs($row['po_point']);
 
         if ($row['po_rel_table'] == '@expire') {
-            delete_expire_point($mb_id, $po_point);
+            delete_expire_point($row['po_type'], $mb_id, $po_point);
         } else {
-            delete_use_point($mb_id, $po_point);
+            delete_use_point($row['po_type'], $mb_id, $po_point);
         }
     } else {
         if ($row['po_use_point'] > 0) {
-            insert_use_point($row['mb_id'], $row['po_use_point'], $row['po_id']);
+            insert_use_point($row['po_type'], $row['mb_id'], $row['po_use_point'], $row['po_id']);
         }
     }
 
@@ -50,13 +50,19 @@ for ($i = 0; $i < $count; $i++) {
     $sql = " update {$g5['point_table']}
                 set po_mb_point = po_mb_point - '{$row['po_point']}'
                 where cn_id = '{$config['cn_id']}'
+                    AND po_type = '{$row['po_type']}'
                     AND mb_id = '{$str_mb_id}'
                   and po_id > '{$po_id}' ";
     sql_query($sql);
 
     // 포인트 UPDATE
-    $sum_point = get_point_sum($_POST['cn_id'][$k], $_POST['mb_id'][$k]);
-    $sql = " update {$g5['member_table']} set mb_point = '$sum_point' where mb_id = '{$str_mb_id}' ";
+    $sum_point = get_point_sum($_POST['cn_id'][$k], $row['po_type'], $_POST['mb_id'][$k]);
+    if ($row['po_type'] == 'basic') {
+        $sql = " update {$g5['member_table']} set mb_point = '$sum_point' where mb_id = '{$str_mb_id}' ";
+    } else {
+        $sql = " update {$g5['member_table']} set mb_{$row['po_type']}_point = '$sum_point' where mb_id = '{$str_mb_id}' ";
+    }
+    
     sql_query($sql);
 }
 

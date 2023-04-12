@@ -60,7 +60,7 @@ $result = sql_query($sql);
 
 // 포인트 쿠폰이면 포인트 차감
 if($result && $cp['cz_type'])
-    insert_point($config['cn_id'], $member['mb_id'], (-1) * $cp['cz_point'], "쿠폰 $cp_id 발급");
+    insert_point($config['cn_id'], 'basic', $member['mb_id'], (-1) * $cp['cz_point'], "쿠폰 $cp_id 발급");
 
 // 다운로드 증가
 sql_query(" update {$g5['g5_shop_coupon_zone_table']} set cz_download = cz_download + 1 where cz_id = '$cz_id' ");

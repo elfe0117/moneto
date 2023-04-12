@@ -75,8 +75,8 @@ while ($row = sql_fetch_array($result))
     if (!$row['wr_is_comment'])
     {
         // 원글 포인트 삭제
-        if (!delete_point($config['cn_id'], $row['mb_id'], $bo_table, $row['wr_id'], '쓰기'))
-            insert_point($config['cn_id'], $row['mb_id'], $board['bo_write_point'] * (-1), "{$board['bo_subject']} {$row['wr_id']} 글삭제");
+        if (!delete_point($config['cn_id'], 'basic', $row['mb_id'], $bo_table, $row['wr_id'], '쓰기'))
+            insert_point($config['cn_id'], 'basic', $row['mb_id'], $board['bo_write_point'] * (-1), "{$board['bo_subject']} {$row['wr_id']} 글삭제");
 
         // 업로드된 파일이 있다면 파일삭제
         $sql2 = " select * from {$g5['board_file_table']} where cn_id = '{$config['cn_id']}' AND bo_table = '$bo_table' and wr_id = '{$row['wr_id']}' ";
@@ -104,8 +104,8 @@ while ($row = sql_fetch_array($result))
     else
     {
         // 코멘트 포인트 삭제
-        if (!delete_point($config['cn_id'], $row['mb_id'], $bo_table, $row['wr_id'], '댓글'))
-            insert_point($config['cn_id'], $row['mb_id'], $board['bo_comment_point'] * (-1), "{$board['bo_subject']} {$write['wr_id']}-{$row['wr_id']} 댓글삭제");
+        if (!delete_point($config['cn_id'], 'basic', $row['mb_id'], $bo_table, $row['wr_id'], '댓글'))
+            insert_point($config['cn_id'], 'basic', $row['mb_id'], $board['bo_comment_point'] * (-1), "{$board['bo_subject']} {$write['wr_id']}-{$row['wr_id']} 댓글삭제");
 
         $count_comment++;
     }

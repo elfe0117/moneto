@@ -696,7 +696,7 @@ if(!$result) {
 
 // 회원이면서 포인트를 사용했다면 테이블에 사용을 추가
 if ($is_member && $od_receipt_point)
-    insert_point($config['cn_id'], $member['mb_id'], (-1) * $od_receipt_point, "주문번호 $od_id 결제");
+    insert_point($config['cn_id'], 'basic', $member['mb_id'], (-1) * $od_receipt_point, "주문번호 $od_id 결제");
 
 $od_memo = nl2br(htmlspecialchars2(stripslashes($od_memo))) . "&nbsp;";
 

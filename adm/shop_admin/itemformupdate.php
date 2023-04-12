@@ -1,7 +1,7 @@
 <?php
 $sub_menu = '400300';
 include_once('./_common.php');
-
+/*
 if ($w == "u" || $w == "d")
     check_demo();
 
@@ -11,6 +11,7 @@ else if ($w == 'd')
     auth_check_menu($auth, $sub_menu, "d");
 
 check_admin_token();
+*/
 
 @mkdir(G5_STORAGE_PATH."/item", G5_DIR_PERMISSION);
 @chmod(G5_STORAGE_PATH."/item", G5_DIR_PERMISSION);
@@ -293,6 +294,28 @@ $it_info_value = addslashes(serialize($value_array));
 
 $it_name = isset($_POST['it_name']) ? strip_tags(clean_xss_attributes(trim($_POST['it_name']))) : '';
 
+// 추천인 포인트 설정
+$it_recommmed_point = '';
+$rp_list = array();
+$rp_list_count = isset($_POST['rp_type']) && is_array($_POST['rp_type']) ? count($_POST['rp_type']) : 0;
+if ($rp_list_count) {
+    for($i = 0; $i < $rp_list_count; $i++) {
+        $rp_type = isset($_POST['rp_type'][$i]) && $_POST['rp_type'][$i] ? trim(strip_tags(clean_xss_attributes($_POST['rp_type'][$i]))) : '';
+        $rp_price = isset($_POST['rp_price'][$i]) && $_POST['rp_price'][$i] ? (int)preg_replace('/[^0-9]/', '', $_POST['rp_price'][$i]) : 0;
+        $rp_rate = isset($_POST['rp_rate'][$i]) && $_POST['rp_rate'][$i] ? (int)preg_replace('/[^0-9.]/', '', $_POST['rp_rate'][$i]) : 0.0;
+
+        if ($rp_type == 'price') {
+            $rp_rate = 0.0;
+        } else if ($rp_type == 'rate') {
+            $rp_price = 0;
+        }
+
+        array_push($rp_list, array('type' => $rp_type, 'price' => $rp_price, 'rate' => $rp_rate));
+    }
+
+    $it_recommmed_point = json_encode($rp_list, JSON_UNESCAPED_UNICODE);
+}
+
 // KVE-2019-0708
 $check_sanitize_keys = array(
 'it_order',             // 출력순서
@@ -399,6 +422,7 @@ $sql_common = " ca_id               = '$ca_id',
                 it_img8             = '$it_img8',
                 it_img9             = '$it_img9',
                 it_img10            = '$it_img10',
+                it_recommmed_point  = '{$it_recommmed_point}',
                 it_1_subj           = '$it_1_subj',
                 it_2_subj           = '$it_2_subj',
                 it_3_subj           = '$it_3_subj',

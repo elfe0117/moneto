@@ -6,7 +6,7 @@ auth_check_menu($auth, $sub_menu, 'r');
 
 $sql_common = " from {$g5['point_table']} po";
 
-$sql_search = " where (1) AND po.cn_id = '{$config['cn_id']}' ";
+$sql_search = " WHERE po.cn_id = '{$config['cn_id']}' ";
 
 if ($stx) {
     $sql_search .= " and ( ";
@@ -59,7 +59,7 @@ if ($sfl == 'mb_id' && $stx) {
 $g5['title'] = '포인트관리';
 require_once './admin.head.php';
 
-$colspan = 9;
+$colspan = 10;
 
 $po_expire_term = '';
 if ($config['cf_point_term'] > 0) {
@@ -114,6 +114,7 @@ if (strstr($sfl, "mb_id")) {
                         <label for="chkall" class="sound_only">포인트 내역 전체</label>
                         <input type="checkbox" name="chkall" value="1" id="chkall" onclick="check_all(this.form)">
                     </th>
+                    <th scope="col"><?php echo subject_sort_link('po_type') ?>유형</a></th>
                     <th scope="col"><?php echo subject_sort_link('mb_id') ?>회원아이디</a></th>
                     <th scope="col">이름</th>
                     <th scope="col">닉네임</th>
@@ -150,6 +151,7 @@ if (strstr($sfl, "mb_id")) {
                             <label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo $row['po_content'] ?> 내역</label>
                             <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i ?>">
                         </td>
+                        <td class="td_left"><?php echo(get_text($row['po_type'])); ?></td>
                         <td class="td_left"><a href="?sfl=mb_id&amp;stx=<?php echo $row['mb_id'] ?>"><?php echo $row['mb_id'] ?></a></td>
                         <td class="td_left"><?php echo get_text($row['mb_name']); ?></td>
                         <td class="td_left sv_use">
@@ -205,6 +207,15 @@ if (strstr($sfl, "mb_id")) {
                     <col>
                 </colgroup>
                 <tbody>
+                    <tr>
+                        <th scope="row"><label for="po_type">유형<strong class="sound_only">필수</strong></label></th>
+                        <td>
+                            <select name="po_type">
+                                <?php echo(option_selected('basic', $po_type, '기본 포인트')); ?>
+                                <?php echo(option_selected('recommend', $po_type, '추천인 포인트')); ?>
+                            </select>
+                        </td>
+                    </tr>
                     <tr>
                         <th scope="row"><label for="mb_id">회원아이디<strong class="sound_only">필수</strong></label></th>
                         <td><input type="text" name="mb_id" value="<?php echo $mb_id ?>" id="mb_id" class="required frm_input" required></td>

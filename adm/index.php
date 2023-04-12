@@ -236,9 +236,9 @@ $colspan = 5;
 </section>
 
 <?php
-$sql_common = " from {$g5['point_table']} ";
-$sql_search = " where (1) AND cn_id = '{$config['cn_id']}' ";
-$sql_order = " order by po_id desc ";
+$sql_common = " FROM {$g5['point_table']} ";
+$sql_search = " WHERE cn_id = '{$config['cn_id']}' ";
+$sql_order = " ORDER BY po_id DESC ";
 
 $sql = " select count(*) as cnt {$sql_common} {$sql_search} {$sql_order} ";
 $row = sql_fetch($sql);
@@ -261,6 +261,7 @@ $colspan = 7;
             <caption>최근 포인트 발생내역</caption>
             <thead>
                 <tr>
+                    <th scope="col">유형</th>
                     <th scope="col">회원아이디</th>
                     <th scope="col">이름</th>
                     <th scope="col">닉네임</th>
@@ -289,6 +290,7 @@ $colspan = 7;
                 ?>
 
                     <tr>
+                        <td class="td_mbid"><?php echo(get_text($row['po_type'])); ?></td>
                         <td class="td_mbid"><a href="./point_list.php?sfl=mb_id&amp;stx=<?php echo $row['mb_id'] ?>"><?php echo $row['mb_id'] ?></a></td>
                         <td class="td_mbname"><?php echo get_text($row2['mb_name']); ?></td>
                         <td class="td_name sv_use">
